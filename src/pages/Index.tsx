@@ -127,7 +127,7 @@ const Index = () => {
       {step.id === "insert_50ias" && (
         <InsertStep
           headline="Use GPT-5, Claude, Gemini e +50 IAs Premium em uma só plataforma."
-          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" className="max-h-full w-auto object-contain" />}
+          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" className="max-h-full w-auto object-contain" />}
           imageHeightClass="h-36"
           subtitle="Tudo em um só lugar, sem precisar alternar entre várias assinaturas."
           onContinue={c.goNext}
