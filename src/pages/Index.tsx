@@ -72,7 +72,7 @@ const Index = () => {
       showBack={!!step.showBack}
       showProgress={!!step.showProgress}
       progress={c.progress}
-      onBack={c.goBack}
+      onBack={handleBack}
       scrollable={isFinal}
     >
       {/* 1. Intro */}
