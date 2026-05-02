@@ -132,7 +132,7 @@ const Index = () => {
           selectedValue={c.state.mercado}
           onSelect={(v, l) => {
             c.setMercado(v as never, l);
-            setTimeout(() => c.goNext(), 180);
+            scheduleAdvance();
           }}
         />
       )}
