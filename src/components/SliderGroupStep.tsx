@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { TaskItem } from "@/data/taskOptionsByMarket";
 import type { SliderValue, FrequencyValue } from "@/types/funnel";
 import { cn } from "@/lib/utils";
