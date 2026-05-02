@@ -152,13 +152,15 @@ const Index = () => {
         <InsertStep
           title="Você está no lugar certo"
           image={
-            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-border flex items-center justify-center">
-              <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-                {c.state.mercadoLabel ?? "Seu mercado"}
-              </span>
-            </div>
+            <img 
+              src={`/markets/${market}.png`} 
+              alt={c.state.mercadoLabel ?? "Seu mercado"}
+              className="w-full h-full object-cover rounded-xl shadow-sm"
+              loading="lazy"
+              decoding="async"
+            />
           }
-          imageHeightClass="h-28"
+          imageHeightClass="h-32"
           bullets={{ title: "A Inner pode te ajudar com:", items: innerHelpsByMarket[market] }}
           onContinue={c.goNext}
         />

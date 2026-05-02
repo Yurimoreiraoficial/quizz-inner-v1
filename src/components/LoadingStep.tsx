@@ -15,7 +15,7 @@ export function LoadingStep({
     "Calculando sua economia estimada",
     "Montando sua recomendação final",
   ],
-  duration = 3800,
+  duration = 8000,
   onComplete,
 }: LoadingStepProps) {
   const [stepIdx, setStepIdx] = useState(0);
