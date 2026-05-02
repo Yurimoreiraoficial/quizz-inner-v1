@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
 import innerTeamImg from "@/assets/inner-team.jpg";
+import promptsImg from "@/assets/prompts.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
@@ -228,7 +229,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         </p>
 
         <div className="mt-6 space-y-4">
-          {finalPageContent.features.big.map((b) => (
+          {finalPageContent.features.big.map((b, idx) => (
             <article key={b.eyebrow} className="card-surface p-5">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
                 {b.eyebrow}
@@ -239,9 +240,21 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               <p className="mt-2 text-[14px] text-muted-foreground text-pretty leading-relaxed">
                 {b.description}
               </p>
-              <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 px-4 py-8 text-center text-[14px] text-muted-foreground">
-                {b.visual}
-              </div>
+              {idx === 0 ? (
+                <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 overflow-hidden">
+                  <img
+                    src={promptsImg}
+                    alt="Biblioteca de prompts da Inner"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto block"
+                  />
+                </div>
+              ) : (
+                <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 px-4 py-8 text-center text-[14px] text-muted-foreground">
+                  {b.visual}
+                </div>
+              )}
             </article>
           ))}
         </div>
