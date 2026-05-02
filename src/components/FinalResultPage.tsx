@@ -308,23 +308,23 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 {finalPageContent.offer.closing.line1}
               </p>
 
-              <div className="mt-3 flex items-end justify-center gap-3">
-                <span className="text-[15px] text-muted-foreground line-through decoration-destructive/60 mb-2">
-                  R$199
+              <div className="mt-3 flex items-baseline justify-center gap-3">
+                <span className="text-[18px] font-medium text-muted-foreground line-through decoration-destructive/60">
+                  R$249
                 </span>
                 <div className="flex items-baseline gap-1 text-brand drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
-                  <span className="text-[18px] font-semibold leading-none">R$</span>
+                  <span className="text-[18px] font-semibold">R$</span>
                   <span className="text-[64px] sm:text-[72px] font-extrabold tracking-tight leading-[0.9]">99</span>
                 </div>
-                <span className="text-[14px] font-medium text-muted-foreground mb-2">/mês</span>
+                <span className="text-[14px] font-medium text-muted-foreground">/mês</span>
               </div>
 
               <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/15 text-primary text-[11px] font-bold uppercase tracking-wider">
                 <Sparkles className="w-3 h-3" />
-                Economize 50%
+                Economize 60%
               </div>
 
-              <p className="mt-3 text-[11px] text-muted-foreground">
+              <p className="mt-3 text-[11px] text-destructive">
                 {finalPageContent.offer.anchor}
               </p>
             </div>
