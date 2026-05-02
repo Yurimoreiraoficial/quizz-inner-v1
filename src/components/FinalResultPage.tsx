@@ -118,6 +118,11 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <p className="mt-3 text-[15px] text-foreground text-pretty">
           {finalPageContent.fusion.description}
         </p>
+        <img
+          src={fusionImg}
+          alt="Tecnologia Fusion"
+          className="mt-4 w-full max-w-sm mx-auto h-auto"
+        />
         <p className="mt-2 text-[14px] text-muted-foreground text-pretty">
           {finalPageContent.fusion.sub}
         </p>
