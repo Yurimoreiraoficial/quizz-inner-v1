@@ -42,8 +42,8 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
                 aria-label={String(s)}
                 onClick={() => onChange(s)}
                 className={cn(
-                  "w-3.5 h-3.5 rounded-full border-2 transition-all",
-                  active ? "w-3.5 h-3.5 rounded-full transition-all bg-primary border-primary scale-100 border-2 text-sm" : "bg-card border-border-strong/40"
+                  "w-2.5 h-2.5 rounded-full border-2 transition-all",
+                  active ? "w-2.5 h-2.5 rounded-full transition-all bg-primary border-primary scale-100 border-2" : "bg-card border-border-strong/40"
                 )}
               />
             );
