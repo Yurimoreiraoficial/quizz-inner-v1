@@ -32,13 +32,13 @@ export function InsertStep({
       )}
 
       {title && (
-        <h2 className="mt-5 text-[22px] sm:text-[24px] font-bold text-foreground text-balance text-center">
+        <h2 className="mt-5 text-[22px] sm:text-[24px] text-foreground text-balance text-center font-medium">
           {title}
         </h2>
       )}
 
       {subtitle && (
-        <p className="mt-3 text-[15px] sm:text-[16px] leading-relaxed text-muted-foreground text-pretty">
+        <p className="mt-3 text-[15px] sm:text-[16px] leading-relaxed text-muted-foreground text-pretty text-center">
           {subtitle}
         </p>
       )}

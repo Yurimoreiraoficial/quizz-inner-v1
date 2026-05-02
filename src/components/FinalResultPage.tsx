@@ -300,10 +300,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <h2 className="text-[22px] sm:text-[24px] font-bold text-foreground text-balance">
           {fName}, Inner é a ferramenta ideal para você!
         </h2>
-        <p className="mt-2 text-[14px] text-muted-foreground text-pretty">
+        <p className="mt-2 text-[14px] text-muted-foreground text-pretty text-center">
           {socialProofSubBy[market]}
         </p>
-        <h3 className="mt-5 text-[16px] font-bold text-foreground">Veja o que eles dizem sobre nós:</h3>
+        <h3 className="mt-5 text-[16px] font-bold text-foreground text-center">Veja o que eles dizem sobre nós:</h3>
         <div className="mt-3">
           <TestimonialSwipe items={testimonialsByMarket[market]} />
         </div>
