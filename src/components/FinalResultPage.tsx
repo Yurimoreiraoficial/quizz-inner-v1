@@ -160,7 +160,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <div className="grid grid-cols-1 gap-3">
           {/* SEM a Inner — negativo */}
           <div className="rounded-3xl border border-destructive/25 bg-destructive/[0.06] p-5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 h-full w-1 bg-destructive/60" />
+            
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-destructive/15 text-destructive">
                 <X className="w-3.5 h-3.5" strokeWidth={3} />
@@ -181,7 +181,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
           {/* COM a Inner — positivo */}
           <div className="rounded-3xl p-5 relative overflow-hidden bg-gradient-to-br from-primary/15 via-card to-card border border-primary/30">
-            <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
+            
             <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
             <div className="relative flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground">
