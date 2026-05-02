@@ -302,7 +302,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 {finalPageContent.offer.tag}
               </span>
               <span className="text-[10px] font-semibold uppercase tracking-wider text-primary/90">
-                Oferta exclusiva
+                MELHOR ESCOLHA
               </span>
             </div>
 
