@@ -71,7 +71,7 @@ export const finalPageContent = {
       { eyebrow: "Imagens", description: "Nano Banana Pro e GPT Images" },
       { eyebrow: "Slides", description: "Gamma integrado à plataforma" },
       { eyebrow: "Anexos", description: "PDFs, planilhas, documentos" },
-      { eyebrow: "Projetos", description: "Separe por objetivo ou área" },
+      { eyebrow: "Projetos", description: "Separe seus chats por objetivo ou área" },
       { eyebrow: "Suporte", description: "Em português, direto no app" },
     ],
   },
