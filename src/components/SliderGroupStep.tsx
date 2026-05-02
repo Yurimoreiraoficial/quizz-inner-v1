@@ -18,8 +18,8 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
   return (
-    <div className="card-surface px-4 py-3 rounded-sm">
-      <div className="text-[14px] sm:text-[15px] font-semibold text-foreground text-pretty mb-2 py-[6px]">
+    <div className="card-surface px-3 py-2 rounded-sm">
+      <div className="text-[13px] sm:text-[14px] font-semibold text-foreground text-pretty mb-1.5 leading-snug">
         {label}
       </div>
 
@@ -52,14 +52,14 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
       </div>
 
       {/* Labels */}
-      <div className="mt-2 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
+      <div className="mt-1.5 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
         {scale.map((s, i) => (
           <button
             key={String(s)}
             type="button"
             onClick={() => onChange(s)}
             className={cn(
-              "text-[12px] sm:text-[13px] py-0.5 transition-colors",
+              "text-[11px] sm:text-[12px] py-0 transition-colors",
               i === 0 ? "text-left" : i === scale.length - 1 ? "text-right" : "text-center",
               i === idx ? "font-bold text-foreground" : "text-muted-foreground"
             )}
@@ -95,10 +95,10 @@ export function SliderGroupStep({ question, scale, items, values, onChange }: Sl
   }, [list]);
   return (
     <div className="flex flex-col">
-      <h1 className="text-[24px] sm:text-[26px] leading-[1.2] font-bold text-foreground text-balance">
+      <h1 className="text-[20px] sm:text-[24px] leading-[1.2] font-bold text-foreground text-balance">
         {question}
       </h1>
-      <div className="mt-5 flex flex-col gap-2">
+      <div className="mt-3 flex flex-col gap-1.5">
         {list.map((it) => (
           <SliderRow
             key={it.id}
