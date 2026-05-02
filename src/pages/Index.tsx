@@ -97,8 +97,7 @@ const Index = () => {
             className="mt-6 w-full max-w-[480px] h-auto select-none pointer-events-none"
             draggable={false}
             decoding="async"
-            // @ts-expect-error fetchpriority is a valid HTML attribute
-            fetchpriority="high"
+            fetchPriority="high"
           />
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0">
             Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
