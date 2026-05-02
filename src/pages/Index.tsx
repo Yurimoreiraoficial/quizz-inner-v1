@@ -66,7 +66,7 @@ const Index = () => {
             <span className="block text-[16px] sm:text-[18px] font-medium text-muted-foreground">por apenas R$99/mês</span>
           </h1>
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px]">
-            Descubra em menos de 1 minuto se a Inner é a melhor escolha para você.
+            Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
           </p>
           <div className="mt-8 w-full">
             <PrimaryButton withArrow onClick={() => { c.ensureSession(); c.goNext(); }}>
