@@ -54,13 +54,30 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           {fName}, sua análise está pronta.
         </h1>
 
-        <div className="mt-5 card-strong p-5 text-left">
-          <div className="text-[12px] uppercase tracking-wider text-muted-foreground">
-            Resultado
-          </div>
-          <div className="mt-1 text-[18px] sm:text-[20px] font-bold text-foreground text-balance">
-            Seu nível de encaixe com a Inner é{" "}
-            <span className="text-brand text-6xl">{fitLabel}</span>
+        <div className="mt-5 card-strong p-6 text-left relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20">
+          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+          <div className="relative">
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              <Sparkles className="w-3.5 h-3.5" />
+              Resultado
+            </div>
+
+            <p className="mt-3 text-[15px] sm:text-[16px] text-muted-foreground">
+              Seu nível de encaixe com a Inner é
+            </p>
+
+            <div className="mt-2 flex items-baseline gap-3">
+              <span className="text-brand text-6xl sm:text-7xl font-bold leading-none tracking-tight drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
+                {fitLabel}
+              </span>
+            </div>
+
+            <div className="mt-5 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+            <div className="mt-4 flex items-center gap-2 text-[12.5px] text-muted-foreground">
+              <Check className="w-4 h-4 text-primary shrink-0" />
+              <span>Análise concluída com base no seu perfil</span>
+            </div>
           </div>
         </div>
 
