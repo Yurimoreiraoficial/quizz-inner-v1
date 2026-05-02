@@ -27,6 +27,23 @@ const Index = () => {
 
   const c = useFunnelState();
   const step = c.currentStep;
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleBack = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+    c.goBack();
+  };
+
+  const scheduleAdvance = () => {
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    advanceTimerRef.current = setTimeout(() => {
+      advanceTimerRef.current = null;
+      c.goNext();
+    }, 180);
+  };
 
   // result_viewed quando entra na tela final
   useEffect(() => {
