@@ -78,7 +78,7 @@ export function getNaturalBenefits(state: FunnelState): string[] {
 
   for (const p of painOptions) {
     const v = state.dores[p.id];
-    if (v === "Frequentemente" || v === "Às vezes") {
+    if (v === "Muito" || v === "Às vezes") {
       const rule = painRules.find((r) => r.match(p.id, p.label));
       if (rule && !benefits.includes(rule.benefit)) benefits.push(rule.benefit);
     }

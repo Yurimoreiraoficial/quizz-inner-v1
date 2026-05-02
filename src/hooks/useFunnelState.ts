@@ -125,7 +125,7 @@ export function useFunnelState() {
         .filter((t) => s.tarefas[t.id] === "Muito" || s.tarefas[t.id] === "Às vezes")
         .map((t) => t.label);
       const doresPrincipais = painOptions
-        .filter((p) => s.dores[p.id] === "Frequentemente" || s.dores[p.id] === "Às vezes")
+        .filter((p) => s.dores[p.id] === "Muito" || s.dores[p.id] === "Às vezes")
         .map((p) => p.label);
       // salva respostas consolidadas
       const taskAnswers: QuizAnswer[] = taskList.map((t) => ({
