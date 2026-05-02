@@ -362,7 +362,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             Assinar agora por R$99/mês
           </PrimaryButton>
           <p className="mt-2 text-[12px] text-muted-foreground">
-            Checkout seguro · Pix, cartão ou boleto parcelado · 14 dias de garantia
+            Checkout seguro · 14 dias de garantia
           </p>
         </div>
 
