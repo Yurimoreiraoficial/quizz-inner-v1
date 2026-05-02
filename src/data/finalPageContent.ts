@@ -113,7 +113,7 @@ export const finalPageContent = {
       a: "Você pode pagar por Pix, cartão de crédito ou boleto parcelado.",
     },
     {
-      q: "Tem algum limite?",
+      q: "Tem algum limite de uso ou créditos?",
       a: "O plano Pro oferece acesso amplo às principais IAs da plataforma. Os limites mais relevantes ficam nas ferramentas de imagem. Se você precisa de volumes maiores, temos o Plano Ultra, com limites mais altos.",
     },
     {
