@@ -58,10 +58,13 @@ export function TestimonialSwipe({ items }: TestimonialSwipeProps) {
             onDragStart={() => setPaused(true)}
             onDragEnd={onDragEnd}
             style={{ x }}
-            initial={{ opacity: 0, x: 80 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -80 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{
+              x: { duration: 0.9, ease: [0.32, 0.72, 0, 1] },
+              opacity: { duration: 0.6, ease: "easeOut" },
+            }}
             className="card-surface p-5 sm:p-6 cursor-grab active:cursor-grabbing select-none"
           >
             <div className="flex items-center gap-1 mb-3 text-warning">
