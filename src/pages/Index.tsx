@@ -19,6 +19,7 @@ import { PartnerLogos } from "@/components/PartnerLogos";
 import { FinalResultPage } from "@/components/FinalResultPage";
 
 import aiHero from "@/assets/ai-network-hero.png";
+import introAiCards from "@/assets/intro-ai-cards.png";
 
 const Index = () => {
   // Inicializa UTMs cedo
@@ -65,6 +66,12 @@ const Index = () => {
             <span className="block text-brand text-[44px] sm:text-[56px] leading-none my-1">+50 IAs</span>
             <span className="block text-[16px] sm:text-[18px] font-medium text-muted-foreground">por apenas R$99/mês</span>
           </h1>
+          <img
+            src={introAiCards}
+            alt="Cards das principais IAs: Gemini, Nano Banana, ChatGPT e Claude"
+            className="mt-6 w-full max-w-[360px] h-auto select-none pointer-events-none"
+            draggable={false}
+          />
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px]">
             Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
           </p>
