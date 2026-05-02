@@ -59,7 +59,8 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
             type="button"
             onClick={() => onChange(s)}
             className={cn(
-              "text-[12px] sm:text-[13px] py-0.5 transition-colors text-muted-foreground text-right",
+              "text-[12px] sm:text-[13px] py-0.5 transition-colors",
+              i === 0 ? "text-left" : i === scale.length - 1 ? "text-right" : "text-center",
               i === idx ? "font-bold text-foreground" : "text-muted-foreground"
             )}
           >
