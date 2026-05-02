@@ -201,7 +201,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </div>
         </div>
 
-        <p className="mt-4 text-[14px] text-muted-foreground text-pretty">
+        <p className="mt-4 text-[14px] text-muted-foreground text-pretty text-center">
           {finalPageContent.beforeAfter.summary}
         </p>
 

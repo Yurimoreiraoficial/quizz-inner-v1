@@ -31,7 +31,7 @@ export const finalPageContent = {
       "Tudo em uma única plataforma",
     ],
     summary:
-      "Com a Inner, você troca várias ferramentas separadas por uma plataforma única com +50 IAs Premium.",
+      "Faça mais pagando menos!",
   },
   features: {
     title: "Tudo o que você precisa em um só lugar.",
