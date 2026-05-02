@@ -181,7 +181,7 @@ const Index = () => {
         <>
           <SliderGroupStep
             question="Com que frequência isso acontece na sua rotina?"
-            scale={["Nunca", "Raramente", "Às vezes", "Frequentemente"]}
+            scale={["Nunca", "Às vezes", "Frequentemente"]}
             items={painOptions}
             values={c.state.dores}
             onChange={(id, l, v) => c.setDor(id, l, v as never)}
