@@ -42,7 +42,7 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
                 aria-label={String(s)}
                 onClick={() => onChange(s)}
                 className={cn(
-                  "w-4 h-4 rounded-full border-2 transition-all",
+                  "w-3.5 h-3.5 rounded-full border-2 transition-all",
                   active ? "bg-primary border-primary scale-100" : "bg-card border-border-strong/40"
                 )}
               />
@@ -52,14 +52,14 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
       </div>
 
       {/* Labels */}
-      <div className="mt-4 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
+      <div className="mt-2 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
         {scale.map((s, i) => (
           <button
             key={String(s)}
             type="button"
             onClick={() => onChange(s)}
             className={cn(
-              "text-center text-[13px] sm:text-[14px] py-1 transition-colors",
+              "text-center text-[12px] sm:text-[13px] py-0.5 transition-colors",
               i === idx ? "font-bold text-foreground" : "text-muted-foreground"
             )}
           >
