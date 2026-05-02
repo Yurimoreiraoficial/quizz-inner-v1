@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { TaskItem } from "@/data/taskOptionsByMarket";
 import type { SliderValue, FrequencyValue } from "@/types/funnel";
 import { cn } from "@/lib/utils";
@@ -81,6 +81,17 @@ interface SliderGroupStepProps {
 
 export function SliderGroupStep({ question, scale, items, values, onChange }: SliderGroupStepProps) {
   const list = useMemo(() => items, [items]);
+
+  // Pré-seleciona "Nunca" (primeiro item da escala) para itens sem valor
+  useEffect(() => {
+    const defaultValue = scale[0];
+    list.forEach((it) => {
+      if (values[it.id] === undefined) {
+        onChange(it.id, it.label, defaultValue);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list]);
   return (
     <div className="flex flex-col">
       <h1 className="text-[24px] sm:text-[26px] leading-[1.2] font-bold text-foreground text-balance">
