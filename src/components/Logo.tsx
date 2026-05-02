@@ -13,7 +13,7 @@ interface LogoProps {
  */
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={cn("logo-pill", className)} aria-label="Inner AI">
+    <div className={cn("logo-pill rounded", className)} aria-label="Inner AI">
       <img
         src={logoWhite}
         alt="Inner AI"
