@@ -147,7 +147,7 @@ const Index = () => {
             values={c.state.tarefas}
             onChange={(id, l, v) => c.setTarefa(id, l, v as never)}
           />
-          <div className="mt-6">
+          <div className="mt-4">
             <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
               CONTINUAR
             </PrimaryButton>
@@ -186,7 +186,7 @@ const Index = () => {
             values={c.state.dores}
             onChange={(id, l, v) => c.setDor(id, l, v as never)}
           />
-          <div className="mt-6">
+          <div className="mt-4">
             <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
               CONTINUAR
             </PrimaryButton>
