@@ -86,7 +86,7 @@ export function SliderGroupStep({ question, scale, items, values, onChange }: Sl
       <h1 className="text-[24px] sm:text-[26px] leading-[1.2] font-bold text-foreground text-balance">
         {question}
       </h1>
-      <div className="mt-5 flex flex-col gap-3">
+      <div className="mt-5 flex flex-col gap-2">
         {list.map((it) => (
           <SliderRow
             key={it.id}
