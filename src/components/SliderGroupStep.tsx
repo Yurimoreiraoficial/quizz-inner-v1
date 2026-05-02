@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useCallback } from "react";
 import type { TaskItem } from "@/data/taskOptionsByMarket";
 import type { SliderValue, FrequencyValue } from "@/types/funnel";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,33 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
   const answered = idx >= 0;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const lastIdxRef = useRef<number>(idx);
+
+  const updateFromClientX = useCallback(
+    (clientX: number) => {
+      const el = trackRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+      const newIdx = Math.round(ratio * (scale.length - 1));
+      if (newIdx !== lastIdxRef.current) {
+        lastIdxRef.current = newIdx;
+        onChange(scale[newIdx]);
+      }
+    },
+    [scale, onChange]
+  );
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    lastIdxRef.current = -1;
+    updateFromClientX(e.clientX);
+  };
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.buttons !== 1 && e.pointerType === "mouse") return;
+    updateFromClientX(e.clientX);
+  };
 
   return (
     <div
@@ -38,23 +65,31 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
           answered ? "opacity-100" : "opacity-70"
         )}
       >
-        {/* Trilho */}
-        <div className="relative px-2">
-          <div className="h-[3px] rounded-full bg-secondary">
+        {/* Trilho — clicável e arrastável */}
+        <div
+          ref={trackRef}
+          role="slider"
+          aria-valuemin={0}
+          aria-valuemax={scale.length - 1}
+          aria-valuenow={Math.max(0, idx)}
+          aria-valuetext={idx >= 0 ? String(scale[idx]) : undefined}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          className="relative px-2 py-3 -my-3 touch-none cursor-pointer select-none"
+        >
+          <div className="h-[3px] rounded-full bg-secondary pointer-events-none">
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{ width: `${pct}%`, background: "var(--gradient-primary)" }}
             />
           </div>
-          <div className="absolute inset-0 flex items-center justify-between">
+          <div className="absolute inset-0 px-2 flex items-center justify-between pointer-events-none">
             {scale.map((s, i) => {
               const active = idx >= i;
               return (
-                <button
+                <span
                   key={String(s)}
-                  type="button"
-                  aria-label={String(s)}
-                  onClick={() => onChange(s)}
+                  aria-hidden
                   className={cn(
                     "w-2 h-2 rounded-full border transition-all",
                     active ? "bg-primary border-primary" : "bg-card border-border-strong/30"
