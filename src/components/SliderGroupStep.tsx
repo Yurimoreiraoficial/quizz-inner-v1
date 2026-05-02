@@ -18,8 +18,8 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
   return (
-    <div className="card-surface px-4 py-3">
-      <div className="text-[14px] sm:text-[15px] font-semibold text-foreground text-pretty mb-2">
+    <div className="card-surface px-4 py-3 rounded-sm">
+      <div className="text-[14px] sm:text-[15px] font-semibold text-foreground text-pretty mb-2 py-[6px]">
         {label}
       </div>
 
@@ -59,7 +59,7 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
             type="button"
             onClick={() => onChange(s)}
             className={cn(
-              "text-center text-[12px] sm:text-[13px] py-0.5 transition-colors",
+              "text-[12px] sm:text-[13px] py-0.5 transition-colors text-muted-foreground text-right",
               i === idx ? "font-bold text-foreground" : "text-muted-foreground"
             )}
           >
