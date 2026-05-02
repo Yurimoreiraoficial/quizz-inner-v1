@@ -21,6 +21,7 @@ import {
 import fusionImg from "@/assets/fusion.svg";
 import innerTeamImg from "@/assets/inner-team.jpg";
 import promptsImg from "@/assets/prompts.svg";
+import appImg from "@/assets/app.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
