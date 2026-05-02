@@ -83,9 +83,9 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
           )}
         </div>
 
-        <p className="text-[12px] text-muted-foreground flex items-center gap-1.5">
+        <p className="text-[12px] text-muted-foreground flex items-center justify-center gap-1.5 text-center">
           <Lock className="w-3.5 h-3.5" />
-          Sem spam. Usaremos seu WhatsApp apenas para te ajudar em caso de dúvida.
+          Usaremos seu WhatsApp apenas para te ajudar em caso de dúvida.
         </p>
 
         <div className="mt-2">
