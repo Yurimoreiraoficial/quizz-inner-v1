@@ -29,7 +29,7 @@ export function OptionCard({ label, selected = false, onClick }: OptionCardProps
       <span
         className={cn(
           "shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors",
-          selected ? "bg-primary border-primary text-white" : "border-[hsl(var(--border-strong))]/60 bg-white"
+          selected ? "bg-primary border-primary text-primary-foreground" : "border-[hsl(var(--border-strong))]/60 bg-card"
         )}
       >
         {selected && <Check className="w-3.5 h-3.5" />}
