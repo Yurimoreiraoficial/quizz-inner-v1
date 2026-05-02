@@ -105,28 +105,32 @@ export const finalPageContent = {
   },
   faqs: [
     {
-      q: "Como funciona a assinatura?",
-      a: "Você assina o Plano PRO por R$99/mês e tem acesso a +50 IAs Premium em uma única plataforma. Pode cancelar quando quiser.",
+      q: "Quais IAs vou ter acesso?",
+      a: "Você terá acesso a +50 IAs Premium em uma única plataforma, incluindo ChatGPT, Claude, Gemini, Perplexity, Grok, DeepSeek, Mistral, Llama, Midjourney, Flux, Nano Banana, Ideogram, ElevenLabs, Gamma, entre outras.",
     },
     {
-      q: "Quais IAs estão inclusas?",
-      a: "ChatGPT, Claude, Gemini, Perplexity, modelos de imagem e mais de 50 outras IAs Premium em constante atualização.",
+      q: "Quais são as formas de pagamento?",
+      a: "Você pode pagar por Pix, cartão de crédito ou boleto parcelado.",
     },
     {
-      q: "Posso cancelar quando quiser?",
-      a: "Sim. Sem multa e sem fidelidade. E nos primeiros 14 dias devolvemos 100% do valor.",
+      q: "Tem algum limite?",
+      a: "O plano Pro oferece acesso amplo às principais IAs da plataforma. Os limites mais relevantes ficam nas ferramentas de imagem. Se você precisa de volumes maiores, temos o Plano Ultra, com limites mais altos.",
+    },
+    {
+      q: "Tem geração de vídeo?",
+      a: "A geração de vídeo está disponível apenas no Plano Ultra. Para saber mais e liberar acesso, clique em \"Falar com o time no WhatsApp\".",
     },
     {
       q: "Funciona no celular?",
-      a: "Sim. A Inner roda no navegador e tem aplicativo dedicado para o seu dia a dia.",
+      a: "Sim. Você pode usar a Inner no computador e no celular, com seus dados sincronizados entre os dispositivos. A melhor experiência no celular é pelo aplicativo.",
     },
     {
-      q: "Tem suporte em português?",
-      a: "Sim. Atendimento humano em português, time brasileiro.",
+      q: "Tem automações e integrações?",
+      a: "O plano Pro é focado no uso das principais IAs dentro da plataforma. Integrações avançadas, API, CRM, n8n ou automações internas podem exigir avaliação do time ou planos superiores. Se esse for seu foco, o ideal é falar com nosso time antes de assinar.",
     },
     {
-      q: "Quais formas de pagamento?",
-      a: "Cartão de crédito, Pix e boleto parcelado em planos anuais.",
+      q: "Tem Claude Code, Lovable ou Antigravity?",
+      a: "Não. A Inner não substitui ferramentas específicas como Claude Code, Lovable ou Antigravity. O foco da Inner é reunir +50 IAs Premium em uma única plataforma para texto, pesquisa, análise, produtividade, criação, imagens, prompts, documentos e apoio ao trabalho diário.",
     },
   ],
   ultraAlert: {
