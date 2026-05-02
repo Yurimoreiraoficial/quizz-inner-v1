@@ -400,7 +400,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 10 — FAQs */}
       <section className="mt-10">
-        <h2 className="text-[22px] font-bold text-foreground">As pessoas costumam perguntar</h2>
+        <h2 className="text-[22px] font-bold text-foreground">Perguntas frequentes:</h2>
         <Accordion type="single" collapsible className="mt-3">
           {finalPageContent.faqs.map((f, i) => (
             <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border">
