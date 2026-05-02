@@ -158,6 +158,9 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 04 — Antes e depois */}
       <section className="mt-10">
+        <h2 className="text-[24px] sm:text-[26px] font-bold text-foreground text-balance mb-5">
+          Tenha mais pagando menos
+        </h2>
         <div className="grid grid-cols-1 gap-3">
           {/* SEM a Inner — negativo */}
           <div className="rounded-3xl border border-destructive/25 bg-destructive/[0.06] p-5 relative overflow-hidden">
