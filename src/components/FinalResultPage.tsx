@@ -7,7 +7,7 @@ import { getNaturalBenefits } from "@/utils/getNaturalBenefits";
 import { buildCheckoutUrl } from "@/utils/buildCheckoutUrl";
 import { buildWhatsappUrl } from "@/utils/buildWhatsappUrl";
 import { finalPageContent, partnerLogos } from "@/data/finalPageContent";
-import { finalSocialSubBy, socialProofSubBy } from "@/data/marketOptions";
+import { socialProofSubBy } from "@/data/marketOptions";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
 import { TestimonialSwipe } from "./TestimonialSwipe";
 import { PrimaryButton } from "./PrimaryButton";
@@ -486,8 +486,6 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </div>
         </div>
 
-        {/* fallback se a final social mensagem ajudar */}
-        <p className="mt-4 text-[12px] text-muted-foreground">{finalSocialSubBy[market]}</p>
       </section>
 
       {/* Bloco 12 — Rodapé */}
