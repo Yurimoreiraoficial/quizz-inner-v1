@@ -18,6 +18,7 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
+import innerTeamImg from "@/assets/inner-team.jpg";
 
 interface FinalResultPageProps {
   state: FunnelState;
@@ -320,7 +321,14 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       {/* Bloco 09 — Quem somos */}
       <section className="mt-10">
         <h2 className="text-[22px] font-bold text-foreground">{finalPageContent.about.title}</h2>
-        <p className="mt-3 text-[15px] text-muted-foreground text-pretty">
+        <img
+          src={innerTeamImg}
+          alt="Equipe Inner AI reunida no escritório"
+          loading="lazy"
+          decoding="async"
+          className="mt-4 w-full h-auto rounded-2xl border border-border object-cover aspect-[3/2]"
+        />
+        <p className="mt-4 text-[15px] text-muted-foreground text-pretty">
           {finalPageContent.about.text}
         </p>
       </section>
