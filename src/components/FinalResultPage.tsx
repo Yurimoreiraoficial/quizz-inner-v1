@@ -158,24 +158,43 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       {/* Bloco 04 — Antes e depois */}
       <section className="mt-10">
         <div className="grid grid-cols-1 gap-3">
-          <div className="rounded-3xl border border-border p-5 bg-secondary/40">
-            <div className="text-[12px] uppercase tracking-wider text-muted-foreground">
-              {finalPageContent.beforeAfter.withoutLabel}
+          {/* SEM a Inner — negativo */}
+          <div className="rounded-3xl border border-destructive/25 bg-destructive/[0.06] p-5 relative overflow-hidden">
+            <div className="absolute top-0 left-0 h-full w-1 bg-destructive/60" />
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-destructive/15 text-destructive">
+                <X className="w-3.5 h-3.5" strokeWidth={3} />
+              </span>
+              <div className="text-[12px] uppercase tracking-wider text-destructive font-semibold">
+                {finalPageContent.beforeAfter.withoutLabel}
+              </div>
             </div>
-            <ul className="mt-2 space-y-1.5 text-[14px] text-foreground/80">
+            <ul className="mt-3 space-y-2 text-[14px] text-foreground/70">
               {finalPageContent.beforeAfter.withoutItems.map((i) => (
-                <li key={i}>• {i}</li>
+                <li key={i} className="flex items-start gap-2 line-through decoration-destructive/40 decoration-1">
+                  <X className="w-4 h-4 text-destructive/70 mt-0.5 shrink-0" strokeWidth={2.5} />
+                  <span>{i}</span>
+                </li>
               ))}
             </ul>
           </div>
-          <div className="card-strong p-5">
-            <div className="text-[12px] uppercase tracking-wider text-primary font-semibold">
-              {finalPageContent.beforeAfter.withLabel}
+
+          {/* COM a Inner — positivo */}
+          <div className="rounded-3xl p-5 relative overflow-hidden bg-gradient-to-br from-primary/15 via-card to-card border border-primary/30">
+            <div className="absolute top-0 left-0 h-full w-1 bg-primary" />
+            <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+            <div className="relative flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground">
+                <Check className="w-3.5 h-3.5" strokeWidth={3} />
+              </span>
+              <div className="text-[12px] uppercase tracking-wider text-primary font-semibold">
+                {finalPageContent.beforeAfter.withLabel}
+              </div>
             </div>
-            <ul className="mt-2 space-y-1.5 text-[14px] text-foreground">
+            <ul className="relative mt-3 space-y-2 text-[14px] text-foreground font-medium">
               {finalPageContent.beforeAfter.withItems.map((i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-primary mt-1 shrink-0" /> {i}
+                  <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" strokeWidth={3} /> {i}
                 </li>
               ))}
             </ul>
