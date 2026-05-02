@@ -21,7 +21,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
     <div className="flex flex-col">
       <div className="text-center">
         <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary uppercase tracking-wider">
-          <span>Análise 92% concluída</span>
+          <span>FALTA POUCO</span>
         </div>
         <h1 className="mt-2 text-[26px] sm:text-[28px] leading-[1.15] font-bold text-foreground text-balance">
           Sua análise está pronta
