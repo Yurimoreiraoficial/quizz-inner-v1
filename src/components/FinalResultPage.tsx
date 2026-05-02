@@ -23,6 +23,7 @@ import innerTeamImg from "@/assets/inner-team.jpg";
 import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
+import transcricaoImg from "@/assets/transcricao.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
@@ -242,21 +243,31 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               <p className="mt-2 text-[14px] text-muted-foreground text-pretty leading-relaxed">
                 {b.description}
               </p>
-              {idx === 0 || idx === 1 || idx === 2 ? (
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 overflow-hidden">
-                  <img
-                    src={idx === 0 ? promptsImg : idx === 1 ? appImg : assistentesImg}
-                    alt={idx === 0 ? "Biblioteca de prompts da Inner" : idx === 1 ? "App Inner AI" : "Assistentes personalizados"}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto block"
-                  />
-                </div>
-              ) : (
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 px-4 py-8 text-center text-[14px] text-muted-foreground">
-                  {b.visual}
-                </div>
-              )}
+              {(() => {
+                const imgs = [promptsImg, appImg, assistentesImg, transcricaoImg];
+                const alts = [
+                  "Biblioteca de prompts da Inner",
+                  "App Inner AI",
+                  "Assistentes personalizados",
+                  "Transcrição de áudio e vídeo",
+                ];
+                const src = imgs[idx];
+                return src ? (
+                  <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 overflow-hidden">
+                    <img
+                      src={src}
+                      alt={alts[idx]}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-auto block"
+                    />
+                  </div>
+                ) : (
+                  <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 px-4 py-8 text-center text-[14px] text-muted-foreground">
+                    {b.visual}
+                  </div>
+                );
+              })()}
             </article>
           ))}
         </div>
