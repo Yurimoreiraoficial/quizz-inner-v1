@@ -18,6 +18,7 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
+import innerTeamImg from "@/assets/inner-team.jpg";
 
 interface FinalResultPageProps {
   state: FunnelState;
