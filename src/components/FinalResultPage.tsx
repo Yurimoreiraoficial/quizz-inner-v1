@@ -491,6 +491,14 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       {/* Bloco 12 — Rodapé */}
       <footer className="mt-12 text-center">
         <Logo />
+        <div className="mt-4 text-[12px] text-muted-foreground flex flex-col gap-1">
+          <div>
+            <a href={links.termsUrl} className="hover:underline">Termos de Serviço</a>
+            <span className="mx-2">·</span>
+            <a href={links.privacyUrl} className="hover:underline">Privacidade</a>
+          </div>
+          <div>CNPJ: {company.cnpj}</div>
+        </div>
         <div className="mt-3 inline-flex items-center gap-2 text-[11px] text-muted-foreground">
           <Shield className="w-3.5 h-3.5" /> Compra segura · Reclame Aqui
         </div>
