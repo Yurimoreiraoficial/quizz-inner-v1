@@ -369,9 +369,9 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             {fName}, ainda ficou com alguma dúvida?
           </h3>
           <div className="mt-3">
-            <PrimaryButton variant="secondary" onClick={onWhats} className="text-sm mt-[8px] py-[5px]">
-              <MessageCircle className="w-4 h-4 mr-1" />
-              Falar com o time no WhatsApp
+            <PrimaryButton variant="secondary" onClick={onWhats} className="text-sm mt-[8px] py-[5px] whitespace-nowrap">
+              <MessageCircle className="w-4 h-4" />
+              <span>Falar com o time no WhatsApp</span>
             </PrimaryButton>
           </div>
         </div>
