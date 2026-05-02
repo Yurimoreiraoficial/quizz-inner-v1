@@ -82,7 +82,7 @@ export function useFunnelState() {
   const setUsoIA = useCallback((value: AiUsage, label: string) => {
     setState((s) => ({ ...s, usoIA: value, usoIALabel: label }));
     recordAnswer({
-      questionId: "uso_ia", questionLabel: "Qual seu uso de IA hoje?",
+      questionId: "uso_ia", questionLabel: "Você já utiliza alguma ferramenta de IA hoje?",
       answerValue: value, answerLabel: label,
     });
     trackEvent(state.sessionId, "option_selected", {
