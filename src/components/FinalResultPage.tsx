@@ -131,11 +131,29 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 03 — Cards de impacto */}
       <section className="mt-8 grid grid-cols-2 gap-3">
-        {finalPageContent.impact.map((t) => (
-          <div key={t} className="card-surface p-4 text-center text-[14px] font-semibold text-foreground">
-            {t}
-          </div>
-        ))}
+        {finalPageContent.impact.map((t) => {
+          const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
+          const num = match?.[1] ?? t;
+          const label = match?.[2] ?? "";
+          return (
+            <div
+              key={t}
+              className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card p-5 text-left"
+            >
+              <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-primary/15 blur-2xl pointer-events-none" />
+              <div className="relative">
+                <div className="text-brand text-3xl sm:text-4xl font-bold leading-none tracking-tight drop-shadow-[0_0_18px_hsl(var(--primary)/0.35)]">
+                  {num}
+                </div>
+                {label && (
+                  <div className="mt-2 text-[12.5px] leading-snug text-muted-foreground">
+                    {label}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </section>
 
       {/* Bloco 04 — Antes e depois */}
