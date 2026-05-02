@@ -117,7 +117,7 @@ export const finalPageContent = {
       a: "O plano Pro oferece acesso amplo às principais IAs da plataforma. Os limites mais relevantes ficam nas ferramentas de imagem. Se você precisa de volumes maiores, temos o Plano Ultra, com limites mais altos.",
     },
     {
-      q: "Tem geração de vídeo?",
+      q: "Consigo gerar vídeos de IA com a Inner?",
       a: "A geração de vídeo está disponível apenas no Plano Ultra. Para saber mais e liberar acesso, clique em \"Falar com o time no WhatsApp\".",
     },
     {
