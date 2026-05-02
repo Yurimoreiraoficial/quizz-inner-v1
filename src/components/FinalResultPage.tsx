@@ -307,11 +307,18 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               {finalPageContent.offer.anchor}
             </p>
 
-            <div className="mt-2 text-center">
-              <p className="text-[14px] text-muted-foreground">{finalPageContent.offer.closing.line1}</p>
-              <p className="mt-1 text-[32px] sm:text-[36px] font-extrabold tracking-tight text-brand leading-none drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
-                {finalPageContent.offer.closing.line2}
+            <div className="mt-3 text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                {finalPageContent.offer.closing.line1}
               </p>
+              <div className="mt-2 inline-flex items-baseline justify-center gap-1 text-foreground">
+                <span className="text-[16px] font-semibold text-muted-foreground">por apenas</span>
+              </div>
+              <div className="mt-1 flex items-baseline justify-center gap-1 text-brand drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
+                <span className="text-[20px] font-semibold leading-none mt-1">R$</span>
+                <span className="text-[56px] sm:text-[64px] font-extrabold tracking-tight leading-none">99</span>
+                <span className="text-[18px] font-medium text-muted-foreground leading-none mb-1">/mês</span>
+              </div>
             </div>
 
             <div className="mt-6">
