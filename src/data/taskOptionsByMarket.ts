@@ -60,7 +60,7 @@ export interface PainItem {
 }
 
 export const painOptions: PainItem[] = [
-  { id: "rework", label: "Precisa refazer o pedido várias vezes para ficar bom" },
+  { id: "rework", label: "Precisa tentar várias vezes até a IA acertar" },
   { id: "doubt_tool", label: "Fica em dúvida qual a melhor IA para cada tarefa" },
   { id: "limits", label: "Bate rapidamente em limites e créditos" },
   { id: "tab_switching", label: "Fica mudando de abas e ferramenta várias vezes" },
