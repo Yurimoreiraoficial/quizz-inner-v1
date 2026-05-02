@@ -46,7 +46,7 @@ export const finalPageContent = {
       "Acesso à +50 IAs Premium",
       "ChatGPT, Claude, Gemini, Perplexity....",
       "+500 prompts prontos para usar",
-      "Tecnologia Fusion para escolher a melhor IA",
+      "Tecnologia Fusion exclusiva da Inner\n \n ",
       "Transcrição de áudio e vídeo",
       "Melhorador de prompts",
       "Assistentes personalizados",
