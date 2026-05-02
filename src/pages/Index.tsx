@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFunnelState } from "@/hooks/useFunnelState";
 import { useUtmParams } from "@/hooks/useUtmParams";
 import { funnelSteps } from "@/data/funnelSteps";
@@ -27,6 +27,23 @@ const Index = () => {
 
   const c = useFunnelState();
   const step = c.currentStep;
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleBack = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+    c.goBack();
+  };
+
+  const scheduleAdvance = () => {
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    advanceTimerRef.current = setTimeout(() => {
+      advanceTimerRef.current = null;
+      c.goNext();
+    }, 180);
+  };
 
   // result_viewed quando entra na tela final
   useEffect(() => {
@@ -55,7 +72,7 @@ const Index = () => {
       showBack={!!step.showBack}
       showProgress={!!step.showProgress}
       progress={c.progress}
-      onBack={c.goBack}
+      onBack={handleBack}
       scrollable={isFinal}
     >
       {/* 1. Intro */}
@@ -91,7 +108,7 @@ const Index = () => {
           selectedValue={c.state.usoIA}
           onSelect={(v, l) => {
             c.setUsoIA(v as never, l);
-            setTimeout(() => c.goNext(), 180);
+            scheduleAdvance();
           }}
         />
       )}
@@ -115,7 +132,7 @@ const Index = () => {
           selectedValue={c.state.mercado}
           onSelect={(v, l) => {
             c.setMercado(v as never, l);
-            setTimeout(() => c.goNext(), 180);
+            scheduleAdvance();
           }}
         />
       )}
