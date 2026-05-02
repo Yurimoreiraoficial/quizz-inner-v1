@@ -61,7 +61,7 @@ export const socialProofSubBy: Record<Market, string> = {
   juridico: "Profissionais do direito ganham horas analisando contratos e pesquisando jurisprudência.",
   educacao: "Educadores e pesquisadores aceleram análises e produzem materiais com mais qualidade.",
   tecnologia: "Times de tecnologia revisam código, pesquisam e documentam mais rápido.",
-  negocios: "Líderes e gestores tomam decisões com mais clareza e velocidade.",
+  negocios: "Líderes e gestores tomam decisões \ncom mais clareza e velocidade.",
   marketing: "Equipes de marketing criam mais conteúdo, com mais consistência e profundidade.",
   design: "Profissionais criativos aceleram conceitos, briefings e produção visual.",
   outro: "Profissionais de diferentes áreas usam várias IAs centralizadas em um só lugar.",
