@@ -17,55 +17,74 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const idx = value ? scale.indexOf(value) : -1;
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
+  const answered = idx >= 0;
+
   return (
-    <div className="card-surface px-3 py-2 rounded-lg">
-      <div className="text-[13px] font-semibold text-foreground leading-snug mb-1.5">
+    <div
+      className={cn(
+        "card-surface px-4 py-3.5 rounded-xl transition-colors",
+        answered ? "border-primary/30" : ""
+      )}
+    >
+      {/* Afirmação — protagonista */}
+      <div className="text-[15px] sm:text-[16px] font-semibold text-foreground leading-snug">
         {label}
       </div>
 
-      {/* Trilho */}
-      <div className="relative px-2">
-        <div className="h-1 rounded-full bg-secondary">
-          <div
-            className="h-full rounded-full transition-all duration-300"
-            style={{ width: `${pct}%`, background: "var(--gradient-primary)" }}
-          />
+      {/* Bloco de resposta — secundário, separado e atenuado até interação */}
+      <div
+        className={cn(
+          "mt-3 pt-3 border-t border-border/60 transition-opacity",
+          answered ? "opacity-100" : "opacity-70"
+        )}
+      >
+        {/* Trilho */}
+        <div className="relative px-2">
+          <div className="h-[3px] rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full transition-all duration-300"
+              style={{ width: `${pct}%`, background: "var(--gradient-primary)" }}
+            />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-between">
+            {scale.map((s, i) => {
+              const active = idx >= i;
+              return (
+                <button
+                  key={String(s)}
+                  type="button"
+                  aria-label={String(s)}
+                  onClick={() => onChange(s)}
+                  className={cn(
+                    "w-2 h-2 rounded-full border transition-all",
+                    active ? "bg-primary border-primary" : "bg-card border-border-strong/30"
+                  )}
+                />
+              );
+            })}
+          </div>
         </div>
-        <div className="absolute inset-0 flex items-center justify-between">
-          {scale.map((s, i) => {
-            const active = idx >= i;
-            return (
-              <button
-                key={String(s)}
-                type="button"
-                aria-label={String(s)}
-                onClick={() => onChange(s)}
-                className={cn(
-                  "w-2.5 h-2.5 rounded-full border-2 transition-all",
-                  active ? "bg-primary border-primary" : "bg-card border-border-strong/40"
-                )}
-              />
-            );
-          })}
-        </div>
-      </div>
 
-      {/* Labels */}
-      <div className="mt-1 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
-        {scale.map((s, i) => (
-          <button
-            key={String(s)}
-            type="button"
-            onClick={() => onChange(s)}
-            className={cn(
-              "text-[10px] leading-tight py-0 transition-colors",
-              i === 0 ? "text-left" : i === scale.length - 1 ? "text-right" : "text-center",
-              i === idx ? "font-bold text-foreground" : "text-muted-foreground"
-            )}
-          >
-            {String(s)}
-          </button>
-        ))}
+        {/* Labels da escala — pequenos e discretos */}
+        <div
+          className="mt-2 grid"
+          style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}
+        >
+          {scale.map((s, i) => (
+            <button
+              key={String(s)}
+              type="button"
+              onClick={() => onChange(s)}
+              className={cn(
+                "text-[10px] uppercase tracking-wide leading-tight py-0 transition-colors",
+                i === 0 ? "text-left" : i === scale.length - 1 ? "text-right" : "text-center",
+                i === idx ? "font-semibold text-primary" : "text-muted-foreground/70"
+              )}
+            >
+              {String(s)}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
