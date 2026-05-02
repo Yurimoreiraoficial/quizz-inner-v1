@@ -98,6 +98,9 @@ export function SliderGroupStep({ question, scale, items, values, onChange }: Sl
       <h1 className="text-[20px] sm:text-[24px] leading-[1.2] font-bold text-foreground text-balance">
         {question}
       </h1>
+      <p className="mt-1.5 text-[13px] sm:text-[14px] text-muted-foreground text-pretty">
+        Toque na escala para selecionar a opção que melhor descreve você.
+      </p>
       <div className="mt-3 flex flex-col gap-1.5">
         {list.map((it) => (
           <SliderRow
