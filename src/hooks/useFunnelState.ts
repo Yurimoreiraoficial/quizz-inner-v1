@@ -62,12 +62,15 @@ export function useFunnelState() {
   }, [state.currentStepIndex, ensureSession]);
 
   const goBack = useCallback(() => {
-    const prevIdx = Math.max(state.currentStepIndex - 1, 0);
-    trackEvent(state.sessionId, "back_clicked", {
-      stepId: currentStep?.id, stepIndex: state.currentStepIndex,
+    setState((s) => {
+      const prevIdx = Math.max(s.currentStepIndex - 1, 0);
+      const curr = funnelSteps[s.currentStepIndex];
+      trackEvent(s.sessionId, "back_clicked", {
+        stepId: curr?.id, stepIndex: s.currentStepIndex,
+      });
+      return { ...s, currentStepIndex: prevIdx };
     });
-    setState((s) => ({ ...s, currentStepIndex: prevIdx }));
-  }, [state.currentStepIndex, currentStep, state.sessionId]);
+  }, []);
 
   const recordAnswer = useCallback((a: QuizAnswer) => {
     setState((s) => ({
