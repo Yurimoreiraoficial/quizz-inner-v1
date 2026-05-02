@@ -19,7 +19,7 @@ import { PartnerLogos } from "@/components/PartnerLogos";
 import { FinalResultPage } from "@/components/FinalResultPage";
 
 import aiHero from "@/assets/ai-network-hero.png";
-import introAiCards from "@/assets/intro-ai-cards.png";
+import introAiCards from "@/assets/intro-ai-cards.svg";
 
 const Index = () => {
   // Inicializa UTMs cedo
