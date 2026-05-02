@@ -83,16 +83,16 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
           )}
         </div>
 
-        <p className="text-[10px] text-muted-foreground flex items-center justify-center gap-1 text-center whitespace-nowrap">
-          <Lock className="w-3 h-3" />
-          <span>Usaremos seu WhatsApp apenas para te ajudar em caso de dúvida.</span>
-        </p>
-
         <div className="mt-2">
           <PrimaryButton type="submit" withArrow disabled={submitted && !formOk}>
             LIBERAR MINHA ANÁLISE
           </PrimaryButton>
         </div>
+
+        <p className="text-[10px] text-muted-foreground flex items-center justify-center gap-1 text-center whitespace-nowrap">
+          <Lock className="w-3 h-3" />
+          <span>Usaremos seu WhatsApp apenas para te ajudar em caso de dúvida.</span>
+        </p>
       </form>
     </div>
   );
