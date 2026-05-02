@@ -132,13 +132,22 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       {/* Bloco 03 — Cards de impacto */}
       <section className="mt-12">
         <div className="grid grid-cols-2 divide-x divide-y divide-border/60 border-y border-border/60">
-          {finalPageContent.impact.map((t) => {
+          {finalPageContent.impact.map((t, i) => {
             const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
             const num = match?.[1] ?? t;
             const label = match?.[2] ?? "";
+            const accents = [
+              "text-primary",
+              "text-primary-deep",
+              "text-warning",
+              "text-success",
+            ] as const;
+            const accent = accents[i % accents.length];
             return (
               <div key={t} className="px-4 py-6">
-                <div className="font-display text-3xl sm:text-[34px] font-semibold tracking-tight text-foreground leading-none">
+                <div
+                  className={`font-display text-3xl sm:text-[34px] font-semibold tracking-tight leading-none ${accent}`}
+                >
                   {num}
                 </div>
                 {label && (
