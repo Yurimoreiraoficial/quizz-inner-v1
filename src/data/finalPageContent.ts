@@ -44,7 +44,7 @@ export const finalPageContent = {
     title: "Veja tudo que está incluso no seu plano:",
     bullets: [
       "Acesso à +50 IAs Premium",
-      "ChatGPT, Claude, Gemini, Perplexity e mais",
+      "ChatGPT, Claude, Gemini, Perplexity....",
       "+500 prompts prontos para usar",
       "Tecnologia Fusion para escolher a melhor IA",
       "Transcrição de áudio e vídeo",
