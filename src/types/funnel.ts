@@ -18,7 +18,7 @@ export type FitLevel = "Alto" | "Médio";
 export type RecommendedPlan = "Plano PRO" | "Plano PRO com avaliação do Plano Ultra";
 
 export type SliderValue = "Nunca" | "Às vezes" | "Muito";
-export type FrequencyValue = "Nunca" | "Às vezes" | "Frequentemente";
+export type FrequencyValue = "Nunca" | "Às vezes" | "Muito";
 
 export type StepType =
   | "intro"
