@@ -14,8 +14,8 @@ export function OptionCard({ label, selected = false, onClick }: OptionCardProps
       type="button"
       onClick={onClick}
       className={cn(
-        "group w-full text-left rounded-2xl bg-card",
-        "px-5 py-4 sm:py-[18px] flex items-center justify-between gap-3",
+        "group w-full text-left rounded-xl bg-card",
+        "px-4 py-3 min-h-[52px] flex items-center justify-between gap-3",
         "border transition-all duration-200 active:scale-[0.99]",
         selected
           ? "border-primary bg-primary/5 shadow-card"
@@ -23,7 +23,7 @@ export function OptionCard({ label, selected = false, onClick }: OptionCardProps
       )}
       aria-pressed={selected}
     >
-      <span className="text-[16px] sm:text-[17px] font-medium text-foreground text-pretty">
+      <span className="text-[15px] sm:text-[15px] font-medium text-foreground text-pretty leading-tight">
         {label}
       </span>
       <span
