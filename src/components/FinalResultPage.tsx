@@ -49,8 +49,8 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
   return (
     <div className="pb-12">
       {/* Bloco 01 — Nível de encaixe */}
-      <section className="text-center">
-        <h1 className="text-[26px] sm:text-[30px] leading-[1.1] font-bold text-foreground text-balance">
+      <section className="text-left">
+        <h1 className="sm:text-[30px] leading-[1.1] text-foreground text-balance text-left font-normal text-2xl">
           {fName}, sua análise está pronta.
         </h1>
 
