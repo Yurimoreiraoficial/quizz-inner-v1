@@ -18,14 +18,14 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
   return (
-    <div className="card-surface p-5">
-      <div className="text-[15px] sm:text-[16px] font-semibold text-foreground text-pretty mb-4">
+    <div className="card-surface px-4 py-3">
+      <div className="text-[14px] sm:text-[15px] font-semibold text-foreground text-pretty mb-2">
         {label}
       </div>
 
       {/* Trilho */}
       <div className="relative px-2">
-        <div className="h-1.5 rounded-full bg-secondary">
+        <div className="h-1 rounded-full bg-secondary">
           <div
             className="h-full rounded-full transition-all duration-300"
             style={{ width: `${pct}%`, background: "var(--gradient-primary)" }}
