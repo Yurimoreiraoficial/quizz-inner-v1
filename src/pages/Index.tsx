@@ -141,7 +141,7 @@ const Index = () => {
       {step.id === "tarefas" && (
         <>
           <SliderGroupStep
-            question="O quanto você usa IA hoje para essas tarefas?"
+            question="Marque o quanto você usa IA hoje para essas tarefas:"
             scale={["Nunca", "Às vezes", "Muito"]}
             items={taskOptionsByMarket[market]}
             values={c.state.tarefas}
