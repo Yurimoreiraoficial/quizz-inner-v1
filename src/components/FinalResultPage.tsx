@@ -410,7 +410,15 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         </div>
       </section>
 
-      {/* Bloco 08 — Quem somos */}
+      {/* Bloco 08 — Garantia */}
+      <section className="mt-10 card-surface p-5 text-center">
+        <Shield className="w-7 h-7 text-primary mx-auto" />
+        <h2 className="mt-2 text-[22px] font-bold text-foreground">{finalPageContent.guarantee.title}</h2>
+        <p className="mt-2 text-[14px] text-muted-foreground text-pretty whitespace-pre-line">{finalPageContent.guarantee.sub}</p>
+        <p className="mt-2 text-[12px] text-muted-foreground">{finalPageContent.guarantee.micro}</p>
+      </section>
+
+      {/* Bloco 09 — Quem somos */}
       <section className="mt-10">
         <h2 className="text-[22px] font-bold text-foreground">{finalPageContent.about.title}</h2>
         <img
@@ -423,14 +431,6 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <p className="mt-4 text-[15px] text-muted-foreground text-pretty">
           {finalPageContent.about.text}
         </p>
-      </section>
-
-      {/* Bloco 09 — Garantia */}
-      <section className="mt-10 card-surface p-5 text-center">
-        <Shield className="w-7 h-7 text-primary mx-auto" />
-        <h2 className="mt-2 text-[22px] font-bold text-foreground">{finalPageContent.guarantee.title}</h2>
-        <p className="mt-2 text-[14px] text-muted-foreground text-pretty whitespace-pre-line">{finalPageContent.guarantee.sub}</p>
-        <p className="mt-2 text-[12px] text-muted-foreground">{finalPageContent.guarantee.micro}</p>
       </section>
 
       {/* Bloco 10 — FAQs */}
