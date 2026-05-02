@@ -222,21 +222,43 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           {finalPageContent.features.sub}
         </p>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="mt-6 space-y-4">
           {finalPageContent.features.big.map((b) => (
-            <div key={b} className="card-surface p-4 text-[14px] font-semibold text-foreground">{b}</div>
+            <article key={b.eyebrow} className="card-surface p-5">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+                {b.eyebrow}
+              </p>
+              <h3 className="mt-2 text-[18px] sm:text-[19px] font-bold text-foreground text-balance leading-snug">
+                {b.title}
+              </h3>
+              <p className="mt-2 text-[14px] text-muted-foreground text-pretty leading-relaxed">
+                {b.description}
+              </p>
+              <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-primary/10 border border-primary/15 px-4 py-8 text-center text-[14px] text-muted-foreground">
+                {b.visual}
+              </div>
+            </article>
           ))}
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {finalPageContent.features.short.map((b) => (
-            <span key={b} className="text-[11px] font-bold tracking-wider px-3 py-1.5 rounded-full bg-primary/10 text-primary uppercase">
-              {b}
-            </span>
+        <div className="mt-4">
+          <PrimaryButton withArrow onClick={onCheckout}>Quero acesso a tudo isso</PrimaryButton>
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          {finalPageContent.features.short.map((s) => (
+            <div key={s.eyebrow} className="card-surface p-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+                {s.eyebrow}
+              </p>
+              <p className="mt-1.5 text-[13.5px] text-foreground leading-snug">
+                {s.description}
+              </p>
+            </div>
           ))}
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 hidden">
           <PrimaryButton withArrow onClick={onCheckout}>Quero acesso a tudo isso</PrimaryButton>
         </div>
       </section>

@@ -36,8 +36,44 @@ export const finalPageContent = {
   features: {
     title: "Tudo o que você precisa em um só lugar.",
     sub: "Pare de alternar entre abas. A Inner centraliza o melhor da IA.",
-    big: ["Prompts", "Aplicativo", "Assistentes personalizados", "Transcrição de áudio e vídeo"],
-    short: ["+50 MODELOS", "GERAÇÃO DE IMAGENS", "CRIADOR DE SLIDES", "ANEXOS ILIMITADOS", "PROJETOS ORGANIZADOS"],
+    big: [
+      {
+        eyebrow: "+500 prompts profissionais",
+        title: "A maior biblioteca de prompts do Brasil",
+        description:
+          "Marketing, vendas, jurídico, RH, finanças — mais de 500 comandos validados por profissionais. Clique, personalize e use em segundos.",
+        visual: "📚 Biblioteca de prompts",
+      },
+      {
+        eyebrow: "Comando de voz + app mobile",
+        title: "A única plataforma multi-IA com app brasileiro",
+        description:
+          "Use por voz no celular, sincronizado com o desktop em tempo real. A única plataforma multi-AI brasileira com aplicativo nativo.",
+        visual: "📱 App Inner AI",
+      },
+      {
+        eyebrow: "Assistentes personalizados",
+        title: "Crie especialistas para sua rotina de trabalho",
+        description:
+          "Monte assistentes para marketing, jurídico, vendas, pesquisa, gestão ou qualquer outra área. Salve instruções, contextos e padrões.",
+        visual: "🤖 Assistentes personalizados",
+      },
+      {
+        eyebrow: "Transcrição de áudio e vídeo",
+        title: "Transforme gravações em texto organizado",
+        description:
+          "Envie áudios, vídeos, reuniões ou aulas e transforme tudo em texto estruturado para resumir, revisar, estudar ou reaproveitar.",
+        visual: "🎙️ Transcrição de reuniões",
+      },
+    ],
+    short: [
+      { eyebrow: "+50 modelos", description: "GPT-5, Claude, Gemini, Grok e mais" },
+      { eyebrow: "Imagens", description: "Nano Banana Pro e GPT Images" },
+      { eyebrow: "Slides", description: "Gamma integrado à plataforma" },
+      { eyebrow: "Anexos", description: "PDFs, planilhas, documentos" },
+      { eyebrow: "Projetos", description: "Separe por objetivo ou área" },
+      { eyebrow: "Suporte", description: "Em português, direto no app" },
+    ],
   },
   offer: {
     tag: "Plano PRO Anual",
