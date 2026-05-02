@@ -1,16 +1,15 @@
-import { partnerLogos } from "@/data/finalPageContent";
+import clientsLogos from "@/assets/clients-logos.svg";
 
-// Logos em UMA única linha (overflow horizontal mas sem barra)
+// Faixa única de logos de clientes/parceiros
 export function PartnerLogos() {
   return (
-    <div className="w-full overflow-x-auto no-scrollbar">
-      <div className="flex items-center justify-center gap-5 sm:gap-7 px-2 whitespace-nowrap">
-        {partnerLogos.map((p) => (
-          <div key={p} className="text-[13px] sm:text-sm font-semibold text-muted-foreground/70 tracking-tight">
-            {p}
-          </div>
-        ))}
-      </div>
+    <div className="w-full overflow-hidden">
+      <img
+        src={clientsLogos}
+        alt="Logos de empresas parceiras e clientes"
+        className="w-full h-auto max-h-10 sm:max-h-12 object-contain opacity-80 invert dark:invert-0 select-none pointer-events-none"
+        draggable={false}
+      />
     </div>
   );
 }
