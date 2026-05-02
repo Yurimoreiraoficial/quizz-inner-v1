@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ArrowRight, Check, MessageCircle, Shield, Star, Sparkles, X } from "lucide-react";
+import { WhatsAppIcon } from "./icons/WhatsAppIcon";
 import type { FunnelState } from "@/types/funnel";
 import { firstName } from "@/utils/formatters";
 import { getNaturalBenefits } from "@/utils/getNaturalBenefits";
@@ -100,8 +101,12 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 title={finalPageContent.ultraAlert.title}
                 body={finalPageContent.ultraAlert.body}
               />
-              <PrimaryButton variant="secondary" onClick={onWhats} className="text-[13px] sm:text-[15px] whitespace-nowrap">
-                <MessageCircle className="w-4 h-4 mr-1" />
+              <PrimaryButton
+                variant="secondary"
+                onClick={onWhats}
+                className="text-[13px] sm:text-[15px] whitespace-nowrap text-[hsl(var(--whatsapp))] border-[hsl(var(--whatsapp))]/30 hover:bg-[hsl(var(--whatsapp))]/8 hover:border-[hsl(var(--whatsapp))]/50"
+              >
+                <WhatsAppIcon className="w-4 h-4 mr-1" />
                 {finalPageContent.ultraAlert.cta}
               </PrimaryButton>
             </div>
@@ -365,8 +370,12 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 <AlertCard
                   body="Pelo seu perfil, talvez o Plano Ultra seja mais adequado para uso alto de imagens, vídeos ou audiovisual."
                 />
-                <PrimaryButton variant="secondary" onClick={onWhats} className="text-[13px] sm:text-[15px] whitespace-nowrap">
-                  <MessageCircle className="w-4 h-4 mr-1" />
+                <PrimaryButton
+                  variant="secondary"
+                  onClick={onWhats}
+                  className="text-[13px] sm:text-[15px] whitespace-nowrap text-[hsl(var(--whatsapp))] border-[hsl(var(--whatsapp))]/30 hover:bg-[hsl(var(--whatsapp))]/8 hover:border-[hsl(var(--whatsapp))]/50"
+                >
+                  <WhatsAppIcon className="w-4 h-4 mr-1" />
                   Falar com o time sobre o Plano Ultra
                 </PrimaryButton>
               </div>
@@ -434,8 +443,12 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             {fName}, ainda ficou com alguma dúvida?
           </h3>
           <div className="mt-3">
-            <PrimaryButton variant="secondary" onClick={onWhats} className="text-sm mt-[8px] py-[5px] whitespace-nowrap">
-              <MessageCircle className="w-4 h-4" />
+            <PrimaryButton
+              variant="secondary"
+              onClick={onWhats}
+              className="text-sm mt-[8px] py-[5px] whitespace-nowrap text-[hsl(var(--whatsapp))] border-[hsl(var(--whatsapp))]/30 hover:bg-[hsl(var(--whatsapp))]/8 hover:border-[hsl(var(--whatsapp))]/50"
+            >
+              <WhatsAppIcon className="w-4 h-4" />
               <span>Falar com o time no WhatsApp</span>
             </PrimaryButton>
           </div>

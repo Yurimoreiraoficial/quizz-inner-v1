@@ -43,6 +43,9 @@
     --success: 152 65% 42%;
     --warning: 35 95% 55%;
 
+    /* WhatsApp accent (sutil) */
+    --whatsapp: 142 60% 38%;
+
     --border: 220 14% 90%;             /* #E3E6EA */
     --border-strong: 0 0% 12%;         /* #1E1E1E */
     --input: 220 14% 90%;
@@ -107,6 +110,8 @@
 
     --destructive: 0 84% 65%;
     --destructive-foreground: 0 0% 8%;
+
+    --whatsapp: 142 55% 55%;
 
     --border: 0 0% 16%;
     --border-strong: 0 0% 28%;
