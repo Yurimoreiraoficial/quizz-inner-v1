@@ -96,6 +96,8 @@ const Index = () => {
             alt="Cards das principais IAs: Gemini, Nano Banana, ChatGPT e Claude"
             className="mt-6 w-full max-w-[480px] h-auto select-none pointer-events-none"
             draggable={false}
+            decoding="async"
+            fetchPriority="high"
           />
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0">
             Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
@@ -125,7 +127,7 @@ const Index = () => {
       {step.id === "insert_50ias" && (
         <InsertStep
           headline="Use GPT-5, Claude, Gemini e +50 IAs Premium em uma só plataforma."
-          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" className="max-h-full w-auto object-contain" />}
+          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" className="max-h-full w-auto object-contain" />}
           imageHeightClass="h-36"
           subtitle="Tudo em um só lugar, sem precisar alternar entre várias assinaturas."
           onContinue={c.goNext}
