@@ -61,8 +61,8 @@ const Index = () => {
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center pt-2">
           <h1 className="text-[28px] sm:text-[32px] leading-[1.1] font-bold text-foreground text-balance">
-            Acesso a <span className="text-brand">+50 IAs</span><br />
-            por apenas <span className="text-brand">R$99/mês</span>
+            Acesso a <span className="text-brand text-6xl">+50 IAs</span><br />
+            por apenas <span className="text-brand text-6xl">R$99/mês</span>
           </h1>
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px]">
             Descubra em menos de 1 minuto se a Inner é a melhor escolha para você.
