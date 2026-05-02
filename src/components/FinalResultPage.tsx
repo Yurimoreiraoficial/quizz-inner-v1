@@ -160,7 +160,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <div className="grid grid-cols-1 gap-3">
           {/* SEM a Inner — negativo */}
           <div className="rounded-3xl border border-destructive/25 bg-destructive/[0.06] p-5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 h-full w-1 bg-destructive/60" />
+            
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-destructive/15 text-destructive">
                 <X className="w-3.5 h-3.5" strokeWidth={3} />
