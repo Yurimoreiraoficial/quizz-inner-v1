@@ -100,7 +100,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 title={finalPageContent.ultraAlert.title}
                 body={finalPageContent.ultraAlert.body}
               />
-              <PrimaryButton variant="secondary" onClick={onWhats}>
+              <PrimaryButton variant="secondary" onClick={onWhats} className="text-[13px] sm:text-[15px] whitespace-nowrap">
                 <MessageCircle className="w-4 h-4 mr-1" />
                 {finalPageContent.ultraAlert.cta}
               </PrimaryButton>
@@ -365,7 +365,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 <AlertCard
                   body="Pelo seu perfil, talvez o Plano Ultra seja mais adequado para uso alto de imagens, vídeos ou audiovisual."
                 />
-                <PrimaryButton variant="secondary" onClick={onWhats}>
+                <PrimaryButton variant="secondary" onClick={onWhats} className="text-[13px] sm:text-[15px] whitespace-nowrap">
                   <MessageCircle className="w-4 h-4 mr-1" />
                   Falar com o time sobre o Plano Ultra
                 </PrimaryButton>
