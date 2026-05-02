@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFunnelState } from "@/hooks/useFunnelState";
 import { useUtmParams } from "@/hooks/useUtmParams";
 import { funnelSteps } from "@/data/funnelSteps";
@@ -28,6 +28,14 @@ const Index = () => {
   const c = useFunnelState();
   const step = c.currentStep;
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [tarefasComplete, setTarefasComplete] = useState(false);
+  const [doresComplete, setDoresComplete] = useState(false);
+
+  // Reset estados de "completo" ao trocar de step
+  useEffect(() => {
+    if (step?.id !== "tarefas") setTarefasComplete(false);
+    if (step?.id !== "dores") setDoresComplete(false);
+  }, [step?.id]);
 
   const handleBack = () => {
     if (advanceTimerRef.current) {
@@ -163,12 +171,15 @@ const Index = () => {
             items={taskOptionsByMarket[market]}
             values={c.state.tarefas}
             onChange={(id, l, v) => c.setTarefa(id, l, v as never)}
+            onAllAnswered={setTarefasComplete}
           />
-          <div className="mt-4">
-            <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
-              CONTINUAR
-            </PrimaryButton>
-          </div>
+          {tarefasComplete && (
+            <div className="mt-4 animate-fade-in">
+              <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
+                CONTINUAR
+              </PrimaryButton>
+            </div>
+          )}
         </>
       )}
 
@@ -202,12 +213,15 @@ const Index = () => {
             items={painOptions}
             values={c.state.dores}
             onChange={(id, l, v) => c.setDor(id, l, v as never)}
+            onAllAnswered={setDoresComplete}
           />
-          <div className="mt-4">
-            <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
-              CONTINUAR
-            </PrimaryButton>
-          </div>
+          {doresComplete && (
+            <div className="mt-4 animate-fade-in">
+              <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
+                CONTINUAR
+              </PrimaryButton>
+            </div>
+          )}
         </>
       )}
 
