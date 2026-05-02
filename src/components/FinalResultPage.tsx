@@ -23,6 +23,7 @@ import innerTeamImg from "@/assets/inner-team.jpg";
 import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
+import transcricaoImg from "@/assets/transcricao.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
