@@ -60,7 +60,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             placeholder="Seu nome"
-            className="w-full h-12 px-4 rounded-2xl bg-white border border-border focus:border-primary outline-none transition-colors text-[16px]"
+            className="w-full h-12 px-4 rounded-2xl bg-card text-foreground placeholder:text-muted-foreground border border-border focus:border-primary outline-none transition-colors text-[16px]"
           />
           {submitted && !nameOk && (
             <p className="mt-1 text-[12px] text-destructive">Informe seu nome.</p>
@@ -74,7 +74,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
             value={phone}
             onChange={(e) => setPhone(maskPhoneBR(e.target.value))}
             placeholder="WhatsApp (com DDD)"
-            className="w-full h-12 px-4 rounded-2xl bg-white border border-border focus:border-primary outline-none transition-colors text-[16px]"
+            className="w-full h-12 px-4 rounded-2xl bg-card text-foreground placeholder:text-muted-foreground border border-border focus:border-primary outline-none transition-colors text-[16px]"
           />
           {submitted && !phoneOk && (
             <p className="mt-1 text-[12px] text-destructive">Informe um WhatsApp válido.</p>

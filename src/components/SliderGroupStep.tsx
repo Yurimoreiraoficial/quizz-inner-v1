@@ -43,7 +43,7 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
                 onClick={() => onChange(s)}
                 className={cn(
                   "w-4 h-4 rounded-full border-2 transition-all",
-                  active ? "bg-primary border-primary scale-100" : "bg-white border-border-strong/40"
+                  active ? "bg-primary border-primary scale-100" : "bg-card border-border-strong/40"
                 )}
               />
             );
