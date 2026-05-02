@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
 import innerTeamImg from "@/assets/inner-team.jpg";
+import promptsImg from "@/assets/prompts.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
