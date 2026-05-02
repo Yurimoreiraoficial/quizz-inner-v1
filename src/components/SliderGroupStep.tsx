@@ -18,8 +18,8 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
   const pct = idx >= 0 ? (idx / (scale.length - 1)) * 100 : 0;
 
   return (
-    <div className="card-surface px-3 py-2 rounded-sm mb-[3px]">
-      <div className="text-[13px] sm:text-[14px] font-semibold text-foreground text-pretty leading-snug my-px py-px mb-[9px]">
+    <div className="card-surface px-3 py-2 rounded-lg">
+      <div className="text-[13px] font-semibold text-foreground leading-snug mb-1.5">
         {label}
       </div>
 
@@ -31,7 +31,6 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
             style={{ width: `${pct}%`, background: "var(--gradient-primary)" }}
           />
         </div>
-        {/* Pontos clicáveis */}
         <div className="absolute inset-0 flex items-center justify-between">
           {scale.map((s, i) => {
             const active = idx >= i;
@@ -43,7 +42,7 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
                 onClick={() => onChange(s)}
                 className={cn(
                   "w-2.5 h-2.5 rounded-full border-2 transition-all",
-                  active ? "w-2.5 h-2.5 rounded-full transition-all bg-primary border-primary scale-100 border-2" : "bg-card border-border-strong/40"
+                  active ? "bg-primary border-primary" : "bg-card border-border-strong/40"
                 )}
               />
             );
@@ -52,14 +51,14 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
       </div>
 
       {/* Labels */}
-      <div className="mt-1.5 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
+      <div className="mt-1 grid" style={{ gridTemplateColumns: `repeat(${scale.length}, minmax(0,1fr))` }}>
         {scale.map((s, i) => (
           <button
             key={String(s)}
             type="button"
             onClick={() => onChange(s)}
             className={cn(
-              "text-[11px] sm:text-[12px] py-0 transition-colors",
+              "text-[10px] leading-tight py-0 transition-colors",
               i === 0 ? "text-left" : i === scale.length - 1 ? "text-right" : "text-center",
               i === idx ? "font-bold text-foreground" : "text-muted-foreground"
             )}
