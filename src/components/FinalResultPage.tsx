@@ -72,12 +72,6 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               </span>
             </div>
 
-            <div className="mt-5 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-            <div className="mt-4 flex items-center gap-2 text-[12.5px] text-muted-foreground">
-              <Check className="w-4 h-4 text-primary shrink-0" />
-              <span>Análise concluída com base no seu perfil</span>
-            </div>
           </div>
         </div>
 
