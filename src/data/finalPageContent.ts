@@ -7,7 +7,7 @@ export const finalPageContent = {
     sub: "Você não precisa saber qual modelo usar. A Inner ajuda a direcionar sua demanda para a IA mais adequada.",
   },
   impact: [
-    "+500 mil usuários",
+    "+500 mil usuários pelo mundo",
     "+50 IAs premium integradas",
     "4.9★ de satisfação no app",
     "7 cursos com certificado",
