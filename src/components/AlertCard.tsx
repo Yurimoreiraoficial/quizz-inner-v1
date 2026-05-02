@@ -13,7 +13,7 @@ export function AlertCard({ title, body, variant = "warning" }: AlertCardProps) 
       variant === "warning" ? "bg-warning/10 border-warning/30" : "bg-primary/5 border-primary/20"
     )}>
       {title && <div className="font-semibold text-foreground mb-1">{title}</div>}
-      <p className="text-sm text-muted-foreground leading-relaxed text-pretty">{body}</p>
+      <p className="text-sm text-muted-foreground leading-relaxed text-pretty whitespace-pre-line">{body}</p>
     </div>
   );
 }
