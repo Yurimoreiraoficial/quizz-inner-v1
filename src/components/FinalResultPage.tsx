@@ -205,9 +205,8 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </div>
         </div>
 
-        <p className="mt-4 text-[14px] text-muted-foreground text-pretty text-center">
-          {finalPageContent.beforeAfter.summary}
-        </p>
+
+
 
         <div className="mt-5">
           <PrimaryButton withArrow onClick={onCheckout}>Assinar agora</PrimaryButton>
