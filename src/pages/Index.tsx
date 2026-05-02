@@ -86,10 +86,10 @@ const Index = () => {
       {/* 1. Intro */}
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center pt-2">
-          <h1 className="leading-tight font-bold text-foreground whitespace-nowrap text-[15px] sm:text-[22px]">
-            <span>Acesso a </span>
-            <span className="text-brand">+50 IAs</span>
-            <span className="font-medium text-muted-foreground"> por apenas R$99/mês</span>
+          <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center">
+            <span className="text-[18px] sm:text-[22px] font-medium text-foreground">Acesso a</span>
+            <span className="text-brand text-[44px] sm:text-[56px] font-extrabold tracking-tight mt-1">+50 IAs</span>
+            <span className="text-[14px] sm:text-[16px] font-medium text-muted-foreground mt-2">por apenas R$99/mês</span>
           </h1>
           <img
             src={introAiCards}
