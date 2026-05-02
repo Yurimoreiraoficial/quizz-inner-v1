@@ -19,7 +19,7 @@ function SliderRow<T extends ScaleValue>({ label, scale, value, onChange }: Slid
 
   return (
     <div className="card-surface px-3 py-2 rounded-sm">
-      <div className="text-[13px] sm:text-[14px] font-semibold text-foreground text-pretty mb-1.5 leading-snug">
+      <div className="text-[13px] sm:text-[14px] font-semibold text-foreground text-pretty mb-1.5 leading-snug my-px py-px">
         {label}
       </div>
 
