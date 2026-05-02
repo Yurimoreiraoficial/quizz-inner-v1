@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +7,7 @@
 /* ============================================================
    INNER AI — DESIGN SYSTEM
    All colors HSL. Tokens centralizados aqui.
+   Tema light = :root | Tema dark = .dark (aplicado em /dark)
 ============================================================ */
 
 @layer base {
@@ -47,6 +48,10 @@
     --input: 220 14% 90%;
     --ring: 213 92% 58%;
 
+    /* Tokens semânticos para superfícies “suaves” usadas em componentes */
+    --surface-input: 0 0% 100%;        /* fundo de inputs */
+    --surface-pill: 0 0% 100%;         /* fundo do logo pill / dot inativo */
+
     --radius: 1.25rem;
 
     /* Gradients */
@@ -74,6 +79,56 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* ====== DARK THEME (rota /dark) ====== */
+  .dark {
+    --background: 0 0% 4%;             /* near-black */
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 7%;                   /* #121212 */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 213 92% 62%;
+    --primary-foreground: 0 0% 8%;
+    --primary-deep: 230 89% 60%;
+    --primary-soft: 205 100% 70%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 213 92% 62%;
+    --accent-foreground: 0 0% 8%;
+
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 0 0% 8%;
+
+    --border: 0 0% 16%;
+    --border-strong: 0 0% 28%;
+    --input: 0 0% 16%;
+    --ring: 213 92% 62%;
+
+    --surface-input: 0 0% 9%;
+    --surface-pill: 0 0% 9%;
+
+    --gradient-primary: linear-gradient(90deg, hsl(230 89% 60%) 0%, hsl(205 100% 70%) 100%);
+    /* Background dark com grid sutil */
+    --gradient-bg:
+      linear-gradient(hsla(0, 0%, 100%, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(0, 0%, 100%, 0.035) 1px, transparent 1px),
+      radial-gradient(circle at 50% -10%, hsla(213, 92%, 30%, 0.18), transparent 60%),
+      hsl(0 0% 4%);
+    background-size: 56px 56px, 56px 56px, auto, auto;
+
+    --shadow-button: 0 18px 45px hsla(213, 92%, 50%, 0.35);
+    --shadow-card: 0 1px 2px hsla(0, 0%, 0%, 0.4), 0 8px 24px hsla(0, 0%, 0%, 0.4);
+    --shadow-soft: 0 2px 12px hsla(0, 0%, 0%, 0.4);
+  }
 }
 
 @layer base {
@@ -96,6 +151,16 @@
     letter-spacing: -0.02em;
     @apply text-foreground;
   }
+
+  /* No tema dark, headings ganham serifa moderna (Fraunces) com ótima legibilidade.
+     Pesos médios + leve itálico apenas em h1 para o tom editorial das referências. */
+  .dark h1, .dark h2 {
+    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    font-optical-sizing: auto;
+  }
+  .dark h1 { font-style: italic; }
 }
 
 @layer components {
@@ -117,16 +182,23 @@
     letter-spacing: 0.08em;
   }
 
+  /* No dark, o CTA principal das referências é branco com texto escuro */
+  .dark .btn-primary {
+    background: hsl(0 0% 100%);
+    color: hsl(0 0% 8%);
+    box-shadow: 0 8px 30px hsla(0, 0%, 0%, 0.5);
+  }
+
   .btn-secondary {
     @apply w-full inline-flex items-center justify-center gap-2 rounded-2xl
            font-semibold transition-colors
-           bg-white text-foreground border border-border
+           bg-card text-foreground border border-border
            hover:bg-secondary active:scale-[0.98];
     padding: 0.95rem 1.25rem;
     font-size: 0.95rem;
   }
 
-  /* Card branco padrão */
+  /* Card padrão */
   .card-surface {
     @apply bg-card rounded-3xl border;
     border-color: hsl(var(--border));
@@ -140,22 +212,33 @@
 
   /* Pill da logo */
   .logo-pill {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-full bg-white border;
-    border-color: hsl(var(--border));
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-2xl border;
+    background: hsl(var(--surface-pill));
+    border-color: hsl(var(--border-strong));
     box-shadow: var(--shadow-soft);
+  }
+  .dark .logo-pill {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
   }
 
   /* Texto azul de destaque */
-  .text-brand {
-    color: hsl(var(--primary));
-  }
+  .text-brand { color: hsl(var(--primary)); }
 
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
 
-  .text-pretty {
-    text-wrap: pretty;
+  /* Eyebrow / label estilo "USO DE IA — — — —" usado nas referências dark */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-muted-foreground;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: hsl(var(--border));
+    min-width: 60px;
   }
 }
 
