@@ -21,9 +21,11 @@ export function FunnelLayout({
   return (
     <div className={scrollable ? "min-h-[100dvh]" : "min-h-[100dvh] flex flex-col"}>
       <div className="funnel-shell pt-4 sm:pt-5">
-        <div className="flex items-center gap-3">
-          <BackButton onClick={onBack} visible={showBack} />
-          <div className="flex-1 flex justify-center -ml-9">
+        <div className="relative flex items-center gap-3">
+          <div className="relative z-10">
+            <BackButton onClick={onBack} visible={showBack} />
+          </div>
+          <div className="flex-1 flex justify-center -ml-9 pointer-events-none">
             <Logo />
           </div>
         </div>
