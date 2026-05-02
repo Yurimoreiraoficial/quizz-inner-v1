@@ -94,7 +94,7 @@ const Index = () => {
           <img
             src={introHero}
             alt="Cards das principais IAs: Gemini, Nano Banana, ChatGPT e Claude"
-            className="mt-6 w-full max-w-[480px] h-auto select-none pointer-events-none"
+            className="mt-6 w-full max-w-[640px] h-auto select-none pointer-events-none"
             draggable={false}
             decoding="async"
             fetchPriority="high"
