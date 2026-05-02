@@ -13,11 +13,11 @@ interface LogoProps {
  */
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={cn("logo-pill rounded", className)} aria-label="Inner AI">
+    <div className={cn("inline-flex items-center justify-center", className)} aria-label="Inner AI">
       <img
         src={logoWhite}
         alt="Inner AI"
-        className="h-[18px] w-auto invert dark:invert-0"
+        className="h-5 w-auto opacity-90 invert dark:invert-0"
         draggable={false}
       />
     </div>
