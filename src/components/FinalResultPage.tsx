@@ -24,6 +24,7 @@ import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
 import transcricaoImg from "@/assets/transcricao.svg";
+import partnerLogosImg from "@/assets/partner-logos.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
@@ -311,10 +312,15 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
             <span className="text-[12px] text-muted-foreground ml-1">4.9 / 5</span>
           </div>
-          <div className="overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-5 justify-center whitespace-nowrap text-[12px] font-semibold text-muted-foreground/70">
-              {partnerLogos.map((p) => <span key={p}>{p}</span>)}
-            </div>
+          <div className="w-full overflow-hidden">
+            <img
+              src={partnerLogosImg}
+              alt="Logos de empresas parceiras e clientes"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-auto max-h-10 sm:max-h-12 object-contain opacity-80 select-none pointer-events-none"
+              draggable={false}
+            />
           </div>
         </div>
       </section>
