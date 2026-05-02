@@ -16,7 +16,7 @@ export function PrimaryButton({
       {...rest}
       className={cn(variant === "primary" ? "btn-primary" : "btn-secondary", className)}
     >
-      <span>{children}</span>
+      <span className="inline-flex items-center justify-center gap-2">{children}</span>
       {withArrow && <ArrowRight className="w-4 h-4" />}
     </button>
   );
