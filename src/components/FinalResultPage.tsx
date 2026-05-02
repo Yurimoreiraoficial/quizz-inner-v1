@@ -60,7 +60,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </div>
           <div className="mt-1 text-[18px] sm:text-[20px] font-bold text-foreground text-balance">
             Seu nível de encaixe com a Inner é{" "}
-            <span className="text-brand">{fitLabel}</span>
+            <span className="text-brand text-6xl">{fitLabel}</span>
           </div>
 
           <p className="mt-4 text-[14px] text-muted-foreground text-pretty">
