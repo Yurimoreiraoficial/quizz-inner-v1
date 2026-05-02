@@ -130,30 +130,26 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       </section>
 
       {/* Bloco 03 — Cards de impacto */}
-      <section className="mt-8 grid grid-cols-2 gap-3">
-        {finalPageContent.impact.map((t) => {
-          const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
-          const num = match?.[1] ?? t;
-          const label = match?.[2] ?? "";
-          return (
-            <div
-              key={t}
-              className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-card to-card p-5 text-left"
-            >
-              <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-primary/15 blur-2xl pointer-events-none" />
-              <div className="relative">
-                <div className="text-brand text-3xl sm:text-4xl font-bold leading-none tracking-tight drop-shadow-[0_0_18px_hsl(var(--primary)/0.35)]">
+      <section className="mt-12">
+        <div className="grid grid-cols-2 divide-x divide-y divide-border/60 border-y border-border/60">
+          {finalPageContent.impact.map((t) => {
+            const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
+            const num = match?.[1] ?? t;
+            const label = match?.[2] ?? "";
+            return (
+              <div key={t} className="px-4 py-6">
+                <div className="font-display text-3xl sm:text-[34px] font-semibold tracking-tight text-foreground leading-none">
                   {num}
                 </div>
                 {label && (
-                  <div className="mt-2 text-[12.5px] leading-snug text-muted-foreground">
+                  <div className="mt-2 text-[12px] leading-snug text-muted-foreground">
                     {label}
                   </div>
                 )}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </section>
 
       {/* Bloco 04 — Antes e depois */}
