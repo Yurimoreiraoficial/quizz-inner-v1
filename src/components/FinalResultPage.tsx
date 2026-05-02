@@ -17,6 +17,7 @@ import { company, links } from "@/data/designTokens";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
+import fusionImg from "@/assets/fusion.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
