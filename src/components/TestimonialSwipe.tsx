@@ -59,7 +59,7 @@ export function TestimonialSwipe({ items }: TestimonialSwipeProps) {
           />
         ))}
       </div>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">arraste para ver mais</p>
+      <p className="mt-2 text-center text-[11px] text-muted-foreground uppercase tracking-widest">A escolha maiores empresas do Brasil</p>
     </div>
   );
 }
