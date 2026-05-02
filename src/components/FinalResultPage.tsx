@@ -24,6 +24,7 @@ import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
 import transcricaoImg from "@/assets/transcricao.svg";
+import partnerLogosImg from "@/assets/partner-logos.svg";
 
 interface FinalResultPageProps {
   state: FunnelState;
