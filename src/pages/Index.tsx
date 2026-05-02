@@ -180,7 +180,7 @@ const Index = () => {
       {step.id === "dores" && (
         <>
           <SliderGroupStep
-            question="Com que frequência isso acontece na sua rotina?"
+            question="Marque com que frequência isso acontece na sua rotina."
             scale={["Nunca", "Às vezes", "Muito"]}
             items={painOptions}
             values={c.state.dores}
