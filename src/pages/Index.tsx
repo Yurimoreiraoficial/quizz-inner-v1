@@ -88,7 +88,7 @@ const Index = () => {
         <div className="flex flex-col items-center text-center pt-2">
           <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center">
             <span className="sm:text-[22px] font-medium text-foreground text-2xl">Acesso a</span>
-            <span className="text-brand sm:text-[56px] font-extrabold tracking-tight mt-1 text-7xl">+50 IAs</span>
+            <span className="text-brand sm:text-[56px] font-extrabold tracking-tight mt-1 text-7xl text-secondary-foreground">+50 IAs</span>
             <span className="sm:text-[16px] font-medium text-muted-foreground text-lg mb-0 mt-[4px]">por apenas R$99/mês</span>
           </h1>
           <img
