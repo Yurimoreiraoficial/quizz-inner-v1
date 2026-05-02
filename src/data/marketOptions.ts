@@ -1,10 +1,10 @@
 import type { Market, OptionItem } from "@/types/funnel";
 
 export const aiUsageOptions: OptionItem[] = [
-  { value: "pago_uma", label: "Pago uma ferramenta de IA" },
+  { value: "pago_uma", label: "Ainda não uso IA" },
   { value: "pago_varias", label: "Pago mais de uma ferramenta" },
   { value: "gratuitas", label: "Uso apenas versões gratuitas" },
-  { value: "nao_uso", label: "Ainda não uso IA" },
+  { value: "nao_uso", label: "Não uso profissionalmente" },
 ];
 
 export const marketOptions: { value: Market; label: string }[] = [

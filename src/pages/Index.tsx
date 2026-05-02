@@ -86,7 +86,7 @@ const Index = () => {
       {/* 2. Uso de IA */}
       {step.id === "uso_ia" && (
         <SingleChoiceStep
-          question="Qual seu uso de IA hoje?"
+          question="Você já utiliza alguma ferramenta de IA hoje?"
           options={aiUsageOptions as { value: string; label: string }[]}
           selectedValue={c.state.usoIA}
           onSelect={(v, l) => {
