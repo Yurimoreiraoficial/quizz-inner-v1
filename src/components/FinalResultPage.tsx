@@ -62,8 +62,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             Seu nível de encaixe com a Inner é{" "}
             <span className="text-brand text-6xl">{fitLabel}</span>
           </div>
+        </div>
 
-          <p className="mt-4 text-[14px] text-muted-foreground text-pretty">
+        <div className="mt-4 card-strong p-5 text-left">
+          <p className="text-[14px] text-muted-foreground text-pretty">
             Com base no seu perfil, identificamos que a Inner pode te ajudar principalmente em:
           </p>
           <ul className="mt-3 space-y-2.5">
