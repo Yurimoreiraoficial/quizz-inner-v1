@@ -267,49 +267,75 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       </section>
 
       {/* Bloco 07 — Oferta */}
-      <section className="mt-10 card-strong p-5">
-        <span className="inline-block text-[11px] font-bold tracking-wider px-3 py-1 rounded-full bg-primary text-primary-foreground uppercase">
-          {finalPageContent.offer.tag}
-        </span>
-        <h2 className="mt-3 text-[22px] sm:text-[24px] font-bold text-foreground text-balance">
-          {finalPageContent.offer.title}
-        </h2>
-        <ul className="mt-3 space-y-2">
-          {finalPageContent.offer.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-[14.5px] text-foreground text-pretty">
-              <Check className="w-4 h-4 text-primary mt-1 shrink-0" /> {b}
-            </li>
-          ))}
-        </ul>
+      <section className="mt-10 relative rounded-3xl p-[1.5px] bg-gradient-to-br from-primary/60 via-primary/20 to-primary/60 shadow-[0_20px_60px_-20px_hsl(var(--primary)/0.45)]">
+        <div className="relative rounded-[calc(1.5rem-1.5px)] bg-gradient-to-br from-card via-card to-primary/5 p-6 overflow-hidden">
+          {/* glow decorativo */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
 
-        {/* ancoragem em UMA linha */}
-        <p className="mt-5 text-[10px] sm:text-[13px] whitespace-nowrap text-destructive text-center">
-          {finalPageContent.offer.anchor}
-        </p>
+          <div className="relative">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wider px-3 py-1 rounded-full bg-primary text-primary-foreground uppercase shadow-[0_6px_20px_-6px_hsl(var(--primary)/0.7)]">
+                <Sparkles className="w-3 h-3" />
+                {finalPageContent.offer.tag}
+              </span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-primary/90">
+                Oferta exclusiva
+              </span>
+            </div>
 
-        <div className="mt-3 text-center">
-          <p className="text-[15px] text-foreground">{finalPageContent.offer.closing.line1}</p>
-          <p className="text-[24px] font-bold text-foreground">{finalPageContent.offer.closing.line2}</p>
-        </div>
+            <h2 className="mt-4 text-[22px] sm:text-[24px] font-bold text-foreground text-balance leading-tight">
+              {finalPageContent.offer.title}
+            </h2>
 
-        <div className="mt-5">
-          <PrimaryButton withArrow onClick={onCheckout}>Assinar agora</PrimaryButton>
-        </div>
-        <p className="mt-3 text-center text-[12px] text-muted-foreground">
-          Garantia de 14 dias · Cancele quando quiser
-        </p>
+            <ul className="mt-4 space-y-2.5">
+              {finalPageContent.offer.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2.5 text-[14.5px] text-foreground text-pretty">
+                  <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary/15 text-primary shrink-0">
+                    <Check className="w-3 h-3" strokeWidth={3.5} />
+                  </span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
 
-        {ultra && (
-          <div className="mt-5 space-y-3">
-            <AlertCard
-              body="Pelo seu perfil, talvez o Plano Ultra seja mais adequado para uso alto de imagens, vídeos ou audiovisual."
-            />
-            <PrimaryButton variant="secondary" onClick={onWhats}>
-              <MessageCircle className="w-4 h-4 mr-1" />
-              Falar com o time sobre o Plano Ultra
-            </PrimaryButton>
+            {/* divisor sutil */}
+            <div className="mt-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+            {/* ancoragem em UMA linha */}
+            <p className="mt-5 text-[10px] sm:text-[13px] whitespace-nowrap text-destructive text-center line-through decoration-destructive/50">
+              {finalPageContent.offer.anchor}
+            </p>
+
+            <div className="mt-2 text-center">
+              <p className="text-[14px] text-muted-foreground">{finalPageContent.offer.closing.line1}</p>
+              <p className="mt-1 text-[32px] sm:text-[36px] font-extrabold tracking-tight text-brand leading-none drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
+                {finalPageContent.offer.closing.line2}
+              </p>
+            </div>
+
+            <div className="mt-6">
+              <PrimaryButton withArrow onClick={onCheckout}>Assinar agora</PrimaryButton>
+            </div>
+
+            <div className="mt-3 flex items-center justify-center gap-1.5 text-[12px] text-muted-foreground">
+              <Shield className="w-3.5 h-3.5 text-primary" />
+              <span>Garantia de 14 dias · Cancele quando quiser</span>
+            </div>
+
+            {ultra && (
+              <div className="mt-5 space-y-3">
+                <AlertCard
+                  body="Pelo seu perfil, talvez o Plano Ultra seja mais adequado para uso alto de imagens, vídeos ou audiovisual."
+                />
+                <PrimaryButton variant="secondary" onClick={onWhats}>
+                  <MessageCircle className="w-4 h-4 mr-1" />
+                  Falar com o time sobre o Plano Ultra
+                </PrimaryButton>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </section>
 
       {/* Bloco 08 — Garantia */}
