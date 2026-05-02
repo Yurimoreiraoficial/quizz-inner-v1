@@ -99,7 +99,7 @@ export function SliderGroupStep({ question, scale, items, values, onChange }: Sl
         {question}
       </h1>
       <p className="mt-1.5 text-[13px] sm:text-[14px] text-muted-foreground text-pretty">
-        Toque na escala para selecionar a opção que melhor descreve você.
+        Toque na escala para selecionar seu nível de uso.
       </p>
       <div className="mt-3 flex flex-col gap-1.5">
         {list.map((it) => (
