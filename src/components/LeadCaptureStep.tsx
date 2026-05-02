@@ -20,10 +20,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
   return (
     <div className="flex flex-col">
       <div className="text-center">
-        <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary uppercase tracking-wider">
-          <span>FALTA POUCO</span>
-        </div>
-        <h1 className="mt-2 text-[26px] sm:text-[28px] leading-[1.15] font-bold text-foreground text-balance">
+        <h1 className="text-[26px] sm:text-[28px] leading-[1.15] font-bold text-foreground text-balance">
           Sua análise está pronta
         </h1>
       </div>
@@ -40,9 +37,14 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
         ))}
       </div>
 
-      <p className="mt-5 text-center text-[14px] text-muted-foreground text-pretty">
-        Preencha seus dados para liberar sua recomendação.
-      </p>
+      <div className="mt-5 text-center">
+        <div className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary uppercase tracking-wider">
+          <span>FALTA POUCO</span>
+        </div>
+        <p className="mt-1 text-[14px] text-muted-foreground text-pretty">
+          Preencha seus dados para liberar sua recomendação.
+        </p>
+      </div>
 
       <form
         className="mt-4 flex flex-col gap-3"
