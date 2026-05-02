@@ -280,11 +280,9 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         </ul>
 
         {/* ancoragem em UMA linha */}
-        <div className="mt-5 overflow-x-auto no-scrollbar">
-          <p className="text-[13px] whitespace-nowrap text-destructive text-center">
-            {finalPageContent.offer.anchor}
-          </p>
-        </div>
+        <p className="mt-5 text-[11.5px] sm:text-[13px] whitespace-nowrap text-destructive text-center">
+          {finalPageContent.offer.anchor}
+        </p>
 
         <div className="mt-3 text-center">
           <p className="text-[15px] text-foreground">{finalPageContent.offer.closing.line1}</p>
