@@ -95,7 +95,7 @@ export const finalPageContent = {
   },
   guarantee: {
     title: "Teste por 14 dias sem risco.",
-    sub: "Se não fizer sentido para você, devolvemos 100% do seu dinheiro.",
+    sub: "Se não fizer sentido para você, \ndevolvemos 100% do seu dinheiro.",
     micro: "Garantia de 14 dias · Cancele quando quiser",
   },
   about: {
