@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ArrowRight, Check, MessageCircle, Shield, Star, Sparkles } from "lucide-react";
+import { ArrowRight, Check, MessageCircle, Shield, Star, Sparkles, X } from "lucide-react";
 import type { FunnelState } from "@/types/funnel";
 import { firstName } from "@/utils/formatters";
 import { getNaturalBenefits } from "@/utils/getNaturalBenefits";
