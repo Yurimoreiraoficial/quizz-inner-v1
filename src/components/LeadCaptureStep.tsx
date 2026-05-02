@@ -31,9 +31,9 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
       {/* Cards com blur */}
       <div className="mt-5 grid grid-cols-2 gap-3">
         {blurredCards.map((c, i) => (
-          <div key={i} className="card-surface p-4 text-left">
-            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{c.label}</div>
-            <div className="mt-1 text-[15px] font-bold text-foreground select-none" style={{ filter: "blur(6px)" }}>
+          <div key={i} className="card-surface h-[68px] overflow-hidden px-3 py-2.5 text-left flex flex-col justify-center">
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground leading-none truncate">{c.label}</div>
+            <div className="mt-1 text-[14px] leading-tight font-bold text-foreground select-none truncate" style={{ filter: "blur(6px)" }}>
               {c.value}
             </div>
           </div>
