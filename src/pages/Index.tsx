@@ -94,7 +94,7 @@ const Index = () => {
           <img
             src={introHero}
             alt="Cards das principais IAs: Gemini, Nano Banana, ChatGPT e Claude"
-            className="mt-6 w-full max-w-[360px] h-auto select-none pointer-events-none"
+            className="mt-6 w-full max-w-[480px] h-auto select-none pointer-events-none"
             draggable={false}
           />
           <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0">
