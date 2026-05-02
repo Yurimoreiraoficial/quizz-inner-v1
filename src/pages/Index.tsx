@@ -18,8 +18,8 @@ import { TestimonialSwipe } from "@/components/TestimonialSwipe";
 import { PartnerLogos } from "@/components/PartnerLogos";
 import { FinalResultPage } from "@/components/FinalResultPage";
 
-import aiHero from "@/assets/ai-network-hero.png";
 import introAiCards from "@/assets/intro-ai-cards.svg";
+import introHero from "@/assets/intro-hero.svg";
 
 const Index = () => {
   // Inicializa UTMs cedo
@@ -92,7 +92,7 @@ const Index = () => {
             <span className="sm:text-[16px] font-medium text-muted-foreground text-lg mb-0 mt-[4px]">por apenas R$99/mês</span>
           </h1>
           <img
-            src={introAiCards}
+            src={introHero}
             alt="Cards das principais IAs: Gemini, Nano Banana, ChatGPT e Claude"
             className="mt-6 w-full max-w-[360px] h-auto select-none pointer-events-none"
             draggable={false}
