@@ -131,24 +131,37 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 03 — Cards de impacto */}
       <section className="mt-12">
-        <div className="grid grid-cols-2 divide-x divide-y divide-border/60 border-y border-border/60">
-          {finalPageContent.impact.map((t) => {
-            const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
-            const num = match?.[1] ?? t;
-            const label = match?.[2] ?? "";
-            return (
-              <div key={t} className="px-4 py-6">
-                <div className="font-display text-3xl sm:text-[34px] font-semibold tracking-tight text-foreground leading-none">
-                  {num}
-                </div>
-                {label && (
-                  <div className="mt-2 text-[12px] leading-snug text-muted-foreground">
-                    {label}
+        <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/[0.08] via-card to-card p-6 sm:p-7">
+          <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-16 w-56 h-56 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+
+          <div className="relative inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <Sparkles className="w-3.5 h-3.5" />
+            Por que confiar na Inner
+          </div>
+
+          <div className="relative mt-5 grid grid-cols-2 gap-x-5 gap-y-7">
+            {finalPageContent.impact.map((t, i) => {
+              const match = t.match(/^([+\d.,]+\s*\S*?)\s+(.*)$/);
+              const num = match?.[1] ?? t;
+              const label = match?.[2] ?? "";
+              return (
+                <div
+                  key={t}
+                  className={`${i % 2 === 1 ? "pl-5 border-l border-primary/15" : ""}`}
+                >
+                  <div className="text-brand font-display text-[34px] sm:text-[40px] font-bold leading-none tracking-tight drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
+                    {num}
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  {label && (
+                    <div className="mt-2 text-[12.5px] leading-snug text-muted-foreground">
+                      {label}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
