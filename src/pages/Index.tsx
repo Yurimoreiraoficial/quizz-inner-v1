@@ -108,7 +108,7 @@ const Index = () => {
           selectedValue={c.state.usoIA}
           onSelect={(v, l) => {
             c.setUsoIA(v as never, l);
-            setTimeout(() => c.goNext(), 180);
+            scheduleAdvance();
           }}
         />
       )}
