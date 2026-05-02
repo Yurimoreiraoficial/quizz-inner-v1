@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFunnelState } from "@/hooks/useFunnelState";
 import { useUtmParams } from "@/hooks/useUtmParams";
 import { funnelSteps } from "@/data/funnelSteps";
