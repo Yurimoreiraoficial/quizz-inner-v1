@@ -85,7 +85,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
 
         <p className="text-[12px] text-muted-foreground flex items-center justify-center gap-1.5 text-center">
           <Lock className="w-3.5 h-3.5" />
-          <span>Usaremos seu WhatsApp apenas para<br />te ajudar em caso de dúvida.</span>
+          <span className="text-xs">Usaremos seu WhatsApp apenas para te ajudar em caso de dúvida.</span>
         </p>
 
         <div className="mt-2">
