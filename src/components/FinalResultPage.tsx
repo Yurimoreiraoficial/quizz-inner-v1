@@ -302,23 +302,31 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             {/* divisor sutil */}
             <div className="mt-6 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-            {/* ancoragem em UMA linha */}
-            <p className="mt-5 text-[10px] sm:text-[13px] whitespace-nowrap text-destructive text-center line-through decoration-destructive/50">
-              {finalPageContent.offer.anchor}
-            </p>
-
-            <div className="mt-3 text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            {/* Card de preço destacado */}
+            <div className="mt-6 rounded-2xl bg-primary/5 border border-primary/20 p-5 text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                 {finalPageContent.offer.closing.line1}
               </p>
-              <div className="mt-2 inline-flex items-baseline justify-center gap-1 text-foreground">
-                <span className="text-[16px] font-semibold text-muted-foreground">por apenas</span>
+
+              <div className="mt-3 flex items-end justify-center gap-3">
+                <span className="text-[15px] text-muted-foreground line-through decoration-destructive/60 mb-2">
+                  R$199
+                </span>
+                <div className="flex items-baseline gap-1 text-brand drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
+                  <span className="text-[18px] font-semibold leading-none">R$</span>
+                  <span className="text-[64px] sm:text-[72px] font-extrabold tracking-tight leading-[0.9]">99</span>
+                </div>
+                <span className="text-[14px] font-medium text-muted-foreground mb-2">/mês</span>
               </div>
-              <div className="mt-1 flex items-baseline justify-center gap-1 text-brand drop-shadow-[0_0_24px_hsl(var(--primary)/0.35)]">
-                <span className="text-[20px] font-semibold leading-none mt-1">R$</span>
-                <span className="text-[56px] sm:text-[64px] font-extrabold tracking-tight leading-none">99</span>
-                <span className="text-[18px] font-medium text-muted-foreground leading-none mb-1">/mês</span>
+
+              <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/15 text-primary text-[11px] font-bold uppercase tracking-wider">
+                <Sparkles className="w-3 h-3" />
+                Economize 50%
               </div>
+
+              <p className="mt-3 text-[11px] text-muted-foreground">
+                {finalPageContent.offer.anchor}
+              </p>
             </div>
 
             <div className="mt-6">
