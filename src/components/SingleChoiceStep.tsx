@@ -17,7 +17,7 @@ export function SingleChoiceStep<T extends string>({
         {question}
       </h1>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-6 flex flex-col gap-2">
         {options.map((opt) => (
           <OptionCard
             key={opt.value}
