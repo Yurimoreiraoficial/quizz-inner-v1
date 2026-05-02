@@ -1,26 +1,24 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import Index from "./Index";
 
 /**
  * Versão DARK do funil.
  *
- * Estratégia: a página é uma cópia funcional do funil (reusa <Index/>),
- * apenas envolvendo-o em uma camada que ativa o tema dark via classe `dark`
- * no <html> enquanto a rota está ativa. Todos os tokens de design já são
- * theme-aware (definidos em src/index.css em :root e .dark), portanto o
- * funil inteiro herda a paleta sem duplicar componentes.
+ * Reusa <Index/> e ativa o tema dark adicionando a classe `dark` no <html>.
+ * Usamos useLayoutEffect para aplicar/remover a classe de forma síncrona,
+ * antes do paint, evitando race conditions com a fase de commit do React
+ * que podem causar erros de "removeChild" durante navegação entre rotas.
  *
- * Para editar a versão dark, ajuste:
- *   - Tokens: src/index.css (.dark { ... })
- *   - Tipografia serifada dos títulos: regras .dark h1, .dark h2 em src/index.css
- *   - CTA branco no dark: regra .dark .btn-primary em src/index.css
+ * O cleanup só remove a classe se esta instância foi quem adicionou,
+ * para não interferir com outros consumidores do tema.
  */
 const IndexDark = () => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
-    root.classList.add("dark");
+    const hadDark = root.classList.contains("dark");
+    if (!hadDark) root.classList.add("dark");
     return () => {
-      root.classList.remove("dark");
+      if (!hadDark) root.classList.remove("dark");
     };
   }, []);
 
