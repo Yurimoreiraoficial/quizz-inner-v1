@@ -91,7 +91,7 @@ export function TestimonialSwipe({ items }: TestimonialSwipeProps) {
           />
         ))}
       </div>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground uppercase tracking-widest">A escolha maiores empresas do Brasil</p>
+      <p className="mt-2 text-center text-[11px] text-muted-foreground uppercase tracking-widest mb-0 pb-[2px] pt-[14px]">A escolha maiores empresas do Brasil</p>
     </div>
   );
 }
