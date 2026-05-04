@@ -1,0 +1,288 @@
+.inner-ai-orbital {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  padding-inline: 2%;
+  overflow: visible;
+  background: transparent;
+}
+
+.inner-ai-orbital,
+.inner-ai-orbital::before,
+.inner-ai-orbital::after,
+.inner-ai-orbital * {
+  box-sizing: border-box;
+}
+
+.inner-ai-orbital__image,
+.inner-ai-orbital__energy,
+.inner-ai-orbital__scanline,
+.inner-ai-orbital__orb,
+.inner-ai-orbital__core,
+.inner-ai-orbital__ring,
+.inner-ai-orbital__shine,
+.inner-ai-orbital__particle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.inner-ai-orbital__image,
+.inner-ai-orbital__energy {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.inner-ai-orbital__image {
+  z-index: 1;
+  object-fit: contain;
+  user-select: none;
+  background: transparent;
+}
+
+.inner-ai-orbital__scanline {
+  left: 5%;
+  right: 5%;
+  top: -8%;
+  height: 1px;
+  z-index: 7;
+  opacity: 0.24;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    transparent,
+    hsl(var(--primary) / 0.26),
+    hsl(var(--primary-deep) / 0.2),
+    transparent
+  );
+  animation: inner-orbital-scan 8s linear infinite;
+}
+
+.inner-ai-orbital__orb {
+  width: 76px;
+  height: 76px;
+  border-radius: 999px;
+  z-index: 3;
+  opacity: 0.54;
+  animation: inner-orbital-orb 8.2s ease-in-out infinite;
+}
+
+.inner-ai-orbital__orb--left {
+  left: 12.5%;
+  top: 22%;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.14), transparent 68%);
+}
+
+.inner-ai-orbital__orb--right {
+  right: 12.5%;
+  top: 22%;
+  background: radial-gradient(circle, hsl(var(--primary-deep) / 0.14), transparent 68%);
+  animation-delay: -2s;
+}
+
+.inner-ai-orbital__orb--center {
+  left: 48%;
+  bottom: 12%;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.14), transparent 68%);
+  animation-delay: -4s;
+}
+
+.inner-ai-orbital__core {
+  left: 50%;
+  top: 48%;
+  width: 228px;
+  height: 228px;
+  z-index: 4;
+  opacity: 0.82;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle, hsl(0 0% 100% / 0.12), transparent 12%),
+    radial-gradient(circle, hsl(var(--primary) / 0.32), transparent 42%),
+    radial-gradient(circle, hsl(var(--primary-deep) / 0.24), transparent 62%);
+  animation: inner-orbital-core 3.8s ease-in-out infinite;
+}
+
+.inner-ai-orbital__ring {
+  left: 50%;
+  top: 48%;
+  width: 250px;
+  height: 250px;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+
+.inner-ai-orbital__ring::before,
+.inner-ai-orbital__ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.inner-ai-orbital__ring::before {
+  border: 1px solid hsl(var(--primary) / 0.26);
+  box-shadow: 0 0 12px hsl(var(--primary) / 0.12), inset 0 0 10px hsl(var(--primary-deep) / 0.08);
+  animation: inner-orbital-spin 12s linear infinite;
+}
+
+.inner-ai-orbital__ring::after {
+  inset: 18px;
+  border: 1px dashed hsl(var(--primary-deep) / 0.35);
+  animation: inner-orbital-spin 15s linear infinite reverse;
+}
+
+.inner-ai-orbital__shine {
+  left: 37%;
+  top: 20%;
+  width: 26%;
+  height: 62%;
+  z-index: 5;
+  opacity: 0.1;
+  border-radius: 32px;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    hsl(0 0% 100% / 0) 38%,
+    hsl(0 0% 100% / 0.08) 50%,
+    hsl(0 0% 100% / 0) 62%,
+    transparent 100%
+  );
+  animation: inner-orbital-shine 7.2s ease-in-out infinite;
+}
+
+.inner-ai-orbital__energy {
+  z-index: 6;
+}
+
+.inner-ai-orbital__path {
+  fill: none;
+  stroke: url(#innerEnergy);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 70 720;
+  animation: inner-orbital-path 5.6s linear infinite;
+}
+
+.inner-ai-orbital__path.is-reverse {
+  animation-direction: reverse;
+}
+
+.inner-ai-orbital__dot {
+  fill: hsl(var(--primary-soft));
+  animation: inner-orbital-dot 2.8s ease-in-out infinite;
+}
+
+.inner-ai-orbital__dot.is-purple {
+  fill: hsl(var(--primary-deep));
+}
+
+.inner-ai-orbital__particle {
+  width: 5px;
+  height: 5px;
+  z-index: 8;
+  border-radius: 999px;
+  background: hsl(var(--primary-soft) / 0.82);
+  animation: inner-orbital-particle 7.4s ease-in-out infinite;
+}
+
+.inner-ai-orbital__particle.purple {
+  background: hsl(var(--primary-deep) / 0.76);
+}
+
+.inner-ai-orbital__particle.p1 { left: 35%; top: 13%; }
+.inner-ai-orbital__particle.p2 { left: 58%; top: 11%; width: 4px; height: 4px; animation-delay: -1.1s; }
+.inner-ai-orbital__particle.p3 { right: 31%; top: 18%; width: 7px; height: 7px; animation-delay: -2.2s; }
+.inner-ai-orbital__particle.p4 { left: 28%; bottom: 18%; width: 4px; height: 4px; animation-delay: -3.4s; }
+.inner-ai-orbital__particle.p5 { right: 34%; bottom: 16%; animation-delay: -4.1s; }
+.inner-ai-orbital__particle.p6 { left: 50%; top: 7%; width: 3px; height: 3px; animation-delay: -5.2s; }
+
+@keyframes inner-orbital-scan {
+  to { transform: translateY(116%); }
+}
+
+@keyframes inner-orbital-orb {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+    opacity: 0.32;
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.08);
+    opacity: 0.72;
+  }
+}
+
+@keyframes inner-orbital-core {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 0.88;
+  }
+}
+
+@keyframes inner-orbital-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes inner-orbital-shine {
+  0%, 42% {
+    opacity: 0.04;
+    transform: translateX(-145%) skewX(-8deg);
+  }
+  54% { opacity: 0.18; }
+  76% {
+    opacity: 0.1;
+    transform: translateX(160%) skewX(-8deg);
+  }
+  100% {
+    opacity: 0.04;
+    transform: translateX(160%) skewX(-8deg);
+  }
+}
+
+@keyframes inner-orbital-path {
+  to { stroke-dashoffset: -790; }
+}
+
+@keyframes inner-orbital-dot {
+  0%, 100% {
+    opacity: 0.38;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes inner-orbital-particle {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(16px, -22px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner-ai-orbital__scanline,
+  .inner-ai-orbital__orb,
+  .inner-ai-orbital__core,
+  .inner-ai-orbital__ring::before,
+  .inner-ai-orbital__ring::after,
+  .inner-ai-orbital__shine,
+  .inner-ai-orbital__path,
+  .inner-ai-orbital__dot,
+  .inner-ai-orbital__particle {
+    animation: none !important;
+  }
+}
