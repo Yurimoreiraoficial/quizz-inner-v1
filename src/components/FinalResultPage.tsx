@@ -19,7 +19,7 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
-import innerTeamImg from "@/assets/inner-team.jpg";
+import innerTeamImg from "@/assets/inner-team.webp";
 import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
