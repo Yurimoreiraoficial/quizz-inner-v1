@@ -85,7 +85,7 @@ const Index = () => {
     >
       {/* 1. Intro */}
       {step.id === "intro" && (
-        <div className="flex flex-col items-center text-center pt-2">
+        <div className="flex flex-col items-center text-center -mt-4">
           <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center pt-0 pb-[13px]">
             <span className="sm:text-[22px] font-medium text-foreground text-2xl">Acesso a</span>
             <span className="text-brand sm:text-[56px] font-extrabold tracking-tight mt-1 text-7xl text-secondary-foreground">+50 IAs</span>
