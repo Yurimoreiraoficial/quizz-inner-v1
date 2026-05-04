@@ -297,7 +297,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 06 — Prova social */}
       <section className="mt-10">
-        <h2 className="text-[22px] sm:text-[24px] font-bold text-foreground text-balance">
+        <h2 className="text-[22px] sm:text-[24px] text-foreground text-balance text-center font-semibold">
           {fName}, Inner é a ferramenta ideal para você!
         </h2>
         <p className="mt-2 text-[14px] text-muted-foreground text-pretty text-center">
