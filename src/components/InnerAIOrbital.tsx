@@ -41,7 +41,7 @@ export const InnerAIOrbital = () => {
       <div className="inner-ai-orbital__shine" aria-hidden="true" />
 
       <img
-        src="/inner-ai-interface-base.webp"
+        src="/inner-ai-interface-base-transparent.webp"
         alt=""
         aria-hidden="true"
         loading="eager"
