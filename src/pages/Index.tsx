@@ -94,8 +94,8 @@ const Index = () => {
           <div className="mt-6 w-full max-w-[640px] mx-auto">
             <InnerAIOrbital />
           </div>
-          <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0 pt-[13px]">
-            Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
+          <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[340px] my-[3px] py-0 mb-0 pt-[13px]">
+            Descubra em menos de 1 minuto se a Inner é a melhor escolha para você.
           </p>
           <div className="mt-8 w-full">
             <PrimaryButton withArrow onClick={() => { c.ensureSession(); c.goNext(); }}>
