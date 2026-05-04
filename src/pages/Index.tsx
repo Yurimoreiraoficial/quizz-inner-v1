@@ -86,7 +86,7 @@ const Index = () => {
       {/* 1. Intro */}
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center pt-2">
-          <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center">
+          <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center pt-0 pb-[13px]">
             <span className="sm:text-[22px] font-medium text-foreground text-2xl">Acesso a</span>
             <span className="text-brand sm:text-[56px] font-extrabold tracking-tight mt-1 text-7xl text-secondary-foreground">+50 IAs</span>
             <span className="sm:text-[16px] font-medium text-muted-foreground text-lg mb-0 mt-[4px]">por apenas R$99/mês</span>
@@ -94,7 +94,7 @@ const Index = () => {
           <div className="mt-6 w-full max-w-[640px] mx-auto">
             <InnerAIOrbital />
           </div>
-          <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0">
+          <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[360px] my-[3px] py-0 mb-0 pt-[13px]">
             Descubra em menos de 1 minuto se a <br /> Inner é a melhor escolha para você.
           </p>
           <div className="mt-8 w-full">
