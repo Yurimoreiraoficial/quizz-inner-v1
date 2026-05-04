@@ -10,7 +10,8 @@ export function normalizePhone(value: string): string {
 
 export function isValidPhone(value: string): boolean {
   const digits = normalizePhone(value);
-  return digits.length >= 10 && digits.length <= 14;
+  // Telefone brasileiro: 10 (fixo) ou 11 (celular) dígitos com DDD
+  return digits.length === 10 || digits.length === 11;
 }
 
 export function isValidName(name: string): boolean {
