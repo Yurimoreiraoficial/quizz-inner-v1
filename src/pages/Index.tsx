@@ -148,8 +148,10 @@ const Index = () => {
           title="Você está no lugar certo"
           image={
             <img 
-              src={`/markets/${market}.png`} 
+              src={`/markets/${market}.webp`} 
               alt={c.state.mercadoLabel ?? "Seu mercado"}
+              width={720}
+              height={265}
               className="w-full h-full object-cover rounded-xl shadow-sm"
               loading="lazy"
               decoding="async"
