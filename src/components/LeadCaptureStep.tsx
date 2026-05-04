@@ -75,7 +75,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
             autoComplete="tel"
             value={phone}
             onChange={(e) => setPhone(maskPhoneBR(e.target.value))}
-            placeholder="(11) 99992-5950"
+            placeholder="(DDD) 00000-0000"
             className="w-full h-12 px-4 rounded-2xl bg-card text-foreground placeholder:text-muted-foreground border border-border focus:border-primary outline-none transition-colors text-[16px]"
           />
           {submitted && !phoneOk && (
