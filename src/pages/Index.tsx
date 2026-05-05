@@ -88,8 +88,8 @@ const Index = () => {
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center -mt-2">
           <h1
-            className="font-sans not-italic font-bold tracking-tight text-foreground text-[32px] sm:text-[40px] leading-[1.1]"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            className="font-sans tracking-tight text-foreground text-[32px] sm:text-[40px] leading-[1.1]"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif", fontStyle: "normal", fontWeight: 700 }}
           >
             Descubra em menos<br />
             de{" "}
