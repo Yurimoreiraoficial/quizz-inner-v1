@@ -88,17 +88,20 @@ const Index = () => {
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center -mt-2">
           <h1
-            className="font-sans not-italic font-bold tracking-tight text-foreground text-balance text-[34px] sm:text-[40px] leading-[1.08]"
+            className="font-sans not-italic font-bold tracking-tight text-foreground text-[32px] sm:text-[40px] leading-[1.1]"
             style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
           >
-            Descubra em menos de{" "}
+            Descubra em menos<br />
+            de{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(90deg, hsl(270 90% 70%) 0%, hsl(213 92% 65%) 100%)" }}
             >
               1 minuto
             </span>{" "}
-            se a Inner é a melhor escolha para você.
+            se a Inner<br />
+            é a melhor escolha<br />
+            para você.
           </h1>
 
           <div className="mt-5 w-full max-w-[640px] mx-auto">
