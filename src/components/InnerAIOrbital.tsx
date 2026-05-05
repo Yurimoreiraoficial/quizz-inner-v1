@@ -31,7 +31,7 @@ const particles = [
 
 export const InnerAIOrbital = () => {
   return (
-    <div className="inner-ai-orbital" aria-label="Inner AI Animated Interface">
+    <div className="inner-ai-orbital pt-0 pb-0 my-[25px]" aria-label="Inner AI Animated Interface">
       <div className="inner-ai-orbital__scanline" aria-hidden="true" />
       <div className="inner-ai-orbital__orb inner-ai-orbital__orb--left" aria-hidden="true" />
       <div className="inner-ai-orbital__orb inner-ai-orbital__orb--right" aria-hidden="true" />
