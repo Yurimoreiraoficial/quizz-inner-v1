@@ -153,19 +153,20 @@
 
   h1, h2, h3, h4, h5 {
     font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    font-style: normal;
     letter-spacing: -0.02em;
     @apply text-foreground;
   }
 
-  /* No tema dark, headings ganham serifa moderna (Fraunces) com ótima legibilidade.
-     Pesos médios + leve itálico apenas em h1 para o tom editorial das referências. */
-  .dark h1, .dark h2 {
-    font-family: 'Fraunces', 'Times New Roman', Georgia, serif;
-    font-weight: 500;
-    letter-spacing: -0.015em;
+  /* Dark mode mantém Inter Bold para consistência tipográfica. */
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: -0.02em;
     font-optical-sizing: auto;
   }
-  .dark h1 { font-style: italic; }
 }
 
 @layer components {
