@@ -20,6 +20,7 @@ import { FinalResultPage } from "@/components/FinalResultPage";
 
 import introAiCards from "@/assets/intro-ai-cards.svg";
 import { InnerAIOrbital } from "@/components/InnerAIOrbital";
+import { Zap, Target, BrainCircuit } from "lucide-react";
 
 const Index = () => {
   // Inicializa UTMs cedo
@@ -85,22 +86,63 @@ const Index = () => {
     >
       {/* 1. Intro */}
       {step.id === "intro" && (
-        <div className="flex flex-col items-center text-center -mt-4">
-          <h1 className="leading-[1.05] font-bold text-foreground text-center flex flex-col items-center pt-0 pb-[13px]">
-            <span className="sm:text-[22px] font-medium text-foreground text-2xl">Acesso a</span>
-            <span className="text-brand sm:text-[56px] font-extrabold tracking-tight mt-1 text-7xl text-secondary-foreground">+50 IAs</span>
-            <span className="sm:text-[16px] font-medium text-muted-foreground text-lg mb-0 mt-[4px]">por apenas R$99/mês</span>
+        <div className="flex flex-col items-center text-center -mt-2">
+          <h1
+            className="font-sans not-italic font-bold tracking-tight text-foreground text-balance text-[34px] sm:text-[40px] leading-[1.08]"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+          >
+            Descubra em menos de{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "linear-gradient(90deg, hsl(270 90% 70%) 0%, hsl(213 92% 65%) 100%)" }}
+            >
+              1 minuto
+            </span>{" "}
+            se a Inner é a melhor escolha para você.
           </h1>
-          <div className="mt-6 w-full max-w-[640px] mx-auto">
+
+          <div className="mt-5 w-full max-w-[640px] mx-auto">
             <InnerAIOrbital />
           </div>
-          <p className="mt-4 text-[15px] sm:text-[16px] text-muted-foreground text-pretty max-w-[340px] my-[3px] py-0 mb-0 pt-[13px]">
-            Descubra em menos de 1 minuto se a Inner é a melhor escolha para você.
-          </p>
-          <div className="mt-8 w-full">
+
+          <div
+            className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] sm:text-[14px] backdrop-blur-sm"
+            style={{
+              background: "hsla(0, 0%, 100%, 0.03)",
+              border: "1px solid hsla(270, 90%, 70%, 0.35)",
+              boxShadow: "0 0 24px hsla(270, 90%, 60%, 0.12), inset 0 0 0 1px hsla(213, 92%, 60%, 0.08)",
+            }}
+          >
+            <Zap className="w-3.5 h-3.5" style={{ color: "hsl(270 90% 75%)" }} aria-hidden />
+            <span className="text-muted-foreground">
+              <span className="font-semibold" style={{ color: "hsl(270 90% 78%)" }}>+50</span>
+              <span className="text-foreground/90"> IAs.</span>
+              <span className="text-muted-foreground"> Uma única plataforma.</span>
+            </span>
+            <Zap className="w-3.5 h-3.5" style={{ color: "hsl(213 92% 70%)" }} aria-hidden />
+          </div>
+
+          <div className="mt-5 w-full">
             <PrimaryButton withArrow onClick={() => { c.ensureSession(); c.goNext(); }}>
-              COMEÇAR
+              COMEÇAR AGORA
             </PrimaryButton>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-3 text-[12px] text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5" style={{ color: "hsl(270 90% 75%)" }} aria-hidden />
+              Rápido
+            </span>
+            <span className="h-3 w-px bg-border" aria-hidden />
+            <span className="inline-flex items-center gap-1.5">
+              <Target className="w-3.5 h-3.5" style={{ color: "hsl(195 90% 70%)" }} aria-hidden />
+              Personalizado
+            </span>
+            <span className="h-3 w-px bg-border" aria-hidden />
+            <span className="inline-flex items-center gap-1.5">
+              <BrainCircuit className="w-3.5 h-3.5" style={{ color: "hsl(213 92% 70%)" }} aria-hidden />
+              Inteligente
+            </span>
           </div>
         </div>
       )}
