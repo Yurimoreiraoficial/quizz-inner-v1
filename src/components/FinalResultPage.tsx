@@ -421,7 +421,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       <section className="mt-10 card-surface p-5 text-center">
         <Shield className="w-7 h-7 text-primary mx-auto" />
         <h2 className="mt-2 text-[22px] font-bold text-foreground">{finalPageContent.guarantee.title}</h2>
-        <p className="mt-2 text-[14px] text-muted-foreground text-pretty whitespace-pre-line">{finalPageContent.guarantee.sub}</p>
+        <p className="mt-2 text-muted-foreground text-pretty whitespace-pre-line text-base">{finalPageContent.guarantee.sub}</p>
         <p className="mt-2 text-[12px] text-muted-foreground">{finalPageContent.guarantee.micro}</p>
       </section>
 
