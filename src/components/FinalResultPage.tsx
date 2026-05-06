@@ -449,7 +449,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           alt="Equipe Inner AI reunida no escritório"
           loading="lazy"
           decoding="async"
-          className="mt-4 w-full h-auto rounded-2xl border border-border object-cover aspect-[3/2] mx-px mr-0 mb-0 py-0 px-0"
+          className="mt-4 w-full h-auto rounded-lg border border-border object-cover aspect-[3/2] mx-px mr-0 mb-0 py-0 px-0"
         />
         <p className="mt-4 text-[15px] text-muted-foreground text-pretty">
           {finalPageContent.about.text}
