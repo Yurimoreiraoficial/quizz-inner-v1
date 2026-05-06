@@ -6,9 +6,11 @@ import { funnelSteps, indexOfPath } from "@/data/funnelSteps";
 const FunnelContext = createContext<FunnelController | null>(null);
 
 interface FunnelProviderProps {
-  /** Prefixo de rota onde o funil vive, ex: "" para light, "/dark" para dark. */
-  basePath?: string;
   children: ReactNode;
+}
+
+function detectBasePath(pathname: string): string {
+  return pathname.startsWith("/dark") ? "/dark" : "";
 }
 
 function getStepSlug(pathname: string, basePath: string): string | null {
@@ -17,11 +19,12 @@ function getStepSlug(pathname: string, basePath: string): string | null {
   return stripped.split("/")[0];
 }
 
-export function FunnelProvider({ basePath = "", children }: FunnelProviderProps) {
+export function FunnelProvider({ children }: FunnelProviderProps) {
   const controller = useFunnelState();
   const location = useLocation();
   const navigate = useNavigate();
 
+  const basePath = detectBasePath(location.pathname);
   // Sincroniza o índice interno do controller com a URL atual.
   const slug = getStepSlug(location.pathname, basePath);
   const urlIndex = slug ? indexOfPath(slug) : -1;
