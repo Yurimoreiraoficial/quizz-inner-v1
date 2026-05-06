@@ -401,6 +401,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               <div className="mt-5 space-y-3">
                 <AlertCard
                   body="Pelo seu perfil, talvez o Plano Ultra seja mais adequado para uso alto de imagens, vídeos ou audiovisual."
+                  align="center"
                 />
                 <PrimaryButton
                   variant="secondary"
