@@ -443,7 +443,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 09 — Quem somos */}
       <Reveal as="section" className="mt-10">
-        <h2 className="text-[22px] font-bold text-foreground">{finalPageContent.about.title}</h2>
+        <h2 className="text-[22px] font-bold text-foreground text-center">{finalPageContent.about.title}</h2>
         <img
           src={innerTeamImg}
           alt="Equipe Inner AI reunida no escritório"
@@ -458,7 +458,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
 
       {/* Bloco 10 — FAQs */}
       <Reveal as="section" className="mt-10">
-        <h2 className="text-[22px] font-bold text-foreground">Perguntas frequentes:</h2>
+        <h2 className="text-[22px] font-bold text-foreground text-center">Perguntas frequentes:</h2>
         <Accordion type="single" collapsible className="mt-3">
           {finalPageContent.faqs.map((f, i) => (
             <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border">
