@@ -483,7 +483,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             Assinar agora por R$99/mês
           </PrimaryButton>
           <p className="mt-2 text-[12px] text-muted-foreground">
-            Checkout seguro · 14 dias de garantia
+            Compra segura · 14 dias de garantia
           </p>
         </div>
 
