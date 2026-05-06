@@ -126,7 +126,7 @@ export const finalPageContent = {
     },
     {
       q: "Tem automações e integrações?",
-      a: "O plano Pro é focado no uso das principais IAs dentro da plataforma. Integrações avançadas, API, CRM, n8n ou automações internas podem exigir avaliação do time ou planos superiores. Se esse for seu foco, o ideal é falar com nosso time antes de assinar.",
+      a: "O plano Pro é focado no uso das principais IAs dentro da plataforma. Integrações avançadas podem exigir avaliação do time ou planos superiores. Se esse for seu foco, o ideal é falar com nosso time antes de assinar.",
     },
     {
       q: "Tem Claude Code, Lovable ou Antigravity?",
