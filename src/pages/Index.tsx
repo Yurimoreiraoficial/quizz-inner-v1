@@ -168,7 +168,7 @@ const Index = () => {
         <InsertStep
           headline="Use GPT-5, Claude, Gemini e +50 IAs Premium em uma só plataforma."
           image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" width={808} height={400} className="max-h-full w-auto object-contain" />}
-          imageHeightClass="h-44"
+          imageHeightClass="h-56"
           subtitle="Tudo em um só lugar, sem precisar alternar entre várias assinaturas."
           onContinue={c.goNext}
         />
