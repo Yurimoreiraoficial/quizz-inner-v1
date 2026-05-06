@@ -27,7 +27,7 @@ import appImg from "@/assets/app.webp";
 import assistentesImg from "@/assets/assistentes.webp";
 import transcricaoImg from "@/assets/transcricao.webp";
 import integracoesImg from "@/assets/integracoes.webp";
-import partnerLogosImg from "@/assets/partner-logos.svg";
+import partnerLogosImg from "@/assets/partner-logos.webp";
 
 interface FinalResultPageProps {
   state: FunnelState;
@@ -323,15 +323,21 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
             <span className="text-[12px] text-muted-foreground ml-1">4.9 / 5</span>
           </div>
-          <div className="w-full overflow-hidden">
-            <img
-              src={partnerLogosImg}
-              alt="Logos de empresas parceiras e clientes"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-auto max-h-10 sm:max-h-12 object-contain opacity-80 select-none pointer-events-none"
-              draggable={false}
-            />
+          <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="flex w-max animate-marquee-rtl">
+              {[0, 1].map((i) => (
+                <img
+                  key={i}
+                  src={partnerLogosImg}
+                  alt="Logos de empresas parceiras e clientes"
+                  loading="lazy"
+                  decoding="async"
+                  aria-hidden={i === 1}
+                  className="h-auto max-h-10 sm:max-h-12 object-contain opacity-80 select-none pointer-events-none shrink-0 pr-8"
+                  draggable={false}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </Reveal>
