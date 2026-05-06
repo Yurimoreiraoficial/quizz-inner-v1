@@ -18,7 +18,7 @@ import { TestimonialSwipe } from "@/components/TestimonialSwipe";
 import { PartnerLogos } from "@/components/PartnerLogos";
 import { FinalResultPage } from "@/components/FinalResultPage";
 
-import introAiCards from "@/assets/intro-ai-cards.svg";
+import introAiCards from "@/assets/logo-das-ias.webp";
 import { InnerAIOrbital } from "@/components/InnerAIOrbital";
 import { Zap, Target, BrainCircuit } from "lucide-react";
 
@@ -167,8 +167,8 @@ const Index = () => {
       {step.id === "insert_50ias" && (
         <InsertStep
           headline="Use GPT-5, Claude, Gemini e +50 IAs Premium em uma só plataforma."
-          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" className="max-h-full w-auto object-contain" />}
-          imageHeightClass="h-36"
+          image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" width={808} height={400} className="max-h-full w-auto object-contain" />}
+          imageHeightClass="h-44"
           subtitle="Tudo em um só lugar, sem precisar alternar entre várias assinaturas."
           onContinue={c.goNext}
         />
