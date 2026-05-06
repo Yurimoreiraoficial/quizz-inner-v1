@@ -26,6 +26,7 @@ import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
 import transcricaoImg from "@/assets/transcricao.svg";
+import integracoesImg from "@/assets/integracoes.webp";
 import partnerLogosImg from "@/assets/partner-logos.svg";
 
 interface FinalResultPageProps {
@@ -254,12 +255,13 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
                 {b.description}
               </p>
               {(() => {
-                const imgs = [promptsImg, appImg, assistentesImg, transcricaoImg];
+                const imgs = [promptsImg, appImg, assistentesImg, transcricaoImg, integracoesImg];
                 const alts = [
                   "Biblioteca de prompts da Inner",
                   "App Inner AI",
                   "Assistentes personalizados",
                   "Transcrição de áudio e vídeo",
+                  "Integrações inteligentes com Gmail e Google Calendar",
                 ];
                 const src = imgs[idx];
                 return src ? (
