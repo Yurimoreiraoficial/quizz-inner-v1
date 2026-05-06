@@ -20,7 +20,7 @@ import { company, links } from "@/data/designTokens";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
-import fusionImg from "@/assets/fusion.svg";
+import fusionImg from "@/assets/fusion.webp";
 import innerTeamImg from "@/assets/inner-team.webp";
 import promptsImg from "@/assets/prompts.webp";
 import appImg from "@/assets/app.webp";
