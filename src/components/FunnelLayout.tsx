@@ -49,9 +49,11 @@ export function FunnelLayout({
         </AnimatePresence>
       </main>
 
-      <div className="funnel-shell">
-        <Footer />
-      </div>
+      {stepKey !== "final" && (
+        <div className="funnel-shell">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 }
