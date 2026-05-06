@@ -422,7 +422,6 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <Shield className="w-7 h-7 text-primary mx-auto" />
         <h2 className="mt-2 text-[22px] font-bold text-foreground">{finalPageContent.guarantee.title}</h2>
         <p className="mt-2 text-muted-foreground text-pretty whitespace-pre-line text-base">{finalPageContent.guarantee.sub}</p>
-        <p className="mt-2 text-[12px] text-muted-foreground">{finalPageContent.guarantee.micro}</p>
       </section>
 
       {/* Bloco 09 — Quem somos */}
