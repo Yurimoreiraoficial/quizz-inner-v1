@@ -136,7 +136,7 @@ export const finalPageContent = {
   ultraAlert: {
     title: "Pelo seu perfil, vale falar com nosso time.",
     body:
-      "A Inner PRO faz sentido para uso geral de IA, pesquisa, textos, documentos, prompts e produtividade.\n\nComo você indicou uso alto em imagem, vídeo ou audiovisual, talvez o Plano Ultra seja mais adequado.\n\nNo PRO, vídeos não estão inclusos e o uso de imagens é moderado, em média de 5 a 10 imagens por dia.",
+      "A Inner PRO faz sentido para uso geral de IA, pesquisa, textos, documentos, prompts e produtividade.\n\nComo você indicou uso alto em imagem, vídeo ou audiovisual, talvez o Plano Ultra seja mais adequado.\n\nNo Plano PRO, vídeos não estão inclusos e o uso de imagens é moderado, em média de 5 a 10 imagens por dia.",
     cta: "Falar com o time sobre o Plano Ultra",
   },
 };
