@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/accordion";
 import fusionImg from "@/assets/fusion.svg";
 import innerTeamImg from "@/assets/inner-team.webp";
-import promptsImg from "@/assets/prompts.svg";
+import promptsImg from "@/assets/prompts.webp";
 import appImg from "@/assets/app.webp";
 import assistentesImg from "@/assets/assistentes.webp";
 import transcricaoImg from "@/assets/transcricao.webp";
