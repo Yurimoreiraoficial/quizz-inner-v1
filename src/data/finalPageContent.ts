@@ -110,7 +110,7 @@ export const finalPageContent = {
     },
     {
       q: "Quais são as formas de pagamento?",
-      a: "Você pode pagar por Pix, cartão de crédito ou boleto parcelado.",
+      a: "Você pode assinar a Inner à vista no Pix, cartão ou em até 12x no cartão de crédito, boleto parcelado ou *PIX parcelado.",
     },
     {
       q: "Tem algum limite de uso ou créditos?",
