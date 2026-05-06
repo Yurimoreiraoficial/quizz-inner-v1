@@ -9,7 +9,7 @@ interface AlertCardProps {
 export function AlertCard({ title, body, variant = "warning" }: AlertCardProps) {
   return (
     <div className={cn(
-      "rounded-2xl border p-4 text-left",
+      "rounded-2xl border p-4 text-center",
       variant === "warning" ? "bg-warning/10 border-warning/30" : "bg-primary/5 border-primary/20"
     )}>
       {title && <div className="font-semibold text-foreground mb-1 text-center">{title}</div>}
