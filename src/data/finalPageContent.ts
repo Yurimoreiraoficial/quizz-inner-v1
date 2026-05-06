@@ -80,7 +80,7 @@ export const finalPageContent = {
     title: "Veja tudo que está incluso no seu plano:",
     bullets: [
       "Acesso à +50 IAs Premium",
-      "ChatGPT, Claude, Gemini, Perplexity....",
+      "GPT 5.1, Claude, Gemini, Perplexity....",
       "+500 prompts prontos para usar",
       "Tecnologia Fusion exclusiva da Inner\n \n ",
       "Transcrição de áudio e vídeo",
