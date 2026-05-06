@@ -517,7 +517,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           <div>CNPJ: {company.cnpj}</div>
         </div>
         <div className="mt-3 inline-flex items-center gap-2 text-[11px] text-muted-foreground">
-          <Shield className="w-3.5 h-3.5" /> Compra segura · Reclame Aqui
+          <Shield className="w-3.5 h-3.5" /> Compra segura
         </div>
       </Reveal>
     </div>
