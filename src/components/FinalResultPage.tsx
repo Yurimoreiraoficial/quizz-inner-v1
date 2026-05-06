@@ -490,7 +490,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
               className="text-sm mt-[8px] py-[5px] whitespace-nowrap text-[hsl(var(--whatsapp))] border-[hsl(var(--whatsapp))]/30 hover:bg-[hsl(var(--whatsapp))]/8 hover:border-[hsl(var(--whatsapp))]/50"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              <span>Falar com o time no WhatsApp</span>
+              <span>Fale com o time no WhatsApp</span>
             </PrimaryButton>
           </div>
         </div>
