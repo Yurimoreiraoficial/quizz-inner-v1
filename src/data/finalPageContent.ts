@@ -67,7 +67,7 @@ export const finalPageContent = {
       },
     ],
     short: [
-      { eyebrow: "+50 modelos", description: "GPT-5, Claude, Gemini, Grok e mais" },
+      { eyebrow: "+50 modelos", description: "GPT-5.1, Claude, Gemini, Grok e mais" },
       { eyebrow: "Imagens", description: "Nano Banana Pro e GPT Images" },
       { eyebrow: "Slides", description: "Gamma integrado à plataforma" },
       { eyebrow: "Anexos", description: "PDFs, planilhas, documentos" },
