@@ -25,7 +25,7 @@ import innerTeamImg from "@/assets/inner-team.webp";
 import promptsImg from "@/assets/prompts.svg";
 import appImg from "@/assets/app.svg";
 import assistentesImg from "@/assets/assistentes.svg";
-import transcricaoImg from "@/assets/transcricao.svg";
+import transcricaoImg from "@/assets/transcricao.webp";
 import integracoesImg from "@/assets/integracoes.webp";
 import partnerLogosImg from "@/assets/partner-logos.svg";
 
