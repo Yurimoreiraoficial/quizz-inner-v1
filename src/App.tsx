@@ -13,40 +13,30 @@ const queryClient = new QueryClient();
 
 const stepPaths = funnelSteps.map((s) => s.path);
 
-const lightFunnel = (
-  <FunnelProvider basePath="">
-    <Index />
-  </FunnelProvider>
-);
-
-const darkFunnel = (
-  <FunnelProvider basePath="/dark">
-    <IndexDark />
-  </FunnelProvider>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          {/* Funil light: cada etapa tem sua própria rota */}
-          <Route path="/" element={<Navigate to="/intro" replace />} />
-          {stepPaths.map((p) => (
-            <Route key={`light-${p}`} path={`/${p}`} element={lightFunnel} />
-          ))}
+        <FunnelProvider>
+          <Routes>
+            {/* Funil light: cada etapa tem sua própria rota */}
+            <Route path="/" element={<Navigate to="/intro" replace />} />
+            {stepPaths.map((p) => (
+              <Route key={`light-${p}`} path={`/${p}`} element={<Index />} />
+            ))}
 
-          {/* Funil dark: mesmas etapas com prefixo /dark */}
-          <Route path="/dark" element={<Navigate to="/dark/intro" replace />} />
-          {stepPaths.map((p) => (
-            <Route key={`dark-${p}`} path={`/dark/${p}`} element={darkFunnel} />
-          ))}
+            {/* Funil dark: mesmas etapas com prefixo /dark */}
+            <Route path="/dark" element={<Navigate to="/dark/intro" replace />} />
+            {stepPaths.map((p) => (
+              <Route key={`dark-${p}`} path={`/dark/${p}`} element={<IndexDark />} />
+            ))}
 
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </FunnelProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
