@@ -65,6 +65,13 @@ export const finalPageContent = {
           "Envie áudios, vídeos, reuniões ou aulas e transforme tudo em texto estruturado para resumir, revisar, estudar ou reaproveitar.",
         visual: "🎙️ Transcrição de reuniões",
       },
+      {
+        eyebrow: "Integrações inteligentes",
+        title: "Conecte suas ferramentas à IA",
+        description:
+          "Conecte Gmail e Google Calendar para resumir e-mails, organizar compromissos e transformar sua rotina em decisões mais rápidas.",
+        visual: "🔗 Integrações inteligentes",
+      },
     ],
     short: [
       { eyebrow: "+50 modelos", description: "GPT-5.1, Claude, Gemini, Grok e mais" },
