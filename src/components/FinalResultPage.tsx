@@ -14,6 +14,7 @@ import { PrimaryButton } from "./PrimaryButton";
 import { AlertCard } from "./AlertCard";
 import { trackEvent } from "@/services/funnelTrackingService";
 import { Logo } from "./Logo";
+import { Reveal } from "./Reveal";
 import { company, links } from "@/data/designTokens";
 import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
@@ -57,7 +58,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
   return (
     <div className="pb-12">
       {/* Bloco 01 — Nível de encaixe */}
-      <section className="text-left">
+      <Reveal as="section" className="text-left">
         <h1 className="sm:text-[30px] leading-[1.1] text-foreground text-balance text-left font-normal text-2xl">
           {fName}, sua análise está pronta.
         </h1>
@@ -117,10 +118,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             </div>
           )}
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 02 — Tecnologia Fusion */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <div className="inline-flex items-center gap-1.5 text-primary text-[12px] font-semibold uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" /> Tecnologia Fusion
         </div>
@@ -138,10 +139,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <p className="mt-2 text-[14px] text-muted-foreground text-pretty">
           {finalPageContent.fusion.sub}
         </p>
-      </section>
+      </Reveal>
 
       {/* Bloco 03 — Cards de impacto */}
-      <section className="mt-12">
+      <Reveal as="section" className="mt-12">
         <h2 className="text-[20px] sm:text-[22px] font-bold text-foreground text-balance">
           Por que confiar na Inner
         </h2>
@@ -164,10 +165,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             );
           })}
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 04 — Antes e depois */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <h2 className="text-[24px] sm:text-[26px] font-bold text-foreground text-balance mb-5">
           Tenha mais pagando menos
         </h2>
@@ -221,10 +222,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <div className="mt-5">
           <PrimaryButton withArrow onClick={onCheckout}>Assinar agora</PrimaryButton>
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 05 — Recursos */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <h2 className="text-[24px] sm:text-[26px] font-bold text-foreground text-balance">
           {finalPageContent.features.title}
         </h2>
@@ -293,10 +294,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <div className="mt-5 hidden">
           <PrimaryButton withArrow onClick={onCheckout}>Quero acesso a tudo isso</PrimaryButton>
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 06 — Prova social */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <h2 className="text-[22px] sm:text-[24px] text-foreground text-balance text-center font-semibold">
           {fName}, Inner é a ferramenta ideal para você!
         </h2>
@@ -323,10 +324,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             />
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 07 — Oferta */}
-      <section className="mt-10 relative rounded-3xl p-[1.5px] bg-gradient-to-br from-primary/60 via-primary/20 to-primary/60 shadow-[0_20px_60px_-20px_hsl(var(--primary)/0.45)]">
+      <Reveal as="section" className="mt-10 relative rounded-3xl p-[1.5px] bg-gradient-to-br from-primary/60 via-primary/20 to-primary/60 shadow-[0_20px_60px_-20px_hsl(var(--primary)/0.45)]">
         <div className="relative rounded-[calc(1.5rem-1.5px)] bg-gradient-to-br from-card via-card to-primary/5 p-6 overflow-hidden">
           {/* glow decorativo */}
           <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
@@ -415,17 +416,17 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             )}
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {/* Bloco 08 — Garantia */}
-      <section className="mt-10 card-surface p-5 text-center">
+      <Reveal as="section" className="mt-10 card-surface p-5 text-center">
         <Shield className="w-7 h-7 text-primary mx-auto" />
         <h2 className="mt-2 text-[22px] font-bold text-foreground">{finalPageContent.guarantee.title}</h2>
         <p className="mt-2 text-muted-foreground text-pretty whitespace-pre-line text-base">{finalPageContent.guarantee.sub}</p>
-      </section>
+      </Reveal>
 
       {/* Bloco 09 — Quem somos */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <h2 className="text-[22px] font-bold text-foreground">{finalPageContent.about.title}</h2>
         <img
           src={innerTeamImg}
@@ -437,10 +438,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <p className="mt-4 text-[15px] text-muted-foreground text-pretty">
           {finalPageContent.about.text}
         </p>
-      </section>
+      </Reveal>
 
       {/* Bloco 10 — FAQs */}
-      <section className="mt-10">
+      <Reveal as="section" className="mt-10">
         <h2 className="text-[22px] font-bold text-foreground">Perguntas frequentes:</h2>
         <Accordion type="single" collapsible className="mt-3">
           {finalPageContent.faqs.map((f, i) => (
@@ -454,10 +455,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
+      </Reveal>
 
       {/* Bloco 11 — CTA final */}
-      <section className="mt-10 text-center">
+      <Reveal as="section" className="mt-10 text-center">
         <h2 className="text-[24px] sm:text-[26px] font-bold text-foreground text-balance">
           Comece hoje com seu plano personalizado de IA.
         </h2>
@@ -486,10 +487,10 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </div>
         </div>
 
-      </section>
+      </Reveal>
 
       {/* Bloco 12 — Rodapé */}
-      <footer className="mt-12 text-center">
+      <Reveal as="footer" className="mt-12 text-center">
         <Logo />
         <div className="mt-4 text-[12px] text-muted-foreground flex flex-col gap-1">
           <div>
@@ -502,7 +503,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
         <div className="mt-3 inline-flex items-center gap-2 text-[11px] text-muted-foreground">
           <Shield className="w-3.5 h-3.5" /> Compra segura · Reclame Aqui
         </div>
-      </footer>
+      </Reveal>
     </div>
   );
 }
