@@ -37,7 +37,9 @@ export function FunnelProvider({ children }: FunnelProviderProps) {
   }, [urlIndex]);
 
   // Quando o controller muda de índice (via goNext/goBack), navegar para a URL correspondente.
+  // Só age se a rota atual já pertence ao funil (evita interferir com /notfound, etc.).
   useEffect(() => {
+    if (urlIndex < 0) return;
     const target = funnelSteps[controller.state.currentStepIndex];
     if (!target) return;
     const desiredPath = `${basePath}/${target.path}`;
