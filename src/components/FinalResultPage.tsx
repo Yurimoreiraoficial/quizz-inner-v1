@@ -23,7 +23,7 @@ import {
 import fusionImg from "@/assets/fusion.svg";
 import innerTeamImg from "@/assets/inner-team.webp";
 import promptsImg from "@/assets/prompts.svg";
-import appImg from "@/assets/app.svg";
+import appImg from "@/assets/app.webp";
 import assistentesImg from "@/assets/assistentes.webp";
 import transcricaoImg from "@/assets/transcricao.webp";
 import integracoesImg from "@/assets/integracoes.webp";
