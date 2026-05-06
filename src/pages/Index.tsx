@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useFunnel } from "@/context/FunnelContext";
+import { useFunnelState } from "@/hooks/useFunnelState";
 import { useUtmParams } from "@/hooks/useUtmParams";
 import { funnelSteps } from "@/data/funnelSteps";
 import { aiUsageOptions, marketOptions, innerHelpsByMarket, socialProofSubBy } from "@/data/marketOptions";
@@ -26,7 +26,7 @@ const Index = () => {
   // Inicializa UTMs cedo
   useUtmParams();
 
-  const c = useFunnel();
+  const c = useFunnelState();
   const step = c.currentStep;
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [tarefasComplete, setTarefasComplete] = useState(false);
