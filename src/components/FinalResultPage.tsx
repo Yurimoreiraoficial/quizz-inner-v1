@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { ArrowRight, Check, MessageCircle, Shield, Star, Sparkles, X } from "lucide-react";
+import { motion } from "framer-motion";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
 import type { FunnelState } from "@/types/funnel";
 import { firstName } from "@/utils/formatters";
@@ -90,10 +91,17 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
           </p>
           <ul className="mt-3 space-y-2.5">
             {benefits.map((b, i) => (
-              <li key={i} className="flex items-start gap-2.5 text-[14.5px] text-foreground text-pretty">
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+                className="flex items-start gap-2.5 text-[14.5px] text-foreground text-pretty"
+              >
                 <Check className="w-4 h-4 text-primary mt-1 shrink-0" />
                 <span>{b}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
 
