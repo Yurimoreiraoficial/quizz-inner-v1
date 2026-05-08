@@ -6,6 +6,7 @@ import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
 import { trackEvent } from "@/services/funnelTrackingService";
 import { funnelConfig, getScreen } from "@/data/funnelConfig";
+import { useAbOverrides } from "@/hooks/useAbOverrides";
 
 import { FunnelLayout } from "@/components/FunnelLayout";
 import { PrimaryButton } from "@/components/PrimaryButton";
@@ -39,10 +40,19 @@ const Index = () => {
    * Fallbacks ficam disponíveis para não quebrar caso o id não esteja mapeado.
    */
   const screen = step ? getScreen(step.id, funnelConfig) : undefined;
-  const content = screen?.content ?? {};
-  const ctaLabel = (content.buttonText && content.buttonText.length > 0)
-    ? content.buttonText
-    : (screen?.cta?.label ?? "CONTINUAR");
+  const baseContent = screen?.content ?? {};
+  const ab = useAbOverrides(step?.id);
+  const content = {
+    ...baseContent,
+    ...(ab.headline !== undefined ? { headline: ab.headline } : {}),
+    ...(ab.subtitle !== undefined ? { subtitle: ab.subtitle } : {}),
+    ...(ab.buttonText !== undefined ? { buttonText: ab.buttonText } : {}),
+  };
+  const ctaLabel =
+    ab.ctaLabel ??
+    (content.buttonText && content.buttonText.length > 0
+      ? content.buttonText
+      : (screen?.cta?.label ?? "CONTINUAR"));
 
   // Reset estados de "completo" ao trocar de step
   useEffect(() => {
