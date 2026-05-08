@@ -5,6 +5,8 @@ import { SectionCard } from "@/components/admin/SectionCard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { loadState, saveState, type Experiment } from "@/data/admin/store";
+import { useFunnelScreens } from "@/hooks/useFunnelScreens";
+import { saveAbTest } from "@/services/funnelService";
 
 const variantBadge: Record<Experiment["status"], React.ComponentProps<typeof StatusBadge>["variant"]> = {
   draft: "neutral", running: "experiment", finished: "success",
@@ -16,23 +18,37 @@ const variantLabel: Record<Experiment["status"], string> = {
 export default function AbPage() {
   const [state, setState] = useState(() => loadState());
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<Omit<Experiment, "id" | "createdAt" | "status">>({
+  const { screens } = useFunnelScreens();
+  const [draft, setDraft] = useState<Omit<Experiment, "id" | "createdAt" | "status"> & { screenKey: string }>({
     name: "", element: "CTA principal", variantA: "", variantB: "", goal: "Cliques no checkout",
+    screenKey: "final",
   });
 
   function persist(next: typeof state) { setState(next); saveState(next); }
 
-  function create() {
+  async function create() {
     if (!draft.name || !draft.variantA || !draft.variantB) return;
     const exp: Experiment = {
-      ...draft,
+      name: draft.name,
+      element: draft.element,
+      variantA: draft.variantA,
+      variantB: draft.variantB,
+      goal: draft.goal,
       id: Math.random().toString(36).slice(2, 9),
       createdAt: new Date().toISOString(),
       status: "draft",
     };
     persist({ ...state, experiments: [exp, ...state.experiments] });
+    // Best-effort: persistir também no backend
+    void saveAbTest({
+      name: draft.name,
+      screen_key: draft.screenKey,
+      field_key: draft.element,
+      metric: draft.goal,
+      status: "draft",
+    });
     setOpen(false);
-    setDraft({ name: "", element: "CTA principal", variantA: "", variantB: "", goal: "Cliques no checkout" });
+    setDraft({ name: "", element: "CTA principal", variantA: "", variantB: "", goal: "Cliques no checkout", screenKey: "final" });
   }
 
   function setStatus(id: string, status: Experiment["status"]) {
@@ -57,6 +73,18 @@ export default function AbPage() {
             <div>
               <label className="admin-label block mb-1.5">Nome do teste</label>
               <input className="admin-input" value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} placeholder="Ex.: CTA final v1" />
+            </div>
+            <div>
+              <label className="admin-label block mb-1.5">Tela do funil</label>
+              <select
+                className="admin-input"
+                value={draft.screenKey}
+                onChange={(e) => setDraft({ ...draft, screenKey: e.target.value })}
+              >
+                {screens.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="admin-label block mb-1.5">Elemento testado</label>
