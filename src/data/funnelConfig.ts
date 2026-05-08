@@ -468,3 +468,86 @@ function getByPath(obj: Record<string, unknown>, path: string): unknown {
     return undefined;
   }, obj);
 }
+
+// ============================================================
+// Helpers de ações por tela (Links e Pixels)
+// ============================================================
+
+/**
+ * Gera ações padrão para uma tela quando ela ainda não tem `events.actions`
+ * configuradas. Baseado no tipo da tela, no CTA e nos defaults do funil.
+ */
+export function getDefaultActionsForScreen(
+  screen: FunnelScreen,
+  cfg: FunnelConfig = funnelConfig,
+): ScreenAction[] {
+  if (screen.type === "final") {
+    return [
+      {
+        action_key: "checkout_click",
+        action_label: "Clique checkout",
+        destination_type: "checkout",
+        destination_value: cfg.defaultCheckoutUrl,
+        event_name: "checkout_click",
+        pixel_enabled: true,
+        pixel_event_name: "InitiateCheckout",
+        utm_source: "quiz",
+        utm_medium: "funnel",
+        utm_campaign: "inner-pro",
+        status: "active",
+      },
+      {
+        action_key: "whatsapp_click",
+        action_label: "Clique WhatsApp",
+        destination_type: "whatsapp",
+        destination_value: cfg.defaultWhatsappNumber,
+        event_name: "whatsapp_click",
+        pixel_enabled: true,
+        pixel_event_name: "Contact",
+        utm_source: "quiz",
+        utm_medium: "funnel",
+        utm_campaign: "inner-ultra",
+        status: "active",
+      },
+    ];
+  }
+
+  if (screen.type === "lead_capture") {
+    return [
+      {
+        action_key: "lead_submit",
+        action_label: "Envio do formulário",
+        destination_type: "next_screen",
+        destination_value: screen.nextScreen ?? "",
+        event_name: screen.events?.complete ?? "lead_submit",
+        pixel_enabled: true,
+        pixel_event_name: "Lead",
+        status: "active",
+      },
+    ];
+  }
+
+  // CTA "next" / opening / single_choice / slider / loading
+  const dest = screen.cta?.destination ?? screen.nextScreen ?? "";
+  return [
+    {
+      action_key: `${screen.id}_advance`,
+      action_label: screen.cta?.label || "Avançar",
+      destination_type: "next_screen",
+      destination_value: dest,
+      event_name: screen.events?.click ?? `${screen.id}_advance`,
+      pixel_enabled: false,
+      status: "active",
+    },
+  ];
+}
+
+/** Retorna as ações configuradas ou os defaults derivados. */
+export function getScreenActions(
+  screen: FunnelScreen,
+  cfg: FunnelConfig = funnelConfig,
+): ScreenAction[] {
+  return screen.events?.actions?.length
+    ? screen.events.actions
+    : getDefaultActionsForScreen(screen, cfg);
+}
