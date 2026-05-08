@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Save, RotateCcw } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import {
-  funnelConfig,
   getDefaultActionsForScreen,
   getScreenActions,
   type ActionDestinationType,
@@ -154,9 +153,8 @@ export function ScreenActionsTable({ screens }: { screens: FunnelScreen[] }) {
               const expanded = open === key;
               const utm = [r.action.utm_source, r.action.utm_medium, r.action.utm_campaign].filter(Boolean).join(" / ");
               return (
-                <>
+                <Fragment key={key}>
                   <tr
-                    key={key}
                     className="cursor-pointer hover:bg-[var(--admin-surface-2)]/60"
                     style={{ borderTop: "1px solid var(--admin-border)" }}
                     onClick={() => setOpen(expanded ? null : key)}
@@ -195,7 +193,7 @@ export function ScreenActionsTable({ screens }: { screens: FunnelScreen[] }) {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               );
             })}
           </tbody>
@@ -304,6 +302,3 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </div>
   );
 }
-
-// Suppress unused import warning if funnelConfig not used directly in some builds
-void funnelConfig;
