@@ -1,22 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Save } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { SectionCard } from "@/components/admin/SectionCard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useSetTopbarActions } from "@/components/admin/AdminLayout";
 import { loadState, saveState, type LinksConfig } from "@/data/admin/store";
+import { loadFunnel, saveLinks } from "@/services/funnelService";
+import { toast } from "@/hooks/use-toast";
 
 export default function LinksPage() {
   const [state, setState] = useState(() => loadState());
   const [dirty, setDirty] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  // Hydrate from backend (funnels table) on mount
+  useEffect(() => {
+    void loadFunnel().then(({ remote }) => {
+      if (!remote) return;
+      setState((s) => ({
+        ...s,
+        links: {
+          ...s.links,
+          checkoutBaseUrl: (remote.checkout_url as string) || s.links.checkoutBaseUrl,
+          whatsappBaseUrl: remote.whatsapp_number
+            ? `https://api.whatsapp.com/send/?phone=${remote.whatsapp_number}`
+            : s.links.whatsappBaseUrl,
+          metaPixelId: (remote.meta_pixel_id as string) || s.links.metaPixelId,
+          ga4Id: (remote.google_tag_id as string) || s.links.ga4Id,
+          gtmId: (remote.gtm_id as string) || s.links.gtmId,
+        },
+      }));
+    });
+  }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    saveState(state); // fallback local
+    const phone = state.links.whatsappBaseUrl.match(/phone=(\d+)/)?.[1] ?? "";
+    const r = await saveLinks({
+      checkoutUrl: state.links.checkoutBaseUrl,
+      whatsappNumber: phone,
+      metaPixelId: state.links.metaPixelId,
+      ga4Id: state.links.ga4Id,
+      gtmId: state.links.gtmId,
+    });
+    setSaving(false);
+    setDirty(false);
+    toast({
+      title: r.ok ? "Links salvos" : "Salvo localmente",
+      description: r.ok ? "Sincronizado com o backend." : "Backend indisponível — alterações ficam locais.",
+    });
+  }
 
   useSetTopbarActions(
     <button
       className="admin-btn-primary inline-flex items-center gap-1.5"
-      disabled={!dirty}
-      onClick={() => { saveState(state); setDirty(false); }}
+      disabled={!dirty || saving}
+      onClick={handleSave}
     >
-      <Save className="w-4 h-4" /> Salvar
+      <Save className="w-4 h-4" /> {saving ? "Salvando..." : "Salvar"}
     </button>,
   );
 
