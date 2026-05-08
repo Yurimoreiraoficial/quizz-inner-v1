@@ -47,6 +47,7 @@ export interface TrackFunnelEventData {
 // ----------------------------------------------------------------
 const SESSION_KEY = "innerai_session_id_v1";
 const EVENTS_KEY = "innerai_events_v1";
+const LEAD_ID_KEY = "innerai_lead_id_v1";
 
 function newId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -65,6 +66,20 @@ export function getOrCreateSessionId(): string {
   } catch {
     return newId();
   }
+}
+
+/** Lead ativo da sessão atual (associado automaticamente aos próximos eventos). */
+export function getActiveLeadId(): string | null {
+  if (typeof window === "undefined") return null;
+  try { return localStorage.getItem(LEAD_ID_KEY); } catch { return null; }
+}
+
+export function setActiveLeadId(id: string | null) {
+  if (typeof window === "undefined") return;
+  try {
+    if (id) localStorage.setItem(LEAD_ID_KEY, id);
+    else localStorage.removeItem(LEAD_ID_KEY);
+  } catch {/* noop */}
 }
 
 // ----------------------------------------------------------------
@@ -156,6 +171,7 @@ export function trackFunnelEvent(
   const utms = getStoredUtms();
   const sessionId = data.sessionId ?? getOrCreateSessionId();
   const preview = data.preview ?? isPreviewContext();
+  const leadId = data.lead_id ?? getActiveLeadId();
 
   const rec: LocalEventRecord = {
     funnel_id: null, // resolvido async
@@ -171,7 +187,7 @@ export function trackFunnelEvent(
     },
     ab_test_id: data.ab_test_id ?? null,
     variant_id: data.variant_id ?? null,
-    lead_id: data.lead_id ?? null,
+    lead_id: leadId,
     source: utms.utm_source ?? null,
     medium: utms.utm_medium ?? null,
     campaign: utms.utm_campaign ?? null,

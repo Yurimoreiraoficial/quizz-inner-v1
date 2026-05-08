@@ -3,7 +3,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import type { FunnelState, QuizAnswer, AiUsage, Market, SliderValue, FrequencyValue, FitLevel, RecommendedPlan } from "@/types/funnel";
 import { funnelSteps } from "@/data/funnelSteps";
 import { trackEvent } from "@/services/funnelTrackingService";
-import { saveLead } from "@/services/leadService";
+import { saveAnswer, saveFunnelLead, validateWhatsapp } from "@/services/leadService";
 import { calculateFit } from "@/utils/calculateFit";
 import { getStoredUtms } from "@/hooks/useUtmParams";
 import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
@@ -86,6 +86,7 @@ export function useFunnelState() {
       questionId: "uso_ia", questionLabel: "Você já utiliza alguma ferramenta de IA hoje?",
       answerValue: value, answerLabel: label,
     });
+    saveAnswer("uso_ia", "uso_ia", { value, label, question_label: "Você já utiliza alguma ferramenta de IA hoje?" });
     trackEvent(state.sessionId, "option_selected", {
       stepId: "uso_ia", stepIndex: state.currentStepIndex,
       metadata: { question_id: "uso_ia", answer: label },
@@ -98,6 +99,7 @@ export function useFunnelState() {
       questionId: "mercado", questionLabel: "Em que mercado você atua hoje?",
       answerValue: value, answerLabel: label,
     });
+    saveAnswer("mercado", "mercado", { value, label, question_label: "Em que mercado você atua hoje?" });
     trackEvent(state.sessionId, "option_selected", {
       stepId: "mercado", stepIndex: state.currentStepIndex,
       metadata: { question_id: "mercado", answer: label },
@@ -106,6 +108,7 @@ export function useFunnelState() {
 
   const setTarefa = useCallback((taskId: string, label: string, value: SliderValue) => {
     setState((s) => ({ ...s, tarefas: { ...s.tarefas, [taskId]: value } }));
+    saveAnswer("tarefas", `tarefa_${taskId}`, { value, label, question_label: label });
     trackEvent(state.sessionId, "slider_changed", {
       stepId: "tarefas", stepIndex: state.currentStepIndex,
       metadata: { question_id: "tarefas", task: label, value },
@@ -114,6 +117,7 @@ export function useFunnelState() {
 
   const setDor = useCallback((painId: string, label: string, value: FrequencyValue) => {
     setState((s) => ({ ...s, dores: { ...s.dores, [painId]: value } }));
+    saveAnswer("dores", `dor_${painId}`, { value, label, question_label: label });
     trackEvent(state.sessionId, "slider_changed", {
       stepId: "dores", stepIndex: state.currentStepIndex,
       metadata: { question_id: "dores", pain: label, value },
@@ -161,26 +165,42 @@ export function useFunnelState() {
     });
   }, []);
 
-  const submitLead = useCallback((nome: string, whatsapp: string) => {
-    const leadId = newSessionId();
-    setState((s) => ({ ...s, nome, whatsapp, leadId }));
-    trackEvent(state.sessionId, "lead_submitted", {
-      stepId: "lead", stepIndex: state.currentStepIndex,
-      metadata: { has_name: !!nome, phone_len: whatsapp.replace(/\D/g, "").length },
-    });
-    trackEvent(state.sessionId, "quiz_completed", { stepId: "lead", stepIndex: state.currentStepIndex });
-    // Persistir lead no Supabase (best-effort, não bloqueia UI)
-    void saveLead({
+  const submitLead = useCallback((nome: string, whatsapp: string, email?: string) => {
+    // Validação de WhatsApp com DDD; se falhar, segue mas marca leadId temporário.
+    const v = validateWhatsapp(whatsapp);
+    const tempId = newSessionId();
+    setState((s) => ({ ...s, nome, whatsapp, leadId: tempId }));
+
+    // Persistência real (upsert por sessão). Atualiza leadId quando o backend responder.
+    void saveFunnelLead({
       sessionId: state.sessionId,
       name: nome,
       phone: whatsapp,
-      answers: { items: state.answers },
+      email,
+      extraAnswers: {
+        items: state.answers,
+        mercado: state.mercadoLabel,
+        uso_ia: state.usoIALabel,
+        tarefas_principais: state.tarefasPrincipais,
+        dores_principais: state.doresPrincipais,
+        plano_sugerido: state.planoSugerido,
+        nivel_encaixe: state.nivelEncaixe,
+        ultra_flag: state.ultraFlag,
+      },
       source: state.utms.utm_source,
       medium: state.utms.utm_medium,
       campaign: state.utms.utm_campaign,
+    }).then((r) => {
+      if (r.id) setState((s) => ({ ...s, leadId: r.id }));
     });
-    return leadId;
-  }, [state.sessionId, state.currentStepIndex, state.answers, state.utms]);
+
+    if (!v.ok) {
+      // eslint-disable-next-line no-console
+      console.warn("[lead] WhatsApp inválido:", v.reason);
+    }
+    trackEvent(state.sessionId, "quiz_completed", { stepId: "lead", stepIndex: state.currentStepIndex });
+    return tempId;
+  }, [state.sessionId, state.currentStepIndex, state.answers, state.utms, state.mercadoLabel, state.usoIALabel, state.tarefasPrincipais, state.doresPrincipais, state.planoSugerido, state.nivelEncaixe, state.ultraFlag]);
 
   const progress = useMemo(() => {
     const total = funnelSteps.length - 1; // exclui final
