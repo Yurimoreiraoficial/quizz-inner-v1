@@ -7,11 +7,14 @@ import { useSetTopbarActions } from "@/components/admin/AdminLayout";
 import { loadState, saveState, type LinksConfig } from "@/data/admin/store";
 import { loadFunnel, saveLinks } from "@/services/funnelService";
 import { toast } from "@/hooks/use-toast";
+import { ScreenActionsTable } from "@/components/admin/ScreenActionsTable";
+import { useFunnelScreens } from "@/hooks/useFunnelScreens";
 
 export default function LinksPage() {
   const [state, setState] = useState(() => loadState());
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
+  const { screens } = useFunnelScreens();
 
   // Hydrate from backend (funnels table) on mount
   useEffect(() => {
@@ -142,6 +145,15 @@ export default function LinksPage() {
               Olhe o console do navegador para ver o payload.
             </span>
           </div>
+        </SectionCard>
+      </div>
+
+      <div className="mt-5">
+        <SectionCard
+          title="Ações por tela"
+          description="Cada botão/clique do funil pode ter destino, evento, pixel e UTMs próprios."
+        >
+          <ScreenActionsTable screens={screens} />
         </SectionCard>
       </div>
     </>
