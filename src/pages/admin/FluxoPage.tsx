@@ -2,22 +2,22 @@ import { Link } from "react-router-dom";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { SectionCard } from "@/components/admin/SectionCard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { loadState } from "@/data/admin/store";
+import { useFunnelScreens } from "@/hooks/useFunnelScreens";
 
 export default function FluxoPage() {
-  const state = loadState();
+  const { screens, source } = useFunnelScreens();
 
   return (
     <>
       <PageHeader
         title="Fluxo visual"
         description="Visão sequencial das etapas do funil. Edição drag-and-drop fora de escopo nesta fase."
-        right={<StatusBadge variant="info">read-only</StatusBadge>}
+        right={<StatusBadge variant="info">{source === "supabase" ? "backend" : "config"}</StatusBadge>}
       />
 
       <SectionCard>
         <ol className="flex flex-col items-stretch gap-3 max-w-xl mx-auto">
-          {state.steps.map((s, i) => (
+          {screens.map((s, i) => (
             <li key={s.id} className="flex flex-col items-center">
               <Link
                 to={`/admin/funis/atual/editor`}
@@ -33,14 +33,14 @@ export default function FluxoPage() {
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div>
-                      <div className="text-sm font-semibold">{s.title}</div>
+                      <div className="text-sm font-semibold">{s.name}</div>
                       <div className="text-xs" style={{ color: "var(--admin-muted)" }}>{s.type}</div>
                     </div>
                   </div>
-                  {!s.enabled && <StatusBadge variant="neutral">off</StatusBadge>}
+                  {s.status !== "active" && <StatusBadge variant="neutral">{s.status}</StatusBadge>}
                 </div>
               </Link>
-              {i < state.steps.length - 1 && (
+              {i < screens.length - 1 && (
                 <div className="w-px h-5" style={{ background: "var(--admin-border-strong)" }} />
               )}
             </li>
