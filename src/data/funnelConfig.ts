@@ -58,6 +58,29 @@ export interface ScreenEvents {
   click?: string;
   /** disparado ao concluir a tela */
   complete?: string;
+  /** ações configuráveis (botões/links) por tela */
+  actions?: ScreenAction[];
+}
+
+export type ActionDestinationType =
+  | "next_screen"
+  | "checkout"
+  | "whatsapp"
+  | "external_url";
+
+export interface ScreenAction {
+  action_key: string;
+  action_label: string;
+  destination_type: ActionDestinationType;
+  destination_value: string;
+  event_name: string;
+  pixel_enabled: boolean;
+  pixel_event_name?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  status: "active" | "inactive";
 }
 
 export interface PixelMapping {
