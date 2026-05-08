@@ -1,5 +1,7 @@
 // Tracking modular — Fase 1: console + localStorage; Fase 2: troca para Supabase
 import type { EventName } from "@/types/funnel";
+import { supabase } from "@/integrations/supabase/client";
+import { getCurrentFunnelId } from "./funnelService";
 
 const EVENTS_KEY = "innerai_events_v1";
 
@@ -41,7 +43,25 @@ export function trackEvent(
     console.log("[track]", eventName, rec);
     pushLocal(rec);
   }
-  // TODO Fase 2: enviar para Supabase quiz_events
+  // Fase 2: best-effort para Supabase. Não bloqueia a UI.
+  void persistRemote(rec);
+}
+
+async function persistRemote(rec: EventRecord) {
+  try {
+    if (!rec.sessionId) return;
+    const funnel_id = await getCurrentFunnelId();
+    if (!funnel_id) return;
+    await supabase.from("funnel_events").insert({
+      funnel_id,
+      session_id: rec.sessionId,
+      event_name: rec.eventName,
+      screen_key: rec.stepId ?? null,
+      event_data: (rec.metadata ?? {}) as never,
+    });
+  } catch {
+    /* offline-first: silenciar erro */
+  }
 }
 
 export function getLocalEvents(): EventRecord[] {

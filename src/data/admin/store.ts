@@ -1,6 +1,6 @@
 /* localStorage helpers para o admin do MVP. */
 import { funnelSteps } from "@/data/funnelSteps";
-import { finalPageContent } from "@/data/finalPageContent";
+import { funnelConfig, getScreen } from "@/data/funnelConfig";
 
 const KEY = "inner.admin.v1";
 
@@ -43,38 +43,37 @@ export type AdminState = {
   workspaceName: string;
 };
 
-const defaultStepLabels: Record<string, { title: string; subtitle: string; cta: string }> = {
-  intro:        { title: "Descubra como a IA pode ajudar você", subtitle: "Quiz rápido de 1 minuto", cta: "Começar quiz" },
-  uso_ia:       { title: "Você já usa ferramentas de IA?", subtitle: "", cta: "Próximo" },
-  insert_50ias: { title: "+50 IAs em uma única plataforma", subtitle: "", cta: "Próximo" },
-  mercado:      { title: "Em qual mercado você atua?", subtitle: "", cta: "Próximo" },
-  insert_help:  { title: "A Inner pode te ajudar com", subtitle: "", cta: "Próximo" },
-  tarefas:      { title: "Em quais tarefas você quer apoio?", subtitle: "", cta: "Próximo" },
-  insert_proof: { title: "Profissionais como você usam a Inner", subtitle: "", cta: "Próximo" },
-  dores:        { title: "Quais dores são mais relevantes?", subtitle: "", cta: "Próximo" },
-  loading:      { title: "Calculando seu plano...", subtitle: "", cta: "" },
-  lead:         { title: "Receba seu plano personalizado", subtitle: "", cta: "Continuar" },
-  final:        { title: finalPageContent.fusion.title, subtitle: finalPageContent.fusion.description, cta: "Assinar Plano PRO" },
-};
+/** Lê labels da fonte de verdade (funnelConfig). */
+function labelsFor(id: string): { title: string; subtitle: string; cta: string } {
+  const s = getScreen(id, funnelConfig);
+  return {
+    title: s?.content.headline ?? id,
+    subtitle: s?.content.subtitle ?? "",
+    cta: s?.content.buttonText ?? s?.cta?.label ?? "",
+  };
+}
 
 function defaults(): AdminState {
   return {
-    steps: funnelSteps.map((s) => ({
-      id: s.id,
-      type: s.type,
-      enabled: true,
-      ...defaultStepLabels[s.id],
-    })),
-    finalCta: "Assinar Plano PRO",
+    steps: funnelSteps.map((s) => {
+      const cfg = getScreen(s.id, funnelConfig);
+      return {
+        id: s.id,
+        type: s.type,
+        enabled: cfg?.status !== "disabled" && cfg?.status !== "paused",
+        ...labelsFor(s.id),
+      };
+    }),
+    finalCta: getScreen("final", funnelConfig)?.content.buttonText ?? "Assinar Plano PRO",
     links: {
-      checkoutBaseUrl: "https://pay.innerai.com/",
-      whatsappBaseUrl: "https://api.whatsapp.com/send/?phone=551152962293",
+      checkoutBaseUrl: funnelConfig.defaultCheckoutUrl,
+      whatsappBaseUrl: `https://api.whatsapp.com/send/?phone=${funnelConfig.defaultWhatsappNumber}`,
       defaultUtmSource: "quiz",
       defaultUtmMedium: "funnel",
       defaultUtmCampaign: "inner-pro",
-      gtmId: "",
-      metaPixelId: "",
-      ga4Id: "",
+      gtmId: funnelConfig.tracking.gtmId,
+      metaPixelId: funnelConfig.tracking.metaPixelId,
+      ga4Id: funnelConfig.tracking.googleTagId,
     },
     experiments: [],
     workspaceName: "Inner AI",

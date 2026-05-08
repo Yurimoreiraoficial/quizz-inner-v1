@@ -3,6 +3,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import type { FunnelState, QuizAnswer, AiUsage, Market, SliderValue, FrequencyValue, FitLevel, RecommendedPlan } from "@/types/funnel";
 import { funnelSteps } from "@/data/funnelSteps";
 import { trackEvent } from "@/services/funnelTrackingService";
+import { saveLead } from "@/services/leadService";
 import { calculateFit } from "@/utils/calculateFit";
 import { getStoredUtms } from "@/hooks/useUtmParams";
 import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
@@ -168,9 +169,18 @@ export function useFunnelState() {
       metadata: { has_name: !!nome, phone_len: whatsapp.replace(/\D/g, "").length },
     });
     trackEvent(state.sessionId, "quiz_completed", { stepId: "lead", stepIndex: state.currentStepIndex });
-    // TODO Fase 2: persistir lead em Supabase
+    // Persistir lead no Supabase (best-effort, não bloqueia UI)
+    void saveLead({
+      sessionId: state.sessionId,
+      name: nome,
+      phone: whatsapp,
+      answers: { items: state.answers },
+      source: state.utms.utm_source,
+      medium: state.utms.utm_medium,
+      campaign: state.utms.utm_campaign,
+    });
     return leadId;
-  }, [state.sessionId, state.currentStepIndex]);
+  }, [state.sessionId, state.currentStepIndex, state.answers, state.utms]);
 
   const progress = useMemo(() => {
     const total = funnelSteps.length - 1; // exclui final
