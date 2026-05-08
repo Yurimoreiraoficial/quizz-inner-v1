@@ -4,6 +4,8 @@ import { PageHeader } from "@/components/admin/PageHeader";
 import { SectionCard } from "@/components/admin/SectionCard";
 import { useSetTopbarActions } from "@/components/admin/AdminLayout";
 import { loadState } from "@/data/admin/store";
+import { funnelConfig } from "@/data/funnelConfig";
+import { loadScreens, getCurrentFunnelId } from "@/services/funnelService";
 
 type CheckStatus = "ok" | "warn" | "fail";
 type Check = { id: string; label: string; description: string; status: CheckStatus };
@@ -17,6 +19,24 @@ function statusIcon(s: CheckStatus) {
 async function runChecks(): Promise<Check[]> {
   const links = loadState().links;
   const checks: Check[] = [];
+
+  // Funil & telas
+  const funnelId = await getCurrentFunnelId();
+  checks.push({
+    id: "funnel", label: "Funil registrado",
+    description: funnelId
+      ? `Quiz Inner V1 conectado ao backend (id ${funnelId.slice(0, 8)}...).`
+      : "Funil não encontrado no backend. Usando fallback de funnelConfig.",
+    status: funnelId ? "ok" : "warn",
+  });
+
+  const remoteScreens = await loadScreens();
+  const expected = funnelConfig.screens.length;
+  checks.push({
+    id: "screens", label: "Telas do funil",
+    description: `${remoteScreens.length} telas carregadas (esperado: ${expected}).`,
+    status: remoteScreens.length === expected ? "ok" : "warn",
+  });
 
   checks.push({
     id: "meta", label: "Meta Pixel",
