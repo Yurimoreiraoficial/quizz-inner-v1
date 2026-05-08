@@ -14,7 +14,334 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ab_tests: {
+        Row: {
+          created_at: string
+          field_key: string
+          funnel_id: string
+          id: string
+          metric: string
+          name: string
+          screen_key: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          field_key: string
+          funnel_id: string
+          id?: string
+          metric?: string
+          name: string
+          screen_key: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          field_key?: string
+          funnel_id?: string
+          id?: string
+          metric?: string
+          name?: string
+          screen_key?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ab_tests_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ab_variants: {
+        Row: {
+          ab_test_id: string
+          created_at: string
+          id: string
+          label: string
+          split_percentage: number
+          status: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          ab_test_id: string
+          created_at?: string
+          id?: string
+          label: string
+          split_percentage?: number
+          status?: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          ab_test_id?: string
+          created_at?: string
+          id?: string
+          label?: string
+          split_percentage?: number
+          status?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ab_variants_ab_test_id_fkey"
+            columns: ["ab_test_id"]
+            isOneToOne: false
+            referencedRelation: "ab_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnel_events: {
+        Row: {
+          ab_test_id: string | null
+          campaign: string | null
+          created_at: string
+          device: string | null
+          event_data: Json
+          event_name: string
+          funnel_id: string
+          id: string
+          lead_id: string | null
+          medium: string | null
+          screen_key: string | null
+          session_id: string
+          source: string | null
+          variant_id: string | null
+        }
+        Insert: {
+          ab_test_id?: string | null
+          campaign?: string | null
+          created_at?: string
+          device?: string | null
+          event_data?: Json
+          event_name: string
+          funnel_id: string
+          id?: string
+          lead_id?: string | null
+          medium?: string | null
+          screen_key?: string | null
+          session_id: string
+          source?: string | null
+          variant_id?: string | null
+        }
+        Update: {
+          ab_test_id?: string | null
+          campaign?: string | null
+          created_at?: string
+          device?: string | null
+          event_data?: Json
+          event_name?: string
+          funnel_id?: string
+          id?: string
+          lead_id?: string | null
+          medium?: string | null
+          screen_key?: string | null
+          session_id?: string
+          source?: string | null
+          variant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funnel_events_ab_test_id_fkey"
+            columns: ["ab_test_id"]
+            isOneToOne: false
+            referencedRelation: "ab_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funnel_events_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funnel_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "funnel_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "funnel_events_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "ab_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnel_leads: {
+        Row: {
+          answers: Json
+          campaign: string | null
+          created_at: string
+          email: string | null
+          funnel_id: string
+          id: string
+          medium: string | null
+          name: string | null
+          phone: string | null
+          session_id: string
+          source: string | null
+        }
+        Insert: {
+          answers?: Json
+          campaign?: string | null
+          created_at?: string
+          email?: string | null
+          funnel_id: string
+          id?: string
+          medium?: string | null
+          name?: string | null
+          phone?: string | null
+          session_id: string
+          source?: string | null
+        }
+        Update: {
+          answers?: Json
+          campaign?: string | null
+          created_at?: string
+          email?: string | null
+          funnel_id?: string
+          id?: string
+          medium?: string | null
+          name?: string | null
+          phone?: string | null
+          session_id?: string
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funnel_leads_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnel_screens: {
+        Row: {
+          content: Json
+          created_at: string
+          cta: Json
+          events: Json
+          funnel_id: string
+          id: string
+          name: string
+          next_screen_key: string | null
+          order_index: number
+          pixels: Json
+          rules: Json
+          screen_key: string
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          cta?: Json
+          events?: Json
+          funnel_id: string
+          id?: string
+          name: string
+          next_screen_key?: string | null
+          order_index?: number
+          pixels?: Json
+          rules?: Json
+          screen_key: string
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          cta?: Json
+          events?: Json
+          funnel_id?: string
+          id?: string
+          name?: string
+          next_screen_key?: string | null
+          order_index?: number
+          pixels?: Json
+          rules?: Json
+          screen_key?: string
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funnel_screens_funnel_id_fkey"
+            columns: ["funnel_id"]
+            isOneToOne: false
+            referencedRelation: "funnels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funnels: {
+        Row: {
+          checkout_url: string | null
+          created_at: string
+          format: string
+          google_tag_id: string | null
+          gtm_id: string | null
+          id: string
+          meta_pixel_id: string | null
+          name: string
+          public_url: string | null
+          slug: string
+          status: string
+          updated_at: string
+          whatsapp_message: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          checkout_url?: string | null
+          created_at?: string
+          format?: string
+          google_tag_id?: string | null
+          gtm_id?: string | null
+          id?: string
+          meta_pixel_id?: string | null
+          name: string
+          public_url?: string | null
+          slug: string
+          status?: string
+          updated_at?: string
+          whatsapp_message?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          checkout_url?: string | null
+          created_at?: string
+          format?: string
+          google_tag_id?: string | null
+          gtm_id?: string | null
+          id?: string
+          meta_pixel_id?: string | null
+          name?: string
+          public_url?: string | null
+          slug?: string
+          status?: string
+          updated_at?: string
+          whatsapp_message?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
