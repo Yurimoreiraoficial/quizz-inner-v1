@@ -6,6 +6,7 @@ import { aiUsageOptions, marketOptions, innerHelpsByMarket, socialProofSubBy } f
 import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
 import { trackEvent } from "@/services/funnelTrackingService";
+import { funnelConfig, getScreen } from "@/data/funnelConfig";
 
 import { FunnelLayout } from "@/components/FunnelLayout";
 import { PrimaryButton } from "@/components/PrimaryButton";
@@ -32,6 +33,18 @@ const Index = () => {
   const [tarefasComplete, setTarefasComplete] = useState(false);
   const [doresComplete, setDoresComplete] = useState(false);
 
+  /**
+   * Configuração centralizada do funil atual.
+   * O componente continua com o mesmo layout/visual; apenas os textos,
+   * CTAs e opções editáveis passam a vir de funnelConfig (lookup por step.id).
+   * Fallbacks ficam disponíveis para não quebrar caso o id não esteja mapeado.
+   */
+  const screen = step ? getScreen(step.id, funnelConfig) : undefined;
+  const content = screen?.content ?? {};
+  const ctaLabel = (content.buttonText && content.buttonText.length > 0)
+    ? content.buttonText
+    : (screen?.cta?.label ?? "CONTINUAR");
+
   // Reset estados de "completo" ao trocar de step
   useEffect(() => {
     if (step?.id !== "tarefas") setTarefasComplete(false);
@@ -56,7 +69,10 @@ const Index = () => {
 
   // result_viewed quando entra na tela final
   useEffect(() => {
-    if (step?.id === "final") {
+    if (!step) return;
+    const ev = getScreen(step.id, funnelConfig)?.events?.view;
+    if (ev) trackEvent(c.state.sessionId, ev, { stepId: step.id });
+    if (step.id === "final") {
       trackEvent(c.state.sessionId, "result_viewed", { stepId: "final" });
     }
   }, [step?.id, c.state.sessionId]);
@@ -153,8 +169,8 @@ const Index = () => {
       {/* 2. Uso de IA */}
       {step.id === "uso_ia" && (
         <SingleChoiceStep
-          question="Você já utiliza alguma ferramenta de IA hoje?"
-          options={aiUsageOptions as { value: string; label: string }[]}
+          question={content.headline ?? "Você já utiliza alguma ferramenta de IA hoje?"}
+          options={(screen?.options?.length ? screen.options : aiUsageOptions) as { value: string; label: string }[]}
           selectedValue={c.state.usoIA}
           onSelect={(v, l) => {
             c.setUsoIA(v as never, l);
@@ -166,10 +182,11 @@ const Index = () => {
       {/* 3. Insert +50 IAs */}
       {step.id === "insert_50ias" && (
         <InsertStep
-          headline="Use GPT-5, Claude, Gemini e +50 IAs Premium em uma só plataforma."
+          headline={content.headline}
           image={<img src={introAiCards} alt="+50 IAs conectadas à Inner" loading="lazy" decoding="async" width={808} height={400} className="max-h-full w-auto object-contain" />}
           imageHeightClass="h-56"
-          subtitle="Tudo em um só lugar, sem precisar alternar entre várias assinaturas."
+          subtitle={content.subtitle}
+          ctaLabel={ctaLabel}
           onContinue={c.goNext}
         />
       )}
@@ -177,8 +194,8 @@ const Index = () => {
       {/* 4. Mercado */}
       {step.id === "mercado" && (
         <SingleChoiceStep
-          question="Em que mercado você atua hoje?"
-          options={marketOptions as { value: string; label: string }[]}
+          question={content.headline ?? "Em que mercado você atua hoje?"}
+          options={(screen?.options?.length ? screen.options : marketOptions) as { value: string; label: string }[]}
           selectedValue={c.state.mercado}
           onSelect={(v, l) => {
             c.setMercado(v as never, l);
@@ -190,7 +207,7 @@ const Index = () => {
       {/* 5. Insert por mercado */}
       {step.id === "insert_help" && (
         <InsertStep
-          title="Você está no lugar certo"
+          title={content.headline}
           image={
             <img 
               src={`/markets/${market}.webp`} 
@@ -203,7 +220,11 @@ const Index = () => {
             />
           }
           imageHeightClass="h-32"
-          bullets={{ title: "A Inner pode te ajudar com:", items: innerHelpsByMarket[market] }}
+          bullets={{
+            title: (content.extras?.bulletsTitle as string) ?? "A Inner pode te ajudar com:",
+            items: innerHelpsByMarket[market],
+          }}
+          ctaLabel={ctaLabel}
           onContinue={c.goNext}
         />
       )}
@@ -212,7 +233,7 @@ const Index = () => {
       {step.id === "tarefas" && (
         <>
           <SliderGroupStep
-            question="Marque o quanto você usa IA hoje para essas tarefas:"
+            question={content.headline ?? "Marque o quanto você usa IA hoje para essas tarefas:"}
             scale={["Nunca", "Às vezes", "Muito"]}
             items={taskOptionsByMarket[market]}
             values={c.state.tarefas}
@@ -222,7 +243,7 @@ const Index = () => {
           {tarefasComplete && (
             <div className="mt-4 animate-fade-in">
               <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
-                CONTINUAR
+                {ctaLabel}
               </PrimaryButton>
             </div>
           )}
@@ -233,7 +254,7 @@ const Index = () => {
       {step.id === "insert_proof" && (
         <div className="flex flex-col">
           <h1 className="text-[26px] sm:text-[28px] leading-[1.15] font-bold text-foreground text-balance">
-            Mais de 500 mil usuários
+            {content.headline ?? "Mais de 500 mil usuários"}
           </h1>
           <p className="mt-3 text-[15px] text-muted-foreground text-pretty">
             {socialProofSubBy[market]}
@@ -245,7 +266,7 @@ const Index = () => {
             <PartnerLogos />
           </div>
           <div className="mt-7">
-            <PrimaryButton onClick={c.goNext}>CONTINUAR</PrimaryButton>
+            <PrimaryButton onClick={c.goNext}>{ctaLabel}</PrimaryButton>
           </div>
         </div>
       )}
@@ -254,7 +275,7 @@ const Index = () => {
       {step.id === "dores" && (
         <>
           <SliderGroupStep
-            question="Marque com que frequência isso acontece na sua rotina."
+            question={content.headline ?? "Marque com que frequência isso acontece na sua rotina."}
             scale={["Nunca", "Às vezes", "Muito"]}
             items={painOptions}
             values={c.state.dores}
@@ -264,7 +285,7 @@ const Index = () => {
           {doresComplete && (
             <div className="mt-4 animate-fade-in">
               <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
-                CONTINUAR
+                {ctaLabel}
               </PrimaryButton>
             </div>
           )}
