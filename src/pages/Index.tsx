@@ -71,7 +71,7 @@ const Index = () => {
   useEffect(() => {
     if (!step) return;
     const ev = getScreen(step.id, funnelConfig)?.events?.view;
-    if (ev) trackEvent(c.state.sessionId, ev, { stepId: step.id });
+    if (ev) trackEvent(c.state.sessionId, ev as never, { stepId: step.id });
     if (step.id === "final") {
       trackEvent(c.state.sessionId, "result_viewed", { stepId: "final" });
     }
