@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFunnelState } from "@/hooks/useFunnelState";
 import { useUtmParams } from "@/hooks/useUtmParams";
-import { funnelSteps } from "@/data/funnelSteps";
 import { aiUsageOptions, marketOptions, innerHelpsByMarket, socialProofSubBy } from "@/data/marketOptions";
 import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
