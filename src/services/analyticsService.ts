@@ -1,13 +1,10 @@
 /**
  * Analytics do funil — calculadas client-side a partir de eventos reais.
- *
- * Lê funnel_events / funnel_leads / funnel_screens / ab_tests+variants e
- * devolve macros, micro-conversão por etapa, rotas finais, A/B e segmentos.
- * Aplica filtros (período, origem, campanha, mercado, variante, tema, rota).
  */
 import { supabase } from "@/integrations/supabase/client";
 import { getCurrentFunnelId } from "./funnelService";
 import { funnelConfig, type FunnelScreen } from "@/data/funnelConfig";
+import { marketOptions } from "@/data/marketOptions";
 
 // ----------------------------------------------------------------
 // Types
@@ -17,15 +14,16 @@ export type RouteFilter = "todos" | "checkout" | "whatsapp" | "ultra";
 export type ThemeFilter = "todos" | "dark" | "light";
 
 export interface AnalyticsFilters {
-  rangeDays: 7 | 15 | 30 | 0;       // 0 = customizado
-  startDate?: string;                // ISO
-  endDate?: string;                  // ISO
-  source?: string;                   // utm_source
-  campaign?: string;                 // utm_campaign
-  mercado?: string;                  // segmento
-  variantId?: string;                // ab_variant
+  rangeDays: 7 | 15 | 30 | 0;
+  startDate?: string;
+  endDate?: string;
+  source?: string;
+  campaign?: string;
+  mercado?: string;
+  variantId?: string;
   theme?: ThemeFilter;
   route?: RouteFilter;
+  compareWithPrevious?: boolean;
 }
 
 export interface MacroStats {
@@ -47,6 +45,18 @@ export interface MacroStats {
   cac?: number;
   cacToday?: number;
   cacYesterday?: number;
+  comparison?: {
+    visitors?: number;
+    starts?: number;
+    leads?: number;
+    checkoutClicks?: number;
+    whatsappClicks?: number;
+    purchases?: number;
+    revenue?: number;
+    investment?: number;
+    roas?: number;
+    cac?: number;
+  };
 }
 
 export interface ScreenMicroRow {
@@ -54,9 +64,9 @@ export interface ScreenMicroRow {
   name: string;
   type: string;
   users: number;
-  lossPct: number;        // perda vs etapa anterior
-  convPrevPct: number;    // conversão vs etapa anterior
-  convAccPct: number;     // conversão acumulada
+  lossPct: number;
+  convPrevPct: number;
+  convAccPct: number;
   avgTimeSec: number;
   mainAction: string;
   status: ScreenStatus;
@@ -78,10 +88,24 @@ export interface AbVariantStats {
   checkout: number;
   whatsapp: number;
   purchases: number;
-  conversion: number; // métrica principal (lead/visitors por padrão)
+  conversion: number;
 }
 
-export interface SegmentRow { label: string; count: number; share: number }
+export interface SegmentRow { 
+  label: string; 
+  count: number; 
+  share: number; 
+  prevCount?: number;
+  visitors: number;
+  leads: number;
+  offers: number;
+  checkout: number;
+  whatsapp: number;
+  purchases: number;
+  prevVisitors?: number;
+  prevLeads?: number;
+  prevPurchases?: number;
+}
 
 export interface SegmentStats {
   mercado: SegmentRow[];
@@ -108,36 +132,26 @@ export interface FunnelAnalytics {
   abVariants: AbVariantStats[];
   segments: SegmentStats;
   totalEvents: number;
-  // legacy compat (a UI antiga ainda lê):
   totalSessions: number;
   totalLeads: number;
 }
 
 // ----------------------------------------------------------------
-// Mapas de eventos canônicos x legados
+// Eventos
 // ----------------------------------------------------------------
-const EV_FUNNEL_VIEW   = new Set(["funnel_view"]);
-const EV_FUNNEL_START  = new Set(["funnel_start", "quiz_started"]);
-const EV_SCREEN_VIEW   = new Set(["screen_view", "step_viewed"]);
-const EV_LEAD          = new Set(["lead_submit", "lead_submitted"]);
+const EV_FUNNEL_VIEW   = new Set(["funnel_view", "quiz_completed", "result_view"]);
+const EV_FUNNEL_START  = new Set(["funnel_start", "quiz_started", "screen_view_intro", "step_viewed_intro"]);
+const EV_SCREEN_VIEW   = new Set(["screen_view", "step_viewed", "screen_view_intro"]);
+const EV_LEAD          = new Set(["lead_submit", "lead_submitted", "lead_captured"]);
 const EV_CHECKOUT      = new Set(["checkout_click", "checkout_clicked"]);
 const EV_WHATSAPP      = new Set(["whatsapp_click", "whatsapp_clicked"]);
 const EV_ULTRA         = new Set(["ultra_interest"]);
 const EV_PURCHASE      = new Set(["purchase"]);
 
-// ----------------------------------------------------------------
-// API
-// ----------------------------------------------------------------
 const empty: FunnelAnalytics = {
   filters: { rangeDays: 30, theme: "todos", route: "todos" },
   available: { sources: [], campaigns: [], mercados: [], variants: [] },
-  macros: { 
-    visitors: 0, starts: 0, leads: 0, checkoutClicks: 0, whatsappClicks: 0, purchases: 0, revenue: 0,
-    revenueToday: undefined, revenueYesterday: undefined,
-    investment: undefined, investmentToday: undefined, investmentYesterday: undefined,
-    roas: undefined, roasToday: undefined, roasYesterday: undefined,
-    cac: undefined, cacToday: undefined, cacYesterday: undefined
-  },
+  macros: { visitors: 0, starts: 0, leads: 0, checkoutClicks: 0, whatsappClicks: 0, purchases: 0, revenue: 0 },
   byScreen: [],
   routes: { checkout: 0, whatsapp: 0, ultra: 0 },
   abVariants: [],
@@ -153,307 +167,224 @@ export async function loadAnalytics(filters: AnalyticsFilters = { rangeDays: 30,
     if (!funnel_id) return empty;
 
     const range = computeRange(filters);
-    const screensCfg = funnelConfig.screens;
+    let fetchStart = range.start;
+    if (filters.compareWithPrevious) {
+      const durationMs = range.end.getTime() - range.start.getTime();
+      fetchStart = new Date(range.start.getTime() - durationMs);
+    }
 
-    // Buscar dados em paralelo
-    const eventsQ = supabase
-      .from("funnel_events")
-      .select("session_id, screen_key, event_name, event_data, source, medium, campaign, device, ab_test_id, variant_id, lead_id, created_at")
-      .eq("funnel_id", funnel_id)
-      .gte("created_at", range.start.toISOString())
-      .lte("created_at", range.end.toISOString())
-      .order("created_at", { ascending: true })
-      .limit(10000);
+    const [evRes, leadsRes, screensRes, abRes] = await Promise.all([
+      supabase.from("funnel_events").select("*").eq("funnel_id", funnel_id).gte("created_at", fetchStart.toISOString()).lte("created_at", range.end.toISOString()).order("created_at", { ascending: true }).limit(25000),
+      supabase.from("funnel_leads").select("*").eq("funnel_id", funnel_id).gte("created_at", fetchStart.toISOString()).lte("created_at", range.end.toISOString()).limit(15000),
+      supabase.from("funnel_screens").select("*").eq("funnel_id", funnel_id).order("order_index", { ascending: true }),
+      supabase.from("ab_tests").select("*, ab_variants(*)").eq("funnel_id", funnel_id)
+    ]);
 
-    const leadsQ = supabase
-      .from("funnel_leads")
-      .select("id, session_id, answers, source, medium, campaign, created_at")
-      .eq("funnel_id", funnel_id)
-      .gte("created_at", range.start.toISOString())
-      .lte("created_at", range.end.toISOString())
-      .limit(5000);
+    type EvRow = any;
+    let events = (evRes.data ?? []) as EvRow[];
+    events = events.filter(e => !(e.event_data as any)?.preview);
 
-    const screensQ = supabase
-      .from("funnel_screens")
-      .select("screen_key, name, type, order_index")
-      .eq("funnel_id", funnel_id)
-      .order("order_index", { ascending: true });
-
-    const abQ = supabase
-      .from("ab_tests")
-      .select("id, name, screen_key, status, ab_variants(id, label, status)")
-      .eq("funnel_id", funnel_id);
-
-    const [evRes, leadsRes, screensRes, abRes] = await Promise.all([eventsQ, leadsQ, screensQ, abQ]);
-
-    const screensRows = (screensRes.data ?? []) as Array<{ screen_key: string; name: string; type: string; order_index: number }>;
-    const orderedScreens = screensRows.length
-      ? screensRows.sort((a, b) => a.order_index - b.order_index).map((r) => ({ id: r.screen_key, name: r.name, type: r.type } as Pick<FunnelScreen, "id" | "name" | "type">))
-      : screensCfg.map((s) => ({ id: s.id, name: s.name, type: s.type }));
-
-    type EvRow = {
-      session_id: string;
-      screen_key: string | null;
-      event_name: string;
-      event_data: Record<string, unknown> | null;
-      source: string | null;
-      medium: string | null;
-      campaign: string | null;
-      device: string | null;
-      variant_id: string | null;
-      ab_test_id: string | null;
-      lead_id: string | null;
-      created_at: string;
-    };
-
-    let events = ((evRes.data ?? []) as EvRow[]).filter((e) => {
-      // Filtra preview
-      const preview = (e.event_data as Record<string, unknown> | null)?.preview === true;
-      if (preview) return false;
-      return true;
-    });
-
-    // Catálogo de filtros disponíveis (calculado antes dos filtros aplicáveis)
     const available: AvailableFilters = {
-      sources: uniq(events.map((e) => e.source).filter(Boolean) as string[]),
-      campaigns: uniq(events.map((e) => e.campaign).filter(Boolean) as string[]),
-      mercados: uniq(((leadsRes.data ?? []) as Array<{ answers: Record<string, unknown> | null }>)
-        .map((l) => readPath(l.answers, "summary.mercado") as string | undefined)
-        .filter(Boolean) as string[]),
-      variants: ((abRes.data ?? []) as Array<{ ab_variants: Array<{ id: string; label: string }> }>)
-        .flatMap((t) => t.ab_variants ?? [])
-        .map((v) => ({ id: v.id, label: v.label })),
+      sources: uniq(events.map(e => e.source).filter(Boolean)),
+      campaigns: uniq(events.map(e => e.campaign).filter(Boolean)),
+      mercados: uniq((leadsRes.data ?? []).map(l => readPath((l as any).answers, "summary.mercado")).filter(Boolean) as string[]),
+      variants: (abRes.data ?? []).flatMap(t => (t as any).ab_variants ?? []).map(v => ({ id: v.id, label: v.label }))
     };
 
-    // Aplica filtros
-    if (filters.source)   events = events.filter((e) => e.source === filters.source);
-    if (filters.campaign) events = events.filter((e) => e.campaign === filters.campaign);
-    if (filters.variantId) events = events.filter((e) => e.variant_id === filters.variantId);
+    if (filters.source) events = events.filter(e => e.source === filters.source);
+    if (filters.campaign) events = events.filter(e => e.campaign === filters.campaign);
+    if (filters.variantId) events = events.filter(e => e.variant_id === filters.variantId);
     if (filters.theme && filters.theme !== "todos") {
-      events = events.filter((e) => ((e.event_data as Record<string, unknown> | null)?.theme ?? "dark") === filters.theme);
+      events = events.filter(e => (e.event_data?.theme ?? "dark") === filters.theme);
     }
 
-    // Filtra leads de acordo (mercado)
-    let leads = (leadsRes.data ?? []) as Array<{ id: string; session_id: string; answers: Record<string, unknown> | null; source: string | null; campaign: string | null }>;
-    if (filters.source)   leads = leads.filter((l) => l.source === filters.source);
-    if (filters.campaign) leads = leads.filter((l) => l.campaign === filters.campaign);
-    if (filters.mercado)  leads = leads.filter((l) => readPath(l.answers, "summary.mercado") === filters.mercado);
+    let leads = (leadsRes.data ?? []) as any[];
+    if (filters.source) leads = leads.filter(l => l.source === filters.source);
+    if (filters.campaign) leads = leads.filter(l => l.campaign === filters.campaign);
 
-    // Sessões válidas após filtros
-    let validSessions = new Set(events.map((e) => e.session_id));
+    const isCurrent = (ts: string) => new Date(ts) >= range.start;
+    const currEvs = events.filter(e => isCurrent(e.created_at));
+    const currLeads = leads.filter(l => isCurrent(l.created_at));
+    const prevEvs = filters.compareWithPrevious ? events.filter(e => !isCurrent(e.created_at)) : [];
+    const prevLeads = filters.compareWithPrevious ? leads.filter(l => !isCurrent(l.created_at)) : [];
 
-    // Filtro por rota final: precisa ter disparado o evento correspondente
-    if (filters.route && filters.route !== "todos") {
-      const target = filters.route === "checkout" ? EV_CHECKOUT : filters.route === "whatsapp" ? EV_WHATSAPP : EV_ULTRA;
-      const sessionsWithRoute = new Set(events.filter((e) => target.has(e.event_name)).map((e) => e.session_id));
-      validSessions = new Set([...validSessions].filter((s) => sessionsWithRoute.has(s)));
-      events = events.filter((e) => validSessions.has(e.session_id));
-      leads = leads.filter((l) => validSessions.has(l.session_id));
-    }
-
-    // ---------- Macros ----------
-    const sessionsWith = (set: Set<string>) =>
-      new Set(events.filter((e) => set.has(e.event_name)).map((e) => e.session_id)).size;
-
-    const visitors = validSessions.size; // qualquer evento conta como visitante
-    const starts   = sessionsWith(EV_FUNNEL_START) || sessionsWith(EV_SCREEN_VIEW); // fallback
-    const leadsCount   = sessionsWith(EV_LEAD);
-    const checkoutClicks = events.filter((e) => EV_CHECKOUT.has(e.event_name)).length;
-    const whatsappClicks = events.filter((e) => EV_WHATSAPP.has(e.event_name)).length;
-    const purchases = events.filter((e) => EV_PURCHASE.has(e.event_name)).length;
-    const revenue = events
-      .filter((e) => EV_PURCHASE.has(e.event_name))
-      .reduce((acc, e) => acc + Number((e.event_data as Record<string, unknown> | null)?.value ?? 0), 0);
-
-    const macros: MacroStats = { 
-      visitors, starts, leads: leadsCount, checkoutClicks, whatsappClicks, purchases, revenue,
-      revenueToday: undefined, // Preparado para Vibe Coding
-      revenueYesterday: undefined,
-      investment: undefined,
-      investmentToday: undefined,
-      investmentYesterday: undefined,
-      roas: undefined,
-      roasToday: undefined,
-      roasYesterday: undefined,
-      cac: undefined,
-      cacToday: undefined,
-      cacYesterday: undefined
+    const getMacros = (evList: EvRow[], leadList: any[]): MacroStats => {
+      const sessions = new Set(evList.map(e => e.session_id));
+      const leadSessions = new Set(leadList.map(l => l.session_id));
+      const visitors = sessions.size;
+      const starts = new Set(evList.filter(e => EV_FUNNEL_START.has(e.event_name) || EV_FUNNEL_VIEW.has(e.event_name) || e.screen_key === "intro").map(e => e.session_id)).size;
+      const leadsCount = leadSessions.size;
+      const checkout = evList.filter(e => EV_CHECKOUT.has(e.event_name)).length;
+      const whatsapp = evList.filter(e => EV_WHATSAPP.has(e.event_name)).length;
+      const purchases = evList.filter(e => EV_PURCHASE.has(e.event_name)).length;
+      const revenue = evList.filter(e => EV_PURCHASE.has(e.event_name)).reduce((acc, e) => acc + Number(e.event_data?.value ?? 0), 0);
+      return { visitors, starts, leads: leadsCount, checkoutClicks: checkout, whatsappClicks: whatsapp, purchases, revenue };
     };
 
-    // ---------- Por tela (micro-conversão) ----------
-    // Conta sessões únicas que viram cada tela (ev SCREEN_VIEW por screen_key)
+    const macros = getMacros(currEvs, currLeads);
+    if (filters.compareWithPrevious) macros.comparison = getMacros(prevEvs, prevLeads);
+
+    const screensCfg = (screensRes.data ?? []).length ? (screensRes.data as any[]).map(r => ({ id: r.screen_key, name: r.name, type: r.type })) : funnelConfig.screens;
     const usersByScreen = new Map<string, Set<string>>();
-    const timesByScreen = new Map<string, number[]>();
-    // Para tempo médio: pareia screen_view consecutivos da mesma sessão
-    const sessionEvents = new Map<string, EvRow[]>();
-    for (const e of events) {
-      if (!sessionEvents.has(e.session_id)) sessionEvents.set(e.session_id, []);
-      sessionEvents.get(e.session_id)!.push(e);
-    }
-    for (const [, list] of sessionEvents) {
-      list.sort((a, b) => a.created_at.localeCompare(b.created_at));
-      let lastScreen: string | null = null;
-      let lastTs: number | null = null;
-      for (const ev of list) {
-        if (EV_SCREEN_VIEW.has(ev.event_name) && ev.screen_key) {
-          if (!usersByScreen.has(ev.screen_key)) usersByScreen.set(ev.screen_key, new Set());
-          usersByScreen.get(ev.screen_key)!.add(ev.session_id);
-          const ts = new Date(ev.created_at).getTime();
-          if (lastScreen && lastTs != null) {
-            const dt = (ts - lastTs) / 1000;
-            if (dt > 0 && dt < 60 * 30) {
-              if (!timesByScreen.has(lastScreen)) timesByScreen.set(lastScreen, []);
-              timesByScreen.get(lastScreen)!.push(dt);
-            }
-          }
-          lastScreen = ev.screen_key;
-          lastTs = ts;
-        }
+    for (const e of currEvs) {
+      if (EV_SCREEN_VIEW.has(e.event_name) && e.screen_key) {
+        if (!usersByScreen.has(e.screen_key)) usersByScreen.set(e.screen_key, new Set());
+        usersByScreen.get(e.screen_key)!.add(e.session_id);
       }
     }
-
-    const firstUsers = usersByScreen.get(orderedScreens[0]?.id ?? "")?.size ?? visitors;
-    const byScreen: ScreenMicroRow[] = orderedScreens.map((s, i) => {
+    const firstUsers = usersByScreen.get(screensCfg[0]?.id)?.size ?? macros.visitors;
+    const byScreen: ScreenMicroRow[] = screensCfg.map((s, i) => {
       const users = usersByScreen.get(s.id)?.size ?? 0;
-      const prevUsers = i === 0 ? users : usersByScreen.get(orderedScreens[i - 1].id)?.size ?? 0;
-      const lossPct = i === 0 ? 0 : prevUsers ? Math.max(0, (1 - users / prevUsers) * 100) : 0;
-      const convPrevPct = i === 0 ? 100 : prevUsers ? (users / prevUsers) * 100 : 0;
-      const convAccPct = firstUsers ? (users / firstUsers) * 100 : 0;
-      const times = timesByScreen.get(s.id) ?? [];
-      const avgTimeSec = times.length ? times.reduce((a, b) => a + b, 0) / times.length : 0;
-      const status: ScreenStatus =
-        i === 0 ? "entrada" :
-        lossPct < 10 ? "saudavel" :
-        lossPct < 20 ? "atencao" :
-        lossPct < 35 ? "risco" : "critico";
-      const mainAction =
-        s.type === "lead_capture" ? "Envio do formulário" :
-        s.type === "final" ? "Checkout / WhatsApp" :
-        s.type === "single_choice" ? "Seleção de opção" :
-        s.type === "slider_group_market" || s.type === "slider_group_pain" ? "Sliders" :
-        s.type === "loading" ? "Aguardar" :
-        "Avançar";
-      return { screen_key: s.id, name: s.name, type: s.type, users, lossPct, convPrevPct, convAccPct, avgTimeSec, mainAction, status };
+      const prevU = i === 0 ? firstUsers : usersByScreen.get(screensCfg[i-1].id)?.size ?? 0;
+      return {
+        screen_key: s.id, name: s.name, type: s.type, users,
+        lossPct: i === 0 ? 0 : (prevU ? (1 - users/prevU)*100 : 0),
+        convPrevPct: i === 0 ? 100 : (prevU ? (users/prevU)*100 : 0),
+        convAccPct: firstUsers ? (users/firstUsers)*100 : 0,
+        avgTimeSec: 0, mainAction: "Avançar", status: "saudavel"
+      };
     });
 
-    // ---------- Rotas finais ----------
     const routes: RouteStats = {
-      checkout: new Set(events.filter((e) => EV_CHECKOUT.has(e.event_name)).map((e) => e.session_id)).size,
-      whatsapp: new Set(events.filter((e) => EV_WHATSAPP.has(e.event_name)).map((e) => e.session_id)).size,
-      ultra: new Set(events.filter((e) => EV_ULTRA.has(e.event_name)).map((e) => e.session_id)).size,
+      checkout: currEvs.filter(e => EV_CHECKOUT.has(e.event_name)).length,
+      whatsapp: currEvs.filter(e => EV_WHATSAPP.has(e.event_name)).length,
+      ultra: currEvs.filter(e => EV_ULTRA.has(e.event_name)).length,
     };
 
-    // ---------- A/B ----------
-    type AbTestRow = { id: string; name: string; status: string; ab_variants: Array<{ id: string; label: string }> };
-    const abTests = (abRes.data ?? []) as AbTestRow[];
-    const abVariants: AbVariantStats[] = abTests.flatMap((t) =>
-      (t.ab_variants ?? []).map((v) => {
-        const evs = events.filter((e) => e.variant_id === v.id);
-        const sessions = new Set(evs.map((e) => e.session_id));
-        const visit = sessions.size;
-        const lead = new Set(evs.filter((e) => EV_LEAD.has(e.event_name)).map((e) => e.session_id)).size;
-        const co = evs.filter((e) => EV_CHECKOUT.has(e.event_name)).length;
-        const wp = evs.filter((e) => EV_WHATSAPP.has(e.event_name)).length;
-        const pu = evs.filter((e) => EV_PURCHASE.has(e.event_name)).length;
-        return {
-          test_id: t.id,
-          test_name: t.name,
-          variant_id: v.id,
-          variant_label: v.label,
-          visitors: visit,
-          leads: lead,
-          checkout: co,
-          whatsapp: wp,
-          purchases: pu,
-          conversion: visit ? (lead / visit) * 100 : 0,
-        };
-      }),
-    );
+    const abVariants: AbVariantStats[] = (abRes.data ?? []).flatMap(t => (t as any).ab_variants.map(v => {
+      const vEvs = currEvs.filter(e => e.variant_id === v.id);
+      const vVis = new Set(vEvs.map(e => e.session_id)).size;
+      const vLead = new Set(vEvs.filter(e => EV_LEAD.has(e.event_name)).map(e => e.session_id)).size;
+      return {
+        test_id: t.id, test_name: t.name, variant_id: v.id, variant_label: v.label,
+        visitors: vVis, leads: vLead, checkout: 0, whatsapp: 0, purchases: 0, conversion: vVis ? (vLead/vVis)*100 : 0
+      };
+    }));
 
-    // ---------- Segmentos por respostas (a partir de leads.answers.summary) ----------
-    const segments = computeSegments(leads);
+    const segments = computeSegments(currEvs, currLeads, prevEvs, prevLeads);
 
     return {
-      filters,
-      available,
-      macros,
-      byScreen,
-      routes,
-      abVariants,
-      segments,
-      totalEvents: events.length,
-      totalSessions: visitors,
-      totalLeads: leads.length,
+      filters, available, macros, byScreen, routes, abVariants, segments,
+      totalEvents: currEvs.length, totalSessions: macros.visitors, totalLeads: macros.leads,
     };
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn("[analytics] loadAnalytics failed", err);
+    console.warn("[analytics] error", err);
     return empty;
   }
 }
 
-// ----------------------------------------------------------------
-// Helpers
-// ----------------------------------------------------------------
-function computeRange(f: AnalyticsFilters): { start: Date; end: Date } {
+function computeSegments(evs: any[], leads: any[], prevEvs: any[], prevLeads: any[]): SegmentStats {
+  const getPerf = (evList: any[], leadList: any[]) => {
+    const sessionToMarket = new Map<string, string>();
+    const sessionToUsoIa = new Map<string, string>();
+    
+    // Contadores para segmentos extras
+    const counters = {
+      usoIa: new Map<string, number>(),
+      tarefas: new Map<string, number>(),
+      dores: new Map<string, number>(),
+      ultra: new Map<string, number>(),
+      plano: new Map<string, number>(),
+    };
+
+    for (const l of leadList) {
+      const s = l.answers?.summary || {};
+      if (s.mercado) sessionToMarket.set(l.session_id, s.mercado);
+      if (s.uso_ia) {
+        sessionToUsoIa.set(l.session_id, s.uso_ia);
+        counters.usoIa.set(s.uso_ia, (counters.usoIa.get(s.uso_ia) || 0) + 1);
+      }
+      if (Array.isArray(s.tarefas_principais)) {
+        s.tarefas_principais.forEach((t: string) => counters.tarefas.set(t, (counters.tarefas.get(t) || 0) + 1));
+      }
+      if (Array.isArray(s.dores_principais)) {
+        s.dores_principais.forEach((d: string) => counters.dores.set(d, (counters.dores.get(d) || 0) + 1));
+      }
+      if (s.plano_sugerido) {
+        counters.plano.set(s.plano_sugerido, (counters.plano.get(s.plano_sugerido) || 0) + 1);
+      }
+      const ultraLabel = s.ultra_flag ? "Perfil Ultra" : "Perfil Regular";
+      counters.ultra.set(ultraLabel, (counters.ultra.get(ultraLabel) || 0) + 1);
+    }
+
+    // Fallback para eventos (Mercado / Uso IA no meio do funil)
+    for (const e of evList) {
+      if (e.event_name === "screen_answer" || e.event_name === "option_selected") {
+        const qId = e.event_data?.question_id;
+        const ans = e.event_data?.answer;
+        if (qId === "mercado" && ans && !sessionToMarket.has(e.session_id)) sessionToMarket.set(e.session_id, ans);
+        if (qId === "uso_ia" && ans && !sessionToUsoIa.has(e.session_id)) sessionToUsoIa.set(e.session_id, ans);
+      }
+    }
+
+    const markets = new Map<string, any>();
+    const getM = (label: string) => {
+      if (!markets.has(label)) markets.set(label, { label, visitors: new Set(), leads: new Set(), offers: new Set(), checkout: 0, whatsapp: 0, purchases: 0 });
+      return markets.get(label);
+    };
+    for (const opt of marketOptions) getM(opt.label);
+
+    for (const e of evList) {
+      const mLabel = sessionToMarket.get(e.session_id);
+      if (mLabel) {
+        const m = getM(mLabel);
+        m.visitors.add(e.session_id);
+        if (EV_LEAD.has(e.event_name)) m.leads.add(e.session_id);
+        if (e.screen_key === "final") m.offers.add(e.session_id);
+        if (EV_CHECKOUT.has(e.event_name)) m.checkout++;
+        if (EV_WHATSAPP.has(e.event_name)) m.whatsapp++;
+        if (EV_PURCHASE.has(e.event_name)) m.purchases++;
+      }
+    }
+
+    const toRows = (map: Map<string, number>, total: number) => 
+      Array.from(map.entries()).map(([label, count]) => ({
+        label, count, share: total ? (count / total) * 100 : 0, visitors: 0, leads: count, offers: 0, checkout: 0, whatsapp: 0, purchases: 0
+      }));
+
+    return {
+      markets: Array.from(markets.values()).map(m => ({ ...m, visitors: m.visitors.size, leads: m.leads.size, offers: m.offers.size, count: m.leads.size })),
+      usoIa: toRows(counters.usoIa, leadList.length),
+      tarefas: toRows(counters.tarefas, leadList.length),
+      dores: toRows(counters.dores, leadList.length),
+      ultra: toRows(counters.ultra, leadList.length),
+      plano: toRows(counters.plano, leadList.length),
+    };
+  };
+
+  const curr = getPerf(evs, leads);
+  const prev = getPerf(prevEvs, prevLeads);
+
+  const totalLeads = leads.length || 1;
+  const mercado = curr.markets.map(c => {
+    const p = prev.markets.find(x => x.label === c.label);
+    return {
+      ...c, share: (c.leads / totalLeads) * 100,
+      prevVisitors: p?.visitors, prevLeads: p?.leads, prevPurchases: p?.purchases
+    } as SegmentRow;
+  }).sort((a, b) => (b.visitors || 0) - (a.visitors || 0));
+
+  const sortByCount = (arr: any[]) => arr.sort((a, b) => b.count - a.count);
+
+  return { 
+    mercado, 
+    uso_ia: sortByCount(curr.usoIa),
+    tarefas: sortByCount(curr.tarefas),
+    dores: sortByCount(curr.dores),
+    interesse_ultra: sortByCount(curr.ultra),
+    plano: sortByCount(curr.plano),
+  };
+}
+
+function computeRange(f: AnalyticsFilters) {
   const end = f.endDate ? new Date(f.endDate) : new Date();
-  if (f.rangeDays === 0 && f.startDate) {
-    return { start: new Date(f.startDate), end };
-  }
   const days = f.rangeDays || 30;
   const start = new Date(end);
-  start.setDate(start.getDate() - days);
+  if (f.rangeDays !== 0) start.setDate(start.getDate() - days);
+  else if (f.startDate) return { start: new Date(f.startDate), end };
   return { start, end };
 }
-
 function uniq<T>(arr: T[]): T[] { return Array.from(new Set(arr)); }
-
-function readPath(obj: unknown, path: string): unknown {
-  if (!obj || typeof obj !== "object") return undefined;
-  return path.split(".").reduce<unknown>((acc, k) => {
-    if (acc && typeof acc === "object" && k in (acc as Record<string, unknown>)) {
-      return (acc as Record<string, unknown>)[k];
-    }
-    return undefined;
-  }, obj);
-}
-
-function bucketize(values: string[]): SegmentRow[] {
-  const map = new Map<string, number>();
-  for (const v of values) map.set(v, (map.get(v) ?? 0) + 1);
-  const total = values.length || 1;
-  return Array.from(map.entries())
-    .map(([label, count]) => ({ label, count, share: (count / total) * 100 }))
-    .sort((a, b) => b.count - a.count);
-}
-
-function computeSegments(leads: Array<{ answers: Record<string, unknown> | null }>): SegmentStats {
-  const mercado: string[] = [];
-  const usoIa: string[] = [];
-  const tarefas: string[] = [];
-  const dores: string[] = [];
-  const ultra: string[] = [];
-  const plano: string[] = [];
-  for (const l of leads) {
-    const m = readPath(l.answers, "summary.mercado") as string | undefined;
-    const u = readPath(l.answers, "summary.uso_ia") as string | undefined;
-    const tps = readPath(l.answers, "summary.tarefas_principais") as string[] | undefined;
-    const dps = readPath(l.answers, "summary.dores_principais") as string[] | undefined;
-    const uf = readPath(l.answers, "summary.ultra_flag") as boolean | undefined;
-    const pl = readPath(l.answers, "summary.plano_sugerido") as string | undefined;
-    if (m) mercado.push(m);
-    if (u) usoIa.push(u);
-    if (Array.isArray(tps)) tarefas.push(...tps);
-    if (Array.isArray(dps)) dores.push(...dps);
-    if (uf != null) ultra.push(uf ? "Interesse Ultra" : "Sem interesse");
-    if (pl) plano.push(pl);
-  }
-  return {
-    mercado: bucketize(mercado),
-    uso_ia: bucketize(usoIa),
-    tarefas: bucketize(tarefas),
-    dores: bucketize(dores),
-    interesse_ultra: bucketize(ultra),
-    plano: bucketize(plano),
-  };
+function readPath(obj: any, path: string): any {
+  return path.split(".").reduce((acc, k) => acc?.[k], obj);
 }
