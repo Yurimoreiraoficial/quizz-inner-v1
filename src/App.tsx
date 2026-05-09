@@ -8,11 +8,8 @@ import IndexDark from "./pages/IndexDark.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import FunisListPage from "./pages/admin/FunisListPage";
-import UnifiedFunnelEditorPage from "./pages/admin/UnifiedFunnelEditorPage";
 import AbPage from "./pages/admin/AbPage";
 import AnalyticsFunilPage from "./pages/admin/AnalyticsFunilPage";
-
-
 
 const queryClient = new QueryClient();
 
@@ -29,12 +26,8 @@ const App = () => (
             <Route index element={<Navigate to="/admin/funis" replace />} />
             <Route path="funis" element={<FunisListPage />} />
             <Route path="funis/atual" element={<Navigate to="/admin/funis/atual/analytics" replace />} />
-            <Route path="funis/atual/editor" element={<Navigate to="/admin/funis/atual/fluxo" replace />} />
-            <Route path="funis/atual/fluxo" element={<UnifiedFunnelEditorPage />} />
             <Route path="funis/atual/ab" element={<AbPage />} />
             <Route path="funis/atual/analytics" element={<AnalyticsFunilPage />} />
-            <Route path="funis/atual/links" element={<Navigate to="/admin/funis/atual/fluxo" replace />} />
-            <Route path="funis/atual/diagnostico" element={<Navigate to="/admin/funis/atual/fluxo" replace />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

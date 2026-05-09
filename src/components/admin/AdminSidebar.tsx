@@ -10,7 +10,6 @@ const workspace = [
 ];
 
 const contextual = [
-  { to: "/admin/funis/atual/fluxo",      label: "Fluxo visual",       icon: GitBranch },
   { to: "/admin/funis/atual/ab",         label: "Testes A/B",         icon: SplitSquareHorizontal },
   { to: "/admin/funis/atual/analytics",  label: "Analytics",          icon: BarChart3 },
 ];
