@@ -11,9 +11,6 @@ const labelMap: Record<string, string> = {
   analytics: "Analytics",
   links: "Links e Pixels",
   diagnostico: "Diagnóstico técnico",
-  templates: "Templates",
-  experimentos: "Experimentos",
-  configuracoes: "Configurações",
 };
 
 function useCrumbs() {

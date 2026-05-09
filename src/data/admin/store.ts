@@ -22,6 +22,13 @@ export type LinksConfig = {
   gtmId: string;
   metaPixelId: string;
   ga4Id: string;
+  whatsappMessage?: string;
+  whatsappEventInternal?: string;
+  whatsappEventMeta?: string;
+  whatsappGtm?: boolean;
+  checkoutEventInternal?: string;
+  checkoutEventMeta?: string;
+  checkoutGtm?: boolean;
 };
 
 export type Experiment = {

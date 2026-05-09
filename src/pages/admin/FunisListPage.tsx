@@ -67,7 +67,7 @@ export default function FunisListPage() {
                   <a href="/dark" target="_blank" rel="noreferrer" className="admin-btn-ghost inline-flex items-center gap-1.5">
                     <Eye className="w-4 h-4" /> Preview
                   </a>
-                  <Link to="/admin/funis/atual" className="admin-btn-primary inline-flex items-center gap-1.5">
+                  <Link to="/admin/funis/atual/analytics" className="admin-btn-primary inline-flex items-center gap-1.5">
                     <Rocket className="w-4 h-4" /> Abrir
                   </Link>
                 </div>

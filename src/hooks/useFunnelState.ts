@@ -27,7 +27,18 @@ function newSessionId() {
 }
 
 export function useFunnelState() {
-  const [state, setState] = useState<FunnelState>(initial);
+  const [state, setState] = useState<FunnelState>(() => {
+    let initialIdx = initial.currentStepIndex;
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const screenParam = params.get("screen");
+      if (screenParam) {
+        const found = funnelSteps.findIndex(s => s.id === screenParam);
+        if (found >= 0) initialIdx = found;
+      }
+    }
+    return { ...initial, currentStepIndex: initialIdx };
+  });
   const startedRef = useRef(false);
 
   const currentStep = funnelSteps[state.currentStepIndex];

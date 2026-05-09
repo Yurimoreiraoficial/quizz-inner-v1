@@ -8,12 +8,14 @@ import { getNaturalBenefits } from "@/utils/getNaturalBenefits";
 import { buildCheckoutUrl } from "@/utils/buildCheckoutUrl";
 import { buildWhatsappUrl } from "@/utils/buildWhatsappUrl";
 import { finalPageContent, partnerLogos } from "@/data/finalPageContent";
+import { funnelConfig, getScreen, type FunnelScreen } from "@/data/funnelConfig";
 import { socialProofSubBy } from "@/data/marketOptions";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
 import { TestimonialSwipe } from "./TestimonialSwipe";
 import { PrimaryButton } from "./PrimaryButton";
 import { AlertCard } from "./AlertCard";
 import { trackEvent } from "@/services/funnelTrackingService";
+import { triggerMetaPixel } from "@/services/metaPixelService";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { company, links } from "@/data/designTokens";
@@ -31,9 +33,13 @@ import partnerLogosImg from "@/assets/partner-logos.webp";
 
 interface FinalResultPageProps {
   state: FunnelState;
+  screen?: FunnelScreen;
 }
 
-export function FinalResultPage({ state }: FinalResultPageProps) {
+export function FinalResultPage({ state, screen: propScreen }: FinalResultPageProps) {
+  const screen = propScreen || getScreen("final", funnelConfig);
+  const content = screen?.content || {};
+  
   const fName = firstName(state.nome) || "você";
   const benefits = useMemo(() => getNaturalBenefits(state), [state]);
   const checkoutUrl = useMemo(() => buildCheckoutUrl(state), [state]);
@@ -43,6 +49,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
   const fitLabel = state.nivelEncaixe ?? "Alto";
 
   const onCheckout = () => {
+    triggerMetaPixel(screen, "checkout");
     trackEvent(state.sessionId, "checkout_clicked", {
       stepId: "final",
       metadata: { fit_level: fitLabel, recommended_plan: state.planoSugerido },
@@ -50,6 +57,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
     window.open(checkoutUrl, "_blank", "noopener");
   };
   const onWhats = () => {
+    triggerMetaPixel(screen, "whatsapp");
     trackEvent(state.sessionId, "whatsapp_clicked", {
       stepId: "final",
       metadata: { fit_level: fitLabel, recommended_plan: state.planoSugerido },
@@ -62,7 +70,7 @@ export function FinalResultPage({ state }: FinalResultPageProps) {
       {/* Bloco 01 — Nível de encaixe */}
       <Reveal as="section" className="text-left">
         <h1 className="sm:text-[30px] leading-[1.1] text-foreground text-balance text-left font-normal text-2xl">
-          {fName}, sua análise está pronta.
+          {content.headline?.replace("{nome}", fName) || `${fName}, sua análise está pronta.`}
         </h1>
 
         <div className="mt-5 card-strong p-6 text-left relative overflow-hidden bg-gradient-to-br from-primary/10 via-card to-card border border-primary/20">

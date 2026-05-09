@@ -5,7 +5,7 @@ import { aiUsageOptions, marketOptions, innerHelpsByMarket, socialProofSubBy } f
 import { taskOptionsByMarket, painOptions } from "@/data/taskOptionsByMarket";
 import { testimonialsByMarket } from "@/data/testimonialsByMarket";
 import { trackEvent } from "@/services/funnelTrackingService";
-import { funnelConfig, getScreen } from "@/data/funnelConfig";
+import { funnelConfig, getScreen, type FunnelScreen } from "@/data/funnelConfig";
 import { useAbOverrides } from "@/hooks/useAbOverrides";
 
 import { FunnelLayout } from "@/components/FunnelLayout";
@@ -22,10 +22,16 @@ import { FinalResultPage } from "@/components/FinalResultPage";
 import introAiCards from "@/assets/logo-das-ias.webp";
 import { InnerAIOrbital } from "@/components/InnerAIOrbital";
 import { Zap, Target, BrainCircuit } from "lucide-react";
+import { initMetaPixel, triggerMetaPixel } from "@/services/metaPixelService";
 
 const Index = () => {
   // Inicializa UTMs cedo
   useUtmParams();
+
+  // Inicializa Meta Pixel se houver
+  useEffect(() => {
+    void initMetaPixel();
+  }, []);
 
   const c = useFunnelState();
   const step = c.currentStep;
@@ -39,7 +45,21 @@ const Index = () => {
    * CTAs e opções editáveis passam a vir de funnelConfig (lookup por step.id).
    * Fallbacks ficam disponíveis para não quebrar caso o id não esteja mapeado.
    */
-  const screen = step ? getScreen(step.id, funnelConfig) : undefined;
+  const [liveOverride, setLiveOverride] = useState<FunnelScreen | null>(null);
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === "INNER_PREVIEW_UPDATE") {
+        setLiveOverride(e.data.screen);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
+  const originalScreen = step ? getScreen(step.id, funnelConfig) : undefined;
+  const screen = (liveOverride && liveOverride.id === step?.id) ? liveOverride : originalScreen;
+
   const baseContent = screen?.content ?? {};
   const ab = useAbOverrides(step?.id);
   const content = {
@@ -76,15 +96,19 @@ const Index = () => {
     }, 180);
   };
 
-  // result_viewed quando entra na tela final
+  // tracking de visualização de tela
   useEffect(() => {
     if (!step) return;
     const ev = getScreen(step.id, funnelConfig)?.events?.view;
     if (ev) trackEvent(c.state.sessionId, ev as never, { stepId: step.id });
+    
+    // Novo Gatilho: Visualizou a página
+    triggerMetaPixel(screen, "view");
+
     if (step.id === "final") {
       trackEvent(c.state.sessionId, "result_viewed", { stepId: "final" });
     }
-  }, [step?.id, c.state.sessionId]);
+  }, [step?.id, c.state.sessionId, screen]);
 
   const market = c.state.mercado ?? "outro";
 
@@ -100,15 +124,18 @@ const Index = () => {
 
   const isFinal = step.id === "final";
 
+  const isPreview = new URLSearchParams(window.location.search).get("preview") === "1";
+
   return (
-    <FunnelLayout
-      stepKey={step.id}
-      showBack={!!step.showBack}
-      showProgress={!!step.showProgress}
-      progress={c.progress}
-      onBack={handleBack}
-      scrollable={isFinal}
-    >
+    <div className={isPreview ? "preview-mode" : ""}>
+      <FunnelLayout
+        stepKey={step.id}
+        showBack={!!step.showBack}
+        showProgress={!!step.showProgress}
+        progress={c.progress}
+        onBack={handleBack}
+        scrollable={isFinal || isPreview}
+      >
       {/* 1. Intro */}
       {step.id === "intro" && (
         <div className="flex flex-col items-center text-center -mt-6 sm:-mt-4">
@@ -182,6 +209,7 @@ const Index = () => {
           options={(screen?.options?.length ? screen.options : aiUsageOptions) as { value: string; label: string }[]}
           selectedValue={c.state.usoIA}
           onSelect={(v, l) => {
+            triggerMetaPixel(screen, "answer");
             c.setUsoIA(v as never, l);
             scheduleAdvance();
           }}
@@ -207,6 +235,7 @@ const Index = () => {
           options={(screen?.options?.length ? screen.options : marketOptions) as { value: string; label: string }[]}
           selectedValue={c.state.mercado}
           onSelect={(v, l) => {
+            triggerMetaPixel(screen, "answer");
             c.setMercado(v as never, l);
             scheduleAdvance();
           }}
@@ -251,7 +280,11 @@ const Index = () => {
           />
           {tarefasComplete && (
             <div className="mt-4 animate-fade-in">
-              <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
+              <PrimaryButton onClick={() => { 
+                triggerMetaPixel(screen, "click");
+                c.finalizeTasksAndPains(); 
+                c.goNext(); 
+              }}>
                 {ctaLabel}
               </PrimaryButton>
             </div>
@@ -275,7 +308,10 @@ const Index = () => {
             <PartnerLogos />
           </div>
           <div className="mt-7">
-            <PrimaryButton onClick={c.goNext}>{ctaLabel}</PrimaryButton>
+            <PrimaryButton onClick={() => {
+              triggerMetaPixel(screen, "click");
+              c.goNext();
+            }}>{ctaLabel}</PrimaryButton>
           </div>
         </div>
       )}
@@ -293,7 +329,11 @@ const Index = () => {
           />
           {doresComplete && (
             <div className="mt-4 animate-fade-in">
-              <PrimaryButton onClick={() => { c.finalizeTasksAndPains(); c.goNext(); }}>
+              <PrimaryButton onClick={() => { 
+                triggerMetaPixel(screen, "click");
+                c.finalizeTasksAndPains(); 
+                c.goNext(); 
+              }}>
                 {ctaLabel}
               </PrimaryButton>
             </div>
@@ -309,8 +349,12 @@ const Index = () => {
       {/* 10. Lead capture */}
       {step.id === "lead" && (
         <LeadCaptureStep
+          headline={content.headline ?? "Sua análise está pronta"}
+          subtitle={content.subtitle ?? "Preencha seus dados para liberar sua recomendação."}
+          buttonText={ctaLabel}
           blurredCards={blurredCards}
           onSubmit={(nome, whatsapp) => {
+            triggerMetaPixel(screen, "submit");
             c.submitLead(nome, whatsapp);
             c.goNext();
           }}
@@ -318,8 +362,9 @@ const Index = () => {
       )}
 
       {/* Final */}
-      {step.id === "final" && <FinalResultPage state={c.state} />}
+      {step.id === "final" && <FinalResultPage state={c.state} screen={screen} />}
     </FunnelLayout>
+    </div>
   );
 };
 

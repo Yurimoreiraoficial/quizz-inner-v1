@@ -1,26 +1,18 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutGrid, FileStack, FlaskConical, BarChart3, Settings,
-  Pencil, GitBranch, SplitSquareHorizontal, Link2, Stethoscope, LifeBuoy,
+  Pencil, GitBranch, SplitSquareHorizontal, Link2, Stethoscope,
 } from "lucide-react";
 import { AdminLogo } from "./AdminLogo";
 
 const workspace = [
   { to: "/admin/funis",         label: "Funis",          icon: LayoutGrid },
-  { to: "/admin/templates",     label: "Templates",      icon: FileStack },
-  { to: "/admin/experimentos",  label: "Experimentos",   icon: FlaskConical },
-  { to: "/admin/analytics",     label: "Analytics",      icon: BarChart3 },
-  { to: "/admin/configuracoes", label: "Configurações",  icon: Settings },
 ];
 
 const contextual = [
-  { to: "/admin/funis/atual",            label: "Visão geral",        icon: LayoutGrid, end: true },
-  { to: "/admin/funis/atual/editor",     label: "Editor",             icon: Pencil },
   { to: "/admin/funis/atual/fluxo",      label: "Fluxo visual",       icon: GitBranch },
   { to: "/admin/funis/atual/ab",         label: "Testes A/B",         icon: SplitSquareHorizontal },
   { to: "/admin/funis/atual/analytics",  label: "Analytics",          icon: BarChart3 },
-  { to: "/admin/funis/atual/links",      label: "Links e Pixels",     icon: Link2 },
-  { to: "/admin/funis/atual/diagnostico",label: "Diagnóstico técnico",icon: Stethoscope },
 ];
 
 export function AdminSidebar() {
@@ -73,21 +65,6 @@ export function AdminSidebar() {
         )}
       </div>
 
-      <div className="p-4">
-        <div
-          className="rounded-2xl p-4"
-          style={{ background: "var(--admin-surface-2)", border: "1px solid var(--admin-border)" }}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <LifeBuoy className="w-4 h-4" style={{ color: "var(--admin-text)" }} />
-            <span className="text-sm font-semibold">Precisa de ajuda?</span>
-          </div>
-          <p className="text-xs leading-relaxed mb-3" style={{ color: "var(--admin-muted)" }}>
-            Documentação interna e referências rápidas para operar o funil atual.
-          </p>
-          <a href="#" className="admin-link text-xs">Abrir guia →</a>
-        </div>
-      </div>
     </aside>
   );
 }

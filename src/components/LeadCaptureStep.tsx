@@ -4,11 +4,20 @@ import { isValidName, isValidPhone, maskPhoneBR, normalizePhone } from "@/utils/
 import { Lock } from "lucide-react";
 
 interface LeadCaptureStepProps {
+  headline?: string;
+  subtitle?: string;
+  buttonText?: string;
   onSubmit: (nome: string, whatsapp: string) => void;
   blurredCards: { value: string; label: string }[];
 }
 
-export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps) {
+export function LeadCaptureStep({ 
+  headline = "Sua análise está pronta", 
+  subtitle = "Preencha seus dados para liberar sua recomendação.",
+  buttonText = "LIBERAR MINHA ANÁLISE",
+  onSubmit, 
+  blurredCards 
+}: LeadCaptureStepProps) {
   const [nome, setNome] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -21,7 +30,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
     <div className="flex flex-col">
       <div className="text-center">
         <h1 className="text-[26px] sm:text-[28px] leading-[1.15] font-bold text-foreground text-balance">
-          Sua análise está pronta
+          {headline}
         </h1>
       </div>
 
@@ -42,7 +51,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
           <span>FALTA POUCO</span>
         </div>
         <p className="mt-1 text-[14px] text-muted-foreground text-pretty">
-          Preencha seus dados para liberar sua recomendação.
+          {subtitle}
         </p>
       </div>
 
@@ -85,7 +94,7 @@ export function LeadCaptureStep({ onSubmit, blurredCards }: LeadCaptureStepProps
 
         <div className="mt-2">
           <PrimaryButton type="submit" withArrow disabled={submitted && !formOk}>
-            LIBERAR MINHA ANÁLISE
+            {buttonText}
           </PrimaryButton>
         </div>
 

@@ -81,7 +81,7 @@ export async function saveScreen(screen: FunnelScreen): Promise<{ ok: boolean }>
       type: screen.type,
       status: screen.status,
       order_index: screen.order,
-      content: (screen.content ?? {}) as never,
+      content: { ...screen.content, options: screen.options } as never,
       cta: (screen.cta ?? {}) as never,
       events: (screen.events ?? {}) as never,
       pixels: (screen.pixels ?? []) as never,
@@ -177,10 +177,11 @@ function mapRowToScreen(row: Record<string, unknown>): FunnelScreen {
     type: row.type as FunnelScreen["type"],
     status: (row.status ?? "active") as FunnelScreen["status"],
     content: (row.content ?? {}) as FunnelScreen["content"],
+    options: (row.content as any)?.options || undefined,
     cta: (row.cta ?? undefined) as FunnelScreen["cta"],
     events: (row.events ?? undefined) as FunnelScreen["events"],
     pixels: (row.pixels ?? []) as FunnelScreen["pixels"],
-    rules: (row.rules ?? []) as FunnelScreen["rules"],
+    rules: (row.rules ?? []) as never,
     nextScreen: (row.next_screen_key ?? null) as string | null,
   };
 }

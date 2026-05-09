@@ -257,10 +257,9 @@ export default function AbPage() {
         right={<button className="admin-btn-primary inline-flex items-center gap-1.5" onClick={startNew}><Plus className="w-4 h-4" /> Novo teste</button>}
       />
 
-      {/* 1. Visão geral dos testes */}
+      {/* 1. Visão geral de performance */}
       <SectionCard
-        title="Visão geral dos testes"
-        description="Resumo de todos os testes A/B do funil."
+        title="Visão geral de performance"
         className="mb-5"
       >
         {loading ? (
@@ -276,26 +275,32 @@ export default function AbPage() {
               <thead>
                 <tr>
                   <th>Teste A/B</th>
-                  <th>Tela</th>
-                  <th>Campo</th>
-                  <th>Métrica</th>
                   <th>Variação vencedora</th>
-                  <th>Resultado</th>
-                  <th>Status</th>
-                  <th></th>
+                  <th>Checkout</th>
+                  <th>Mais detalhes</th>
                 </tr>
               </thead>
               <tbody>
                 {tests.map((t) => {
                   const perf = perfMap[t.id] ?? [];
                   const winner = pickWinner(perf);
-                  const totalVisitors = perf.reduce((a, p) => a + p.visitors, 0);
+                  const winnerVariant = winner
+                    ? t.variants.find((v) => v.id === winner.variant_id)
+                    : null;
+                  // Best checkout value from winning variant, or best overall
+                  const checkoutPct = winner
+                    ? `${winner.conversion_rate.toFixed(1)}%`
+                    : "—";
+                  const detail = winnerVariant
+                    ? String(
+                        typeof (winnerVariant.value as { value?: unknown }).value === "string"
+                          ? (winnerVariant.value as { value?: unknown }).value
+                          : ""
+                      ).slice(0, 60) || "—"
+                    : "—";
                   return (
                     <tr key={t.id}>
                       <td className="font-semibold">{t.name || "(sem nome)"}</td>
-                      <td>{screenName(t.screen_key)}</td>
-                      <td>{FIELD_LABEL[t.field_key] ?? t.field_key}</td>
-                      <td>{METRIC_LABEL[t.metric] ?? t.metric}</td>
                       <td>
                         {winner ? (
                           <span className="inline-flex items-center gap-1" style={{ color: "var(--admin-green)" }}>
@@ -305,23 +310,8 @@ export default function AbPage() {
                           <span style={{ color: "var(--admin-muted)" }}>—</span>
                         )}
                       </td>
-                      <td>
-                        {winner
-                          ? `${winner.conversion_rate.toFixed(2)}%`
-                          : totalVisitors === 0
-                            ? <span style={{ color: "var(--admin-muted)" }}>sem dados</span>
-                            : <span style={{ color: "var(--admin-muted)" }}>{totalVisitors}/{MIN_VOLUME_FOR_WINNER} visitantes</span>}
-                      </td>
-                      <td>
-                        <StatusBadge variant={STATUS_BADGE[t.status] ?? "neutral"}>
-                          {STATUS_LABEL[t.status] ?? t.status}
-                        </StatusBadge>
-                      </td>
-                      <td>
-                        <button className="admin-btn-ghost inline-flex items-center gap-1" onClick={() => scrollToTest(t.id)}>
-                          Detalhes <ChevronRight className="w-3.5 h-3.5" />
-                        </button>
-                      </td>
+                      <td>{checkoutPct}</td>
+                      <td className="text-sm" style={{ color: "var(--admin-muted)" }}>{detail}</td>
                     </tr>
                   );
                 })}
@@ -433,27 +423,30 @@ export default function AbPage() {
         </SectionCard>
       )}
 
-      {/* 2. Cards detalhados por teste */}
+      {/* 2. Visão detalhada de performance */}
       {!loading && tests.length > 0 && (
-        <div className="space-y-5">
-          {tests.map((t) => (
-            <div
-              key={t.id}
-              ref={(el) => { cardRefs.current[t.id] = el; }}
-              className="rounded-lg transition-shadow"
-              style={{ boxShadow: "0 0 0 0 transparent" }}
-            >
-              <AbTestCard
-                test={t}
-                perf={perfMap[t.id] ?? []}
-                screenName={screenName(t.screen_key)}
-                onEdit={() => startEdit(t)}
-                onStatus={(s) => changeStatus(t.id, s)}
-                onRemove={() => remove(t.id)}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <h2 className="text-[15px] font-bold mb-4" style={{ color: "var(--admin-text)" }}>Visão detalhada de performance</h2>
+          <div className="grid gap-5 mb-5 grid-cols-1 xl:grid-cols-2">
+            {tests.map((t) => (
+              <div
+                key={t.id}
+                ref={(el) => { cardRefs.current[t.id] = el; }}
+                className="rounded-lg transition-shadow"
+                style={{ boxShadow: "0 0 0 0 transparent" }}
+              >
+                <AbTestCard
+                  test={t}
+                  perf={perfMap[t.id] ?? []}
+                  screenName={screenName(t.screen_key)}
+                  onEdit={() => startEdit(t)}
+                  onStatus={(s) => changeStatus(t.id, s)}
+                  onRemove={() => remove(t.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </>
   );
@@ -472,6 +465,7 @@ function AbTestCard({
   const winner = pickWinner(perf);
   const totalVisitors = perf.reduce((a, p) => a + p.visitors, 0);
   const splitSum = test.variants.reduce((a, v) => a + v.split_percentage, 0);
+  const hasVolume = totalVisitors >= MIN_VOLUME_FOR_WINNER;
   const rows = perf.length > 0
     ? perf
     : test.variants.map((v) => ({
@@ -482,7 +476,7 @@ function AbTestCard({
   return (
     <SectionCard
       title={test.name || "(sem nome)"}
-      description={`Tela: ${screenName} · Campo: ${FIELD_LABEL[test.field_key] ?? test.field_key} · Métrica: ${METRIC_LABEL[test.metric] ?? test.metric}`}
+      description={`Métrica principal: ${METRIC_LABEL[test.metric] ?? test.metric}`}
       right={
         <div className="flex items-center gap-2">
           <StatusBadge variant={STATUS_BADGE[test.status] ?? "neutral"}>
@@ -498,7 +492,7 @@ function AbTestCard({
     >
       {Math.round(splitSum) !== 100 && (
         <div className="mb-3 text-sm" style={{ color: "var(--admin-red-text)" }}>
-          ⚠ Soma dos splits desta variação é {splitSum}% (deveria ser 100%).
+          ⚠ Soma dos splits é {splitSum}% (deveria ser 100%).
         </div>
       )}
 
@@ -506,15 +500,10 @@ function AbTestCard({
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Variação</th>
+              <th>Variante</th>
               <th>Split</th>
-              <th>Visitantes</th>
-              <th>Leads</th>
+              <th>Lead</th>
               <th>Checkout</th>
-              <th>WhatsApp</th>
-              <th>Compras</th>
-              <th>Receita</th>
-              <th>Conv. ({METRIC_LABEL[test.metric] ?? test.metric})</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -529,6 +518,8 @@ function AbTestCard({
                 totalVisitors,
               });
               const badge = VARIANT_BADGE[vs];
+              const leadPct = p.visitors ? ((p.leads / p.visitors) * 100).toFixed(1) + "%" : "—";
+              const checkoutPct = p.visitors ? ((p.checkout_clicks / p.visitors) * 100).toFixed(1) + "%" : "—";
               const rowStyle: React.CSSProperties = isWinner
                 ? { background: "var(--admin-green-soft)" }
                 : {};
@@ -541,16 +532,9 @@ function AbTestCard({
                     </span>
                   </td>
                   <td>{p.split_percentage}%</td>
-                  <td>{p.visitors}</td>
-                  <td>{p.leads}</td>
-                  <td>{p.checkout_clicks}</td>
-                  <td>{p.whatsapp_clicks}</td>
-                  <td>{p.purchases}</td>
-                  <td>{p.revenue ? `R$ ${p.revenue.toFixed(2)}` : "—"}</td>
-                  <td className={isWinner ? "font-semibold" : ""}>{p.conversion_rate.toFixed(2)}%</td>
-                  <td>
-                    <StatusBadge variant={badge.variant}>{badge.label}</StatusBadge>
-                  </td>
+                  <td className={isWinner ? "font-semibold" : ""}>{leadPct}</td>
+                  <td className={isWinner ? "font-semibold" : ""}>{checkoutPct}</td>
+                  <td><StatusBadge variant={badge.variant}>{badge.label}</StatusBadge></td>
                 </tr>
               );
             })}
@@ -558,7 +542,7 @@ function AbTestCard({
         </table>
       </div>
 
-      {totalVisitors < MIN_VOLUME_FOR_WINNER && (
+      {!hasVolume && (
         <p className="mt-3 text-xs" style={{ color: "var(--admin-muted)" }}>
           Volume insuficiente para declarar vencedora ({totalVisitors}/{MIN_VOLUME_FOR_WINNER} visitantes).
         </p>

@@ -257,4 +257,13 @@
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Estilos específicos para o modo preview dentro do Admin */
+  .preview-mode *::-webkit-scrollbar {
+    display: none !important;
+  }
+  .preview-mode * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
 }
