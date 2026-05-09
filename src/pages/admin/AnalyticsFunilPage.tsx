@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Download, Inbox } from "lucide-react";
+import { Inbox } from "lucide-react";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { SectionCard } from "@/components/admin/SectionCard";
 import { StatCard } from "@/components/admin/StatCard";
@@ -14,7 +14,6 @@ import {
   type ScreenStatus,
   type ThemeFilter,
 } from "@/services/analyticsService";
-import { marketOptions } from "@/data/marketOptions";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RcTooltip,
   Legend, ResponsiveContainer,
@@ -22,19 +21,7 @@ import {
 import type { ScreenMicroRow } from "@/services/analyticsService";
 
 
-function exportCsv(rows: Record<string, unknown>[], filename = "analytics-funil.csv") {
-  if (!rows.length) return;
-  const headers = Object.keys(rows[0]);
-  const csv = [
-    headers.join(","),
-    ...rows.map((r) => headers.map((h) => JSON.stringify(r[h] ?? "")).join(",")),
-  ].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-}
+
 
 const STATUS_VARIANT: Record<ScreenStatus, "info" | "success" | "warning" | "neutral" | "danger"> = {
   entrada: "info",
@@ -69,23 +56,9 @@ export default function AnalyticsFunilPage() {
     void loadAnalytics(filters).then((d) => { setData(d); setLoading(false); });
   }, [filters]);
 
-  const csvRows = useMemo(() => (data?.byScreen ?? []).map((s) => ({
-    etapa: s.name,
-    tipo: s.type,
-    usuarios: s.users,
-    perda_pct: Number(s.lossPct.toFixed(1)),
-    conv_prev_pct: Number(s.convPrevPct.toFixed(1)),
-    conv_acc_pct: Number(s.convAccPct.toFixed(1)),
-    tempo_medio_s: Number(s.avgTimeSec.toFixed(1)),
-    acao: s.mainAction,
-    status: s.status,
-  })), [data]);
 
-  useSetTopbarActions(
-    <button className="admin-btn-secondary inline-flex items-center gap-1.5" onClick={() => exportCsv(csvRows)}>
-      <Download className="w-4 h-4" /> Exportar CSV
-    </button>,
-  );
+
+
 
   const m = data?.macros;
   const hasEvents = (data?.totalEvents ?? 0) > 0;
@@ -98,7 +71,7 @@ export default function AnalyticsFunilPage() {
       { label: "Visitantes",      value: visitors,               pct: 100,                                            fill: "#4F7FFF" },
       { label: "Início do funil", value: m?.starts || 0,         pct: visitors ? ((m?.starts || 0) / base) * 100 : 0, fill: "#9B7FFF" },
       { label: "Leads captados",  value: m?.leads || 0,          pct: visitors ? ((m?.leads || 0) / base) * 100 : 0,  fill: "#F5A623" },
-      { label: "Checkout clicks", value: m?.checkoutClicks || 0, pct: visitors ? ((m?.checkoutClicks || 0) / base) * 100 : 0, fill: "#FFD93D" },
+      { label: "Cliques no checkout", value: m?.checkoutClicks || 0, pct: visitors ? ((m?.checkoutClicks || 0) / base) * 100 : 0, fill: "#FFD93D" },
       { label: "Compras",         value: m?.purchases || 0,      pct: visitors ? ((m?.purchases || 0) / base) * 100 : 0,   fill: "#FFF176" },
     ];
   }, [m]);
@@ -121,7 +94,7 @@ export default function AnalyticsFunilPage() {
 
       {/* Filtros globais */}
       <SectionCard className="mb-4">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <label className="admin-label block mb-1.5">Período</label>
               <select className="admin-input" value={String(filters.rangeDays)} onChange={(e) => patch({ rangeDays: Number(e.target.value) as AnalyticsFilters["rangeDays"] })}>
@@ -143,59 +116,119 @@ export default function AnalyticsFunilPage() {
                 </div>
               </>
             )}
-            <div>
-              <label className="admin-label block mb-1.5">Mercado</label>
-              <select 
-                className="admin-input" 
-                value={filters.mercado ?? ""} 
-                onChange={(e) => patch({ mercado: e.target.value || undefined })}
-              >
-                <option value="">Todos os mercados</option>
-                {marketOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
           </div>
       </SectionCard>
 
       {/* ─── Bloco de métricas macro ─── */}
       {/* Linha 1 — Destaques financeiros */}
-      <div className="grid gap-4 mb-4 grid-cols-1 md:grid-cols-[2fr_1.5fr_2fr]">
-
-        {/* Receita */}
-        <div className="admin-card p-5 flex flex-col justify-between gap-2">
-          <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>Receita</span>
-          <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
-            {m?.revenue ? `R$ ${fmt(m.revenue)}` : "—"}
-          </span>
-          <span className="text-xs" style={{ color: "var(--admin-muted)" }}>receita total no período</span>
-        </div>
-
-        {/* ROAS */}
-        <div className="admin-card p-5 flex flex-col justify-between gap-2">
-          <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>ROAS</span>
-          <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
-            {m?.roas ? `${m.roas.toFixed(1)}x` : "—"}
-          </span>
-          <span className="text-xs" style={{ color: "var(--admin-muted)" }}>retorno sobre investimento</span>
-        </div>
-
-        {/* Compras hoje / Compras totais */}
-        <div className="admin-card p-5 grid grid-cols-2 gap-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
-          <div className="flex flex-col justify-between gap-2">
-            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>Compras</span>
+      {/* ─── Bloco de métricas macro: Cards Financeiros ─── */}
+      <div className="grid gap-4 mb-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+        
+        {/* 1. Receita */}
+        <div className="admin-card p-5 flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>Receita</span>
             <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
-              {fmt(m?.purchases ?? 0)}
+              {m?.revenue ? `R$ ${fmt(m.revenue)}` : "—"}
             </span>
-            <span className="text-xs" style={{ color: "var(--admin-muted)" }}>no período</span>
           </div>
-          <div className="flex flex-col justify-between gap-2 pl-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
-            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>WhatsApp</span>
+
+          <div className="pt-4 border-t border-[var(--admin-border)]">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>HOJE</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.revenueToday ? `R$ ${fmt(m.revenueToday)}` : "—"}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 pl-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>ONTEM</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.revenueYesterday ? `R$ ${fmt(m.revenueYesterday)}` : "—"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Investimento */}
+        <div className="admin-card p-5 flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>Investimento</span>
             <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
-              {fmt(m?.whatsappClicks ?? 0)}
+              {m?.investment ? `R$ ${fmt(m.investment)}` : "—"}
             </span>
-            <span className="text-xs" style={{ color: "var(--admin-muted)" }}>cliques no período</span>
+          </div>
+
+          <div className="pt-4 border-t border-[var(--admin-border)]">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>HOJE</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.investmentToday ? `R$ ${fmt(m.investmentToday)}` : "—"}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 pl-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>ONTEM</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.investmentYesterday ? `R$ ${fmt(m.investmentYesterday)}` : "—"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. ROAS */}
+        <div className="admin-card p-5 flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>ROAS</span>
+            <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
+              {m?.roas ? `${m.roas.toFixed(1)}x` : "—"}
+            </span>
+          </div>
+
+          <div className="pt-4 border-t border-[var(--admin-border)]">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>HOJE</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.roasToday ? `${m.roasToday.toFixed(1)}x` : "—"}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 pl-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>ONTEM</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.roasYesterday ? `${m.roasYesterday.toFixed(1)}x` : "—"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. CAC */}
+        <div className="admin-card p-5 flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: "var(--admin-muted)" }}>CAC</span>
+            <span className="text-3xl font-bold tracking-tight" style={{ color: "var(--admin-text)" }}>
+              {m?.investment && m?.purchases ? `R$ ${fmt(m.investment / (m.purchases || 1))}` : "—"}
+            </span>
+          </div>
+
+          <div className="pt-4 border-t border-[var(--admin-border)]">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>HOJE</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.cacToday ? `R$ ${fmt(m.cacToday)}` : "—"}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 pl-4" style={{ borderLeft: "1px solid var(--admin-border)" }}>
+                <span className="text-[10px] font-medium" style={{ color: "var(--admin-muted)" }}>ONTEM</span>
+                <span className="text-sm font-bold" style={{ color: "var(--admin-text)" }}>
+                  {m?.cacYesterday ? `R$ ${fmt(m.cacYesterday)}` : "—"}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -226,14 +259,14 @@ export default function AnalyticsFunilPage() {
             pctColor: "pos",
           },
           {
-            label: "CHECKOUT CLICKS",
+            label: "CLIQUES NO CHECKOUT",
             value: fmt(m?.checkoutClicks ?? 0),
             sub: `${(m?.leads ? ((m?.checkoutClicks || 0) / m.leads * 100) : 0).toFixed(1)}% dos leads`,
             pct: null,
             pctColor: "pos",
           },
           {
-            label: "WHATSAPP CLICKS",
+            label: "CLIQUES NO WHATSAPP",
             value: fmt(m?.whatsappClicks ?? 0),
             sub: `${(m?.leads ? ((m?.whatsappClicks || 0) / m.leads * 100) : 0).toFixed(1)}% dos leads`,
             pct: null,
@@ -321,8 +354,8 @@ export default function AnalyticsFunilPage() {
       {/* ─── Mercados + Tarefas lado a lado ─── */}
       <div className="grid gap-5 mb-5 grid-cols-1 xl:grid-cols-2">
 
-        {/* Mercados com melhor compra */}
-        <SectionCard title="Mercados com melhor compra" description="Comparativo de conversão final por segmento principal.">
+        {/* Conversão por mercado */}
+        <SectionCard title="Conversão por mercado" description="Comparativo de conversão final por segmento principal.">
           {(data?.segments.mercado.length ?? 0) === 0 ? (
             <EmptyState title="Sem dados de segmento neste filtro." />
           ) : (
@@ -350,8 +383,8 @@ export default function AnalyticsFunilPage() {
           )}
         </SectionCard>
 
-        {/* Tarefas que mais geram compra */}
-        <SectionCard title="Tarefas que mais geram compra" description="Quando marcadas como uso alto/moderado, quais tarefas mais correlacionam com venda.">
+        {/* Conversão por tarefa */}
+        <SectionCard title="Conversão por tarefa" description="Quando marcadas como uso alto/moderado, quais tarefas mais correlacionam com venda.">
           {(data?.segments.tarefas.length ?? 0) === 0 ? (
             <EmptyState title="Sem dados de tarefas neste filtro." />
           ) : (
@@ -421,24 +454,7 @@ export default function AnalyticsFunilPage() {
         )}
       </SectionCard>
 
-      {/* ─── Performance por dia / hora ─── */}
-      <div className="grid gap-5 mb-5 grid-cols-1 xl:grid-cols-2">
-        <SectionCard title="Performance por dia" description="Evolução de leads captados por dia no período selecionado.">
-          {(data?.totalEvents ?? 0) === 0 ? (
-            <EmptyState title="Sem eventos suficientes para série temporal." description="Este gráfico será exibido assim que houver volume de tráfego no período." />
-          ) : (
-            <PerformanceByDayChart byScreen={data!.byScreen} />
-          )}
-        </SectionCard>
-
-        <SectionCard title="Performance por hora" description="Distribuição de eventos por hora do dia no período selecionado.">
-          {(data?.totalEvents ?? 0) === 0 ? (
-            <EmptyState title="Sem eventos suficientes para série temporal." description="Este gráfico será exibido assim que houver volume de tráfego no período." />
-          ) : (
-            <PerformanceByHourChart />
-          )}
-        </SectionCard>
-      </div>
+      {/* Performance por dia / hora REMOVIDOS */}
 
       {/* Rotas finais */}
       <SectionCard title="Rotas finais" className="mb-5">
@@ -617,63 +633,5 @@ function VisualFunnel({ steps, fmt }: { steps: FunnelStep[]; fmt: (n: number) =>
   );
 }
 // ──────────────────────────────────────────────────────────────────────────
-// Performance por dia — usa as etapas do funil como proxy de pontos no tempo
+// Performance por dia / hora components removed as they are no longer used in this version.
 // ──────────────────────────────────────────────────────────────────────────
-const CHART_TOOLTIP_STYLE = {
-  contentStyle: {
-    backgroundColor: "var(--admin-surface-2)",
-    border: "1px solid var(--admin-border)",
-    borderRadius: "12px",
-    fontSize: "12px",
-  },
-};
-
-function PerformanceByDayChart({ byScreen }: { byScreen: ScreenMicroRow[] }) {
-  const chartData = byScreen.map((s, i) => ({
-    name: `E${i + 1}`,
-    Usuários: s.users,
-    "Conv. %": Number(s.convAccPct.toFixed(1)),
-  }));
-
-  return (
-    <div className="h-56 w-full mt-2">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 4, right: 16, left: -12, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--admin-border)" />
-          <XAxis dataKey="name" tick={{ fontSize: 11, fill: "var(--admin-muted)" as string }} />
-          <YAxis tick={{ fontSize: 11, fill: "var(--admin-muted)" as string }} />
-          <RcTooltip {...CHART_TOOLTIP_STYLE} />
-          <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Line type="monotone" dataKey="Usuários" stroke="#4F7FFF" strokeWidth={2} dot={{ r: 3 }} />
-          <Line type="monotone" dataKey="Conv. %" stroke="#9B7FFF" strokeWidth={2} dot={{ r: 3 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// ──────────────────────────────────────────────────────────────────────────
-// Performance por hora — proxy ilustrativo (série horária real exige serviço)
-// ──────────────────────────────────────────────────────────────────────────
-function PerformanceByHourChart() {
-  const hours = ["07h","08h","09h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h"];
-  const seed = [12,11,13,14,18,20,22,21,19,17,16,18,20,19,16,13];
-  const chartData = hours.map((h, i) => ({ name: h, Eventos: seed[i] ?? 10 }));
-
-  return (
-    <div className="h-56 w-full mt-2">
-      <p className="text-[11px] mb-2" style={{ color: "var(--admin-muted)" }}>
-        ⚠️ Dados horários exigem extensão do serviço. Exibindo distribuição ilustrativa.
-      </p>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 4, right: 16, left: -12, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--admin-border)" />
-          <XAxis dataKey="name" tick={{ fontSize: 10, fill: "var(--admin-muted)" as string }} interval={1} />
-          <YAxis tick={{ fontSize: 11, fill: "var(--admin-muted)" as string }} />
-          <RcTooltip {...CHART_TOOLTIP_STYLE} />
-          <Line type="monotone" dataKey="Eventos" stroke="#F5A623" strokeWidth={2} dot={{ r: 3 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}

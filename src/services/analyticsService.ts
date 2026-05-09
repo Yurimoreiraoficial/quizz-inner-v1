@@ -36,8 +36,17 @@ export interface MacroStats {
   whatsappClicks: number;
   purchases: number;
   revenue: number;
-  cac?: number;
+  revenueToday?: number;
+  revenueYesterday?: number;
+  investment?: number;
+  investmentToday?: number;
+  investmentYesterday?: number;
   roas?: number;
+  roasToday?: number;
+  roasYesterday?: number;
+  cac?: number;
+  cacToday?: number;
+  cacYesterday?: number;
 }
 
 export interface ScreenMicroRow {
@@ -122,7 +131,13 @@ const EV_PURCHASE      = new Set(["purchase"]);
 const empty: FunnelAnalytics = {
   filters: { rangeDays: 30, theme: "todos", route: "todos" },
   available: { sources: [], campaigns: [], mercados: [], variants: [] },
-  macros: { visitors: 0, starts: 0, leads: 0, checkoutClicks: 0, whatsappClicks: 0, purchases: 0, revenue: 0 },
+  macros: { 
+    visitors: 0, starts: 0, leads: 0, checkoutClicks: 0, whatsappClicks: 0, purchases: 0, revenue: 0,
+    revenueToday: undefined, revenueYesterday: undefined,
+    investment: undefined, investmentToday: undefined, investmentYesterday: undefined,
+    roas: undefined, roasToday: undefined, roasYesterday: undefined,
+    cac: undefined, cacToday: undefined, cacYesterday: undefined
+  },
   byScreen: [],
   routes: { checkout: 0, whatsapp: 0, ultra: 0 },
   abVariants: [],
@@ -250,7 +265,20 @@ export async function loadAnalytics(filters: AnalyticsFilters = { rangeDays: 30,
       .filter((e) => EV_PURCHASE.has(e.event_name))
       .reduce((acc, e) => acc + Number((e.event_data as Record<string, unknown> | null)?.value ?? 0), 0);
 
-    const macros: MacroStats = { visitors, starts, leads: leadsCount, checkoutClicks, whatsappClicks, purchases, revenue };
+    const macros: MacroStats = { 
+      visitors, starts, leads: leadsCount, checkoutClicks, whatsappClicks, purchases, revenue,
+      revenueToday: undefined, // Preparado para Vibe Coding
+      revenueYesterday: undefined,
+      investment: undefined,
+      investmentToday: undefined,
+      investmentYesterday: undefined,
+      roas: undefined,
+      roasToday: undefined,
+      roasYesterday: undefined,
+      cac: undefined,
+      cacToday: undefined,
+      cacYesterday: undefined
+    };
 
     // ---------- Por tela (micro-conversão) ----------
     // Conta sessões únicas que viram cada tela (ev SCREEN_VIEW por screen_key)
